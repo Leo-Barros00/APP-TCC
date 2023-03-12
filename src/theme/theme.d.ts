@@ -1,6 +1,6 @@
 import 'styled-components';
 
-type ColorTheme = 'primary' | 'secondary' | 'error' | 'warning' | 'success'
+type Variant = 'primary' | 'secondary' | 'error' | 'warning' | 'success'
 
 interface Pallete {
   main: string,
@@ -9,6 +9,6 @@ interface Pallete {
 
 declare module 'styled-components' {
   export interface DefaultTheme {
-    colors: Record<ColorTheme, Pallete>
+    colors: Record<Variant, Pallete>
   }
 }
