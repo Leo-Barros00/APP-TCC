@@ -1,14 +1,14 @@
 import 'styled-components';
 
-type Variant = 'primary' | 'secondary' | 'error' | 'warning' | 'success'
+export type Variant = 'primary' | 'secondary' | 'error' | 'warning' | 'success'
 
-interface Pallete {
+interface ColorPallete {
   main: string,
   constrastText: string
 }
 
 declare module 'styled-components' {
   export interface DefaultTheme {
-    colors: Record<Variant, Pallete>
+    colors: Record<Variant, ColorPallete>
   }
 }

@@ -11,20 +11,20 @@ export const lightTheme: DefaultTheme = {
       constrastText: '#FFF'
     },
     secondary: {
-      main: '',
-      constrastText: ''
+      main: '#241142',
+      constrastText: '#FFF'
     },
     error: {
-      main: '',
-      constrastText: ''
+      main: '#dc2626',
+      constrastText: '#fff'
     },
     warning: {
-      main: '',
-      constrastText: ''
+      main: '#facc15',
+      constrastText: '#fff'
     },
     success: {
-      main: '',
-      constrastText: ''
+      main: '#65a30d',
+      constrastText: '#fff'
     }
   }
 }
