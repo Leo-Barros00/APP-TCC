@@ -1,10 +1,32 @@
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { ThemeProvider } from 'styled-components/native';
+import * as Font from 'expo-font';
 
 import { basicTheme, lightTheme } from './src/theme';
 
 export default function App() {
+  const [appIsReady, setAppIsReady] = useState(false)
+
+  useEffect(() => {
+    async function prepare() {
+      await Font.loadAsync({
+        'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
+        'Poppins-Medium': require('./assets/fonts/Poppins-Medium.ttf'),
+        'Poppins-SemiBold': require('./assets/fonts/Poppins-SemiBold.ttf'),
+        'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
+      })
+
+      setAppIsReady(true)
+    }
+
+    prepare()
+  }, [])
+
+  if (!appIsReady)
+    return null
+
   return (
     <ThemeProvider theme={{ ...basicTheme, ...lightTheme }}>
       <View style={styles.container}>
