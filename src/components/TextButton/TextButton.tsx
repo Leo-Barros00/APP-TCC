@@ -1,6 +1,8 @@
 import React from 'react'
 import styled, { css, useTheme } from 'styled-components/native'
 
+import { hexToHsl } from '../../utils/color'
+
 import { IButton, IText } from './interface'
 
 const Container = styled.TouchableHighlight<Omit<IButton, 'text'>>`
@@ -25,20 +27,23 @@ const ButtonText = styled.Text<IText>`
   font-size: 20px;
   font-family: 'Poppins-SemiBold';
 
-  ${({ ghost, variant, theme }) => !ghost ?
-    css`
-      color: ${theme.colors[variant].constrastText};
-    ` : css`
-      color: ${theme.colors[variant].main};
-    `}
+  color: ${({ ghost, variant, theme }) => theme.colors[variant][!ghost ? 'constrastText' : 'main']};
 `
+
+function getMinButtonUnderlayColorLightness(currentLightness: number): number {
+  const decreasedLightness = Math.max(10, currentLightness -15)
+  return Math.min(currentLightness, decreasedLightness)
+}
 
 const TextButton: React.FC<IButton> = ({ children, text, variant, ...props }) => {
   const { colors } = useTheme()
+  const { hue, saturation, lightness } = hexToHsl(colors[variant].main)
+
+  const underlayLightness = getMinButtonUnderlayColorLightness(lightness)
 
   return (
     <Container
-      underlayColor={colors[variant].main}
+      underlayColor={`hsl(${hue} ${saturation}% ${underlayLightness}%)`}
       variant={variant}
       {...props}
     >
