@@ -3,8 +3,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { ThemeProvider } from 'styled-components/native';
 import * as Font from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 
 import { basicTheme, lightTheme } from './src/theme';
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false)
@@ -23,6 +26,11 @@ export default function App() {
 
     prepare()
   }, [])
+
+  useEffect(() => {
+    if (appIsReady)
+      setTimeout(SplashScreen.hideAsync, 1000)
+  }, [appIsReady])
 
   if (!appIsReady)
     return null
