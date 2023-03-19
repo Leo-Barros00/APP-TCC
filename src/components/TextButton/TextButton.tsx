@@ -12,7 +12,7 @@ const Container = styled.TouchableHighlight<Omit<IButton, 'text'>>`
   padding: 12px 16px;
   align-items: center;
   justify-content: center;
-  margin: 4px;
+  margin: 4px 0;
 
   ${({ ghost, variant, theme }) => !ghost ?
     css`
