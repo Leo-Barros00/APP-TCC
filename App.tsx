@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components/native';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import { Provider } from 'react-redux';
 
 import RootNavigation from './src/RootNavigation';
 
 import { basicTheme, lightTheme } from './src/theme';
+import store from './src/store/configureStore'
 
 SplashScreen.preventAutoHideAsync();
 
@@ -36,8 +38,10 @@ export default function App() {
     return null
 
   return (
-    <ThemeProvider theme={{ ...basicTheme, ...lightTheme }}>
-      <RootNavigation />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={{ ...basicTheme, ...lightTheme }}>
+        <RootNavigation />
+      </ThemeProvider>
+    </Provider>
   );
 }
