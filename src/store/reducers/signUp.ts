@@ -1,17 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-enum SignUpStep {
+export enum SignUpStep {
   Email,
   Name,
   BirthDate
 } 
 
 interface SignUpState {
-  step: SignUpStep
+  step: SignUpStep,
+  email: string
+  name: string
+  surname: string
 }
 
 const initialState: SignUpState = {
   step: SignUpStep.Email,
+  email: '',
+  name: '',
+  surname: ''
 }
 
 const signUpslice = createSlice({
@@ -24,8 +30,14 @@ const signUpslice = createSlice({
     previousStep(state) {
       state.step--;
     },
+    insertSignUpInfo(state, action: PayloadAction<Partial<SignUpState>>) {
+      return {
+        ...state,
+        ...action.payload
+      }
+    }
   },
 });
 
-export const { nextStep, previousStep } = signUpslice.actions;
+export const { nextStep, previousStep, insertSignUpInfo } = signUpslice.actions;
 export default signUpslice.reducer;
