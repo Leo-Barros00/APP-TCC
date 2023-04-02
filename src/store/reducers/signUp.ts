@@ -11,13 +11,15 @@ interface SignUpState {
   email: string
   name: string
   surname: string
+  cpf: string
 }
 
 const initialState: SignUpState = {
   step: SignUpStep.Email,
   email: '',
   name: '',
-  surname: ''
+  surname: '',
+  cpf: ''
 }
 
 const signUpslice = createSlice({

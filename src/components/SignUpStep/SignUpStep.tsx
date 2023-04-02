@@ -4,6 +4,7 @@ import styled from 'styled-components/native'
 
 import SignUpEmailStep from '../SignUpEmailStep'
 import SignUpNameStep from '../SignUpNameStep/SignUpNameStep'
+import SignUpCpfStep from '../SignUpCpfStep'
 
 import { useAppSelector } from '../../hooks/redux'
 
@@ -31,7 +32,7 @@ const signUpSteps = [
   },
   {
     instruction: 'Insira agora o seu CPF',
-    form: <></>
+    form: <SignUpCpfStep />
   }
 ] as const
 
