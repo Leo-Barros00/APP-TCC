@@ -27,18 +27,18 @@ const WelcomeTextSubTitle = styled.Text`
 `
 
 const WelcomeTextHighlight = styled.Text`
-  text-decoration: underline;
+  /* text-decoration: underline; */
   color: ${({ theme }) => theme.colors.primary.main};
 `
 
-const OnboardingScreen: React.FC<ScreenType> = () => {
+const OnboardingScreen: React.FC<ScreenType> = ({ navigation }) => {
 
   function handleOnPressLoginButton() {
 
   }
 
   function handleOnPressSignInButton() {
-
+    navigation.navigate('SignUp')
   }
   
   return (
@@ -48,7 +48,7 @@ const OnboardingScreen: React.FC<ScreenType> = () => {
           Bem-vindo(a)
         </WelcomeTextTitle>
         <WelcomeTextSubTitle>
-          Simplifique a ligação de <WelcomeTextHighlight>quem necessita</WelcomeTextHighlight>, com <WelcomeTextHighlight>quem tem habilidades para realizar</WelcomeTextHighlight>.
+          Simplifique a conexão de <WelcomeTextHighlight>quem necessita</WelcomeTextHighlight>, com <WelcomeTextHighlight>quem tem habilidades para realizar</WelcomeTextHighlight>.
         </WelcomeTextSubTitle>
       </OnboardingTextContainer>
       <Button
