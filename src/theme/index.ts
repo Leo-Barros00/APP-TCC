@@ -7,11 +7,11 @@ export const basicTheme = {
 export const lightTheme: DefaultTheme = {
   colors: {
     primary: {
-      main: '#6930C3',
+      main: '#3030C2',
       constrastText: '#FFF'
     },
     secondary: {
-      main: '#241142',
+      main: '#151553',
       constrastText: '#FFF'
     },
     error: {
