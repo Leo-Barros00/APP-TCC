@@ -22,3 +22,21 @@ export function validateEmail(email: string): Validation {
     errors: []
   }
 }
+
+export function validateRequired(fieldName: string, value: string): Validation {
+  const requiredSchema = string().required(`O campo ${fieldName} é obrigatório`)
+
+  try {
+    requiredSchema.validateSync(value, { abortEarly: false })
+  } catch (err: any) {
+    return {
+      success: false,
+      errors: err.errors
+    }
+  }
+
+  return {
+    success: true,
+    errors: []
+  }
+}

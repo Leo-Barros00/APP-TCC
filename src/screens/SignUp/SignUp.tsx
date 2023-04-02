@@ -21,7 +21,7 @@ const TitleContainer = styled.View`
 `
 
 const SignUpTitle = styled.Text`
-  font-size: 36px;
+  font-size: 34px;
   font-family: 'Poppins-Bold';
 `
 

@@ -2,6 +2,9 @@ import React from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
 
+import SignUpEmailStep from '../SignUpEmailStep'
+import SignUpNameStep from '../SignUpNameStep/SignUpNameStep'
+
 import { useAppSelector } from '../../hooks/redux'
 
 const Container = styled.View`
@@ -11,7 +14,7 @@ const Container = styled.View`
 `
 
 const Instruction = styled.Text`
-  font-size: 28px;
+  font-size: 26px;
   line-height: 40px;
   font-family: 'Poppins-SemiBold';
   text-align: center;
@@ -20,13 +23,17 @@ const Instruction = styled.Text`
 const signUpSteps = [
   {
     instruction: 'Primeiramente, insira seu e-mail',
-    form: <></>
+    form: <SignUpEmailStep />
   },
   {
     instruction: 'Perfeito, agora insira seu nome e sobrenome',
+    form: <SignUpNameStep />
+  },
+  {
+    instruction: 'Insira agora o seu CPF',
     form: <></>
   }
-]
+] as const
 
 const SignUpStep: React.FC = () => {
   const { step } = useAppSelector(({ signUp }) => signUp)
