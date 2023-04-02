@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { subYears } from 'date-fns'
 
 export enum SignUpStep {
   Email,
@@ -12,6 +13,7 @@ interface SignUpState {
   name: string
   surname: string
   cpf: string
+  birthDate: string
 }
 
 const initialState: SignUpState = {
@@ -19,7 +21,8 @@ const initialState: SignUpState = {
   email: '',
   name: '',
   surname: '',
-  cpf: ''
+  cpf: '',
+  birthDate: subYears(new Date(), 18).toISOString()
 }
 
 const signUpslice = createSlice({

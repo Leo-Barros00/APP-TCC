@@ -5,6 +5,7 @@ import styled from 'styled-components/native'
 import SignUpEmailStep from '../SignUpEmailStep'
 import SignUpNameStep from '../SignUpNameStep/SignUpNameStep'
 import SignUpCpfStep from '../SignUpCpfStep'
+import SignUpBirthDateStep from '../SignUpBirthDateStep'
 
 import { useAppSelector } from '../../hooks/redux'
 
@@ -33,12 +34,20 @@ const signUpSteps = [
   {
     instruction: 'Insira agora o seu CPF',
     form: <SignUpCpfStep />
+  },
+  {
+    instruction: 'Nos conte agora a sua data de nascimento',
+    form: <SignUpBirthDateStep />
+  },
+  {
+    instruction: 'Qual gênero você se identifica?',
+    form: <></>
   }
 ] as const
 
 const SignUpStep: React.FC = () => {
   const { step } = useAppSelector(({ signUp }) => signUp)
-  const { instruction, form } = signUpSteps[step]
+  const { instruction, form } = signUpSteps[0]
 
   return (
     <Container>
