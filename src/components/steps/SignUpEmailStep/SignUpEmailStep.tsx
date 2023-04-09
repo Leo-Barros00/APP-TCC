@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { View } from 'react-native'
 
-import EmailTextField from '../EmailTextField'
-import TextButton from '../TextButton'
-import SignUpErrors from '../SignUpErrors'
+import EmailTextField from '../../atomic/EmailTextField'
+import TextButton from '../../atomic/TextButton'
+import SignUpErrors from '../../atomic/SignUpErrors'
 
-import { useAppDispatch, useAppSelector } from '../../hooks/redux'
-import { insertSignUpInfo, nextStep } from '../../store/reducers/signUp'
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux'
+import { insertSignUpInfo, nextStep } from '../../../store/reducers/signUp'
 
-import { validateEmail } from '../../utils/validation'
+import { validateEmail } from '../../../utils/validation'
 
 const SignUpEmailStep = () => {
   const { email } = useAppSelector(({ signUp }) => signUp)

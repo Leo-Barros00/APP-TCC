@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components/native'
 
-import Button from '../../components/TextButton'
+import Button from '../../components/atomic/TextButton'
+import { SafeAreaView } from 'react-native'
 
 const Container = styled.View`
   flex: 1;
@@ -42,28 +43,31 @@ const OnboardingScreen: React.FC<ScreenType> = ({ navigation }) => {
   }
   
   return (
-    <Container>
-      <OnboardingTextContainer>
-        <WelcomeTextTitle>
-          Bem-vindo(a)
-        </WelcomeTextTitle>
-        <WelcomeTextSubTitle>
-          Simplifique a conexão de <WelcomeTextHighlight>quem necessita</WelcomeTextHighlight>, com <WelcomeTextHighlight>quem tem habilidades para realizar</WelcomeTextHighlight>.
-        </WelcomeTextSubTitle>
-      </OnboardingTextContainer>
-      <Button
-        fluid
-        variant='primary'
-        text='Criar conta'
-        onPress={handleOnPressSignInButton}
-      />
-      <Button
-        fluid
-        variant='secondary'
-        text='Fazer login'
-        onPress={handleOnPressLoginButton}
-      />
-    </Container>
+    <SafeAreaView style={{flex: 1}}>
+      <Container>
+        <OnboardingTextContainer>
+          <WelcomeTextTitle>
+            Bem-vindo(a)
+          </WelcomeTextTitle>
+          <WelcomeTextSubTitle>
+            Simplifique a conexão de <WelcomeTextHighlight>quem necessita</WelcomeTextHighlight>, com <WelcomeTextHighlight>quem tem habilidades para realizar</WelcomeTextHighlight>.
+          </WelcomeTextSubTitle>
+        </OnboardingTextContainer>
+        <Button
+          fluid
+          variant='primary'
+          text='Criar conta'
+          onPress={handleOnPressSignInButton}
+        />
+        <Button
+          fluid
+          variant='secondary'
+          text='Fazer login'
+          onPress={handleOnPressLoginButton}
+        />
+      </Container>
+    </SafeAreaView>
+
   )
 }
 

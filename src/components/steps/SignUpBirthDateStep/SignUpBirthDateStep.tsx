@@ -3,11 +3,11 @@ import { View } from 'react-native'
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker'
 import { subYears, isSameDay, format } from 'date-fns'
 
-import TextButton from '../TextButton'
+import TextButton from '../../atomic/TextButton'
 
-import { useAppDispatch, useAppSelector } from '../../hooks/redux'
-import { insertSignUpInfo, nextStep } from '../../store/reducers/signUp'
-import SignUpErrors from '../SignUpErrors'
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux'
+import { insertSignUpInfo, nextStep } from '../../../store/reducers/signUp'
+import SignUpErrors from '../../atomic/SignUpErrors'
 
 const SignUpBirthDateStep = () => {
   const { birthDate } = useAppSelector(({ signUp }) => signUp)

@@ -2,12 +2,13 @@ import React from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
 
-import SignUpEmailStep from '../SignUpEmailStep'
-import SignUpNameStep from '../SignUpNameStep/SignUpNameStep'
-import SignUpCpfStep from '../SignUpCpfStep'
-import SignUpBirthDateStep from '../SignUpBirthDateStep'
+import SignUpEmailStep from '../../steps/SignUpEmailStep'
+import SignUpNameStep from '../../steps/SignUpNameStep/SignUpNameStep'
+import SignUpCpfStep from '../../steps/SignUpCpfStep'
+import SignUpBirthDateStep from '../../steps/SignUpBirthDateStep'
 
-import { useAppSelector } from '../../hooks/redux'
+import { useAppSelector } from '../../../hooks/redux'
+import SignUpGenderStep from '../SignUpGenderStep/SignUpGenderStep'
 
 const Container = styled.View`
   flex: 1; 
@@ -41,13 +42,13 @@ const signUpSteps = [
   },
   {
     instruction: 'Qual gênero você se identifica?',
-    form: <></>
+    form: <SignUpGenderStep />
   }
 ] as const
 
 const SignUpStep: React.FC = () => {
   const { step } = useAppSelector(({ signUp }) => signUp)
-  const { instruction, form } = signUpSteps[0]
+  const { instruction, form } = signUpSteps[step]
 
   return (
     <Container>

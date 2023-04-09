@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 
-import SignUpStep from '../../components/SignUpStep'
+import SignUpStep from '../../components/steps/SignUpStep'
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux'
 import { previousStep } from '../../store/reducers/signUp'

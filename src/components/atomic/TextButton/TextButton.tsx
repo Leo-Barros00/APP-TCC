@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, { css, useTheme } from 'styled-components/native'
 
-import { hexToHsl } from '../../utils/color'
+import { hexToHsl } from '../../../utils/color'
 
 import { IButton, IText } from './interface'
 
@@ -47,7 +47,7 @@ const TextButton: React.FC<IButton> = ({ children, text, variant, ...props }) =>
       variant={variant}
       {...props}
     >
-      <ButtonText
+      <ButtonText 
         variant={variant}
         {...props}
       >
