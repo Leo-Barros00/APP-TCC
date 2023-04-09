@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components/native'
-
-import Button from '../../components/atomic/TextButton'
 import { SafeAreaView } from 'react-native'
+
+import Button from '@Components/atomic/TextButton'
 
 const Container = styled.View`
   flex: 1;

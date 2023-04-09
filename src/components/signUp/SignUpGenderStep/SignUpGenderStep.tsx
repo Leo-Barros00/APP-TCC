@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import { View } from 'react-native'
-import { subYears, isSameDay, format } from 'date-fns'
 
-import TextButton from '../../atomic/TextButton'
+import SignUpErrors from '@Components/signUp/SignUpErrors'
+import TextButton from '@Components/atomic/TextButton'
+import RadioButton from '@Components/atomic/RadioButton/RadioButton'
 
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux'
-import { nextStep } from '../../../store/reducers/signUp'
-import SignUpErrors from '../../atomic/SignUpErrors'
-import RadioButton from '../../atomic/RadioButton/RadioButton'
+import { useAppDispatch, useAppSelector } from '@Hooks/redux'
+import { nextStep } from '@Store/reducers/signUp'
 
 const SignUpGenderStep = () => {
   const [errors, setErrors] = useState<string[]>([])

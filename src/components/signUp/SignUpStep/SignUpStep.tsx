@@ -2,13 +2,13 @@ import React from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
 
-import SignUpEmailStep from '../../steps/SignUpEmailStep'
-import SignUpNameStep from '../../steps/SignUpNameStep/SignUpNameStep'
-import SignUpCpfStep from '../../steps/SignUpCpfStep'
-import SignUpBirthDateStep from '../../steps/SignUpBirthDateStep'
+import SignUpEmailStep from '@Components/signUp/SignUpEmailStep'
+import SignUpNameStep from '@Components/signUp/SignUpNameStep'
+import SignUpCpfStep from '@Components/signUp/SignUpCpfStep'
+import SignUpBirthDateStep from '@Components/signUp/SignUpBirthDateStep'
+import SignUpGenderStep from '@Components/signUp/SignUpGenderStep'
 
-import { useAppSelector } from '../../../hooks/redux'
-import SignUpGenderStep from '../SignUpGenderStep/SignUpGenderStep'
+import { useAppSelector } from '@Hooks/redux'
 
 const Container = styled.View`
   flex: 1; 

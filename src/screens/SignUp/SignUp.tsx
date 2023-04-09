@@ -3,10 +3,10 @@ import React, { useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 
-import SignUpStep from '../../components/steps/SignUpStep'
+import SignUpStep from '@Components/signUp/SignUpStep'
 
-import { useAppDispatch, useAppSelector } from '../../hooks/redux'
-import { previousStep } from '../../store/reducers/signUp'
+import { useAppDispatch, useAppSelector } from '@Hooks/redux'
+import { previousStep } from '@Store/reducers/signUp'
 
 const Container = styled.View`
   flex: 1;
