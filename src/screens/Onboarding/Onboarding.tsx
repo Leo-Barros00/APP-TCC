@@ -4,6 +4,9 @@ import { SafeAreaView } from 'react-native'
 
 import Button from '@Components/atomic/TextButton'
 
+import { useAppDispatch } from '@Hooks/redux'
+import { insertSignUpInfo } from '@Store/reducers/signUp'
+
 const Container = styled.View`
   flex: 1;
   align-items: center;
@@ -33,12 +36,14 @@ const WelcomeTextHighlight = styled.Text`
 `
 
 const OnboardingScreen: React.FC<ScreenType> = ({ navigation }) => {
+  const dispatch = useAppDispatch()
 
   function handleOnPressLoginButton() {
 
   }
 
   function handleOnPressSignInButton() {
+    dispatch(insertSignUpInfo({ step: 0 }))
     navigation.navigate('SignUp')
   }
   
