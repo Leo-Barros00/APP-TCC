@@ -1,6 +1,7 @@
 import React from 'react'
 import styled, { css, useTheme } from 'styled-components/native'
 
+import { hexToHsl } from '../../../utils/color'
 import { IRadioButton } from './interface'
 import { IButton, IText } from '../TextButton/interface'
 
@@ -29,10 +30,31 @@ const ButtonText = styled.Text<IText>`
   color: ${({ ghost, variant, theme }) => theme.colors[variant][!ghost ? 'constrastText' : 'main']};
 `
 
-const RadioButton: React.FC<IRadioButton> = ({ ...props }) => {
+function getMinButtonUnderlayColorLightness(currentLightness: number): number {
+  const decreasedLightness = Math.max(10, currentLightness -15)
+  return Math.min(currentLightness, decreasedLightness)
+}
+
+const SelectedCard: React.FC<IRadioButton> = ({ text, variant, ...props }) => {
+  const { colors } = useTheme()
+  const { hue, saturation, lightness } = hexToHsl(colors[variant].main)
+
+  const underlayLightness = getMinButtonUnderlayColorLightness(lightness)
     return (
-        <ButtonText {...props} />
+        
+      <Container
+      underlayColor={`hsl(${hue} ${saturation}% ${underlayLightness}%)`}
+      variant={variant}
+      {...props}
+      >
+        <ButtonText 
+          variant={variant}
+          {...props}
+        >
+          {text}
+        </ButtonText>
+    </Container>
     )
 }
 
-export default RadioButton
+export default SelectedCard

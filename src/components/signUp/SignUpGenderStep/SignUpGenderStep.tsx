@@ -3,20 +3,31 @@ import { View } from 'react-native'
 
 import SignUpErrors from '@Components/signUp/SignUpErrors'
 import TextButton from '@Components/atomic/TextButton'
-import RadioButton from '@Components/atomic/RadioButton/RadioButton'
+import SelectedCard from '@Components/atomic/SelectedCard/SelectedCard'
 
 import { useAppDispatch, useAppSelector } from '@Hooks/redux'
-import { nextStep } from '@Store/reducers/signUp'
+import { insertSignUpInfo, nextStep } from '@Store/reducers/signUp'
+import { validateRequired } from '@Utils/validation'
 
 const SignUpGenderStep = () => {
-  const [errors, setErrors] = useState<string[]>([])
-  const [genderSelected, setGenderSelected] = useState(null)
+  const { gender } = useAppSelector(({ signUp }) => signUp)
+  const [genderErrors, setGenderErrors] = useState<string[]>([])
 
   const dispatch = useAppDispatch()
 
+  function handleOnClickGenderSelected(value: string) {
+    dispatch(insertSignUpInfo({ gender: value }))
+    setGenderErrors([])
+  }
+
   function handleOnClickNext() {
-    if(!genderSelected) {
-      setErrors(['Algum gênero deve ser selecionado'])
+    const genderValidation = validateRequired('Genero', gender)
+
+
+    if(!genderValidation.success) {
+      setGenderErrors(genderValidation.errors)
+
+      return;
     }
 
     dispatch(nextStep())
@@ -24,21 +35,21 @@ const SignUpGenderStep = () => {
 
   return (
     <View>
-      <SignUpErrors errors={errors} />
-      <RadioButton 
-        title={'Masculino'}
-        onPress={() => { console.log('clicou M') } }
-        value={'M'}
-        variant={'primary'}
-        fluid 
-      />
-      <RadioButton
-        title={'Feminino'}
-        onPress={() => {console.log('clicou F')}}
-        value={'F'}
-        variant={'primary'}
-        fluid
-      />
+      <SignUpErrors errors={genderErrors} />
+      <View style={{paddingBottom: 32}}>
+        <SelectedCard 
+          text={'Masculino'}
+          onPress={() => handleOnClickGenderSelected('Masculino')}
+          variant={'secondary'}
+          fluid 
+        />
+        <SelectedCard
+          text={'Feminino'}
+          onPress={() => handleOnClickGenderSelected('Feminino')}
+          variant={'secondary'}
+          fluid
+        />
+      </View>
       <TextButton
         text="Avançar"
         variant='primary'
