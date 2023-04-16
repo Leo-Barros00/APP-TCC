@@ -7,6 +7,7 @@ import SignUpNameStep from '@Components/signUp/SignUpNameStep'
 import SignUpCpfStep from '@Components/signUp/SignUpCpfStep'
 import SignUpBirthDateStep from '@Components/signUp/SignUpBirthDateStep'
 import SignUpGenderStep from '@Components/signUp/SignUpGenderStep'
+import SignUpPasswordStep from '@Components/signUp/SignUpPasswordStep'
 
 import { useAppSelector } from '@Hooks/redux'
 
@@ -43,6 +44,10 @@ const signUpSteps = [
   {
     instruction: 'Qual gênero você se identifica?',
     form: <SignUpGenderStep />,
+  },
+  {
+    instruction: 'Informe agora a sua senha para cadastro',
+    form: <SignUpPasswordStep />,
   },
 ] as const
 

@@ -10,6 +10,8 @@ export enum SignUpStep {
 interface SignUpState {
   step: SignUpStep
   email: string
+  password: string
+  passwordConfirm?: string
   name: string
   surname: string
   cpf: string
@@ -20,6 +22,8 @@ interface SignUpState {
 const initialState: SignUpState = {
   step: SignUpStep.Email,
   email: '',
+  password: '',
+  passwordConfirm: '',
   name: '',
   surname: '',
   cpf: '',
