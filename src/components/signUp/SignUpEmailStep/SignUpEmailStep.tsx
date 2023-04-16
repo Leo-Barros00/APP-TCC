@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { View } from 'react-native'
 
 import EmailTextField from '@Components/atomic/EmailTextField'
-import TextButton from '@Components/atomic/TextButton'
 import SignUpErrors from '@Components/signUp/SignUpErrors'
+import SignUpButtons from '@Components/signUp/SignUpButtons'
 
 import { useAppDispatch, useAppSelector } from '@Hooks/redux'
 import { insertSignUpInfo, nextStep } from '@Store/reducers/signUp'
@@ -21,7 +21,7 @@ const SignUpEmailStep = () => {
     setErrors([])
   }
 
-  function handleOnClickNext() {
+  function handleOnPressNextButton() {
     const emailValidation = validateEmail(email)
 
     if(!emailValidation.success) {
@@ -41,13 +41,10 @@ const SignUpEmailStep = () => {
         value={email}
         blurOnSubmit={false}
         returnKeyType="next"
-        onSubmitEditing={handleOnClickNext}
+        onSubmitEditing={handleOnPressNextButton}
       />
-      <TextButton
-        text="Avançar"
-        variant='primary'
-        fluid
-        onPress={handleOnClickNext}
+      <SignUpButtons
+        handleOnPressNextButton={handleOnPressNextButton}
       />
     </View>
   )

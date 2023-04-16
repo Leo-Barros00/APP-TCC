@@ -5,10 +5,10 @@ import { subYears, isSameDay, format } from 'date-fns'
 
 import TextButton from '@Components/atomic/TextButton'
 import SignUpErrors from '@Components/signUp/SignUpErrors'
+import SignUpButtons from '@Components/signUp/SignUpButtons'
 
 import { useAppDispatch, useAppSelector } from '@Hooks/redux'
 import { insertSignUpInfo, nextStep } from '@Store/reducers/signUp'
-
 
 const SignUpBirthDateStep = () => {
   const { birthDate } = useAppSelector(({ signUp }) => signUp)
@@ -33,7 +33,7 @@ const SignUpBirthDateStep = () => {
     dispatch(insertSignUpInfo({ birthDate: date?.toISOString() }))
   }
 
-  function handleOnClickNext() {
+  function handleOnPressNextButton() {
     if(!dateSelected) {
       setErrors(['A data deve ser selecionada'])
     }
@@ -60,11 +60,8 @@ const SignUpBirthDateStep = () => {
         fluid
         onPressIn={handleOnPressDateField}
       />
-      <TextButton
-        text="Avançar"
-        variant='primary'
-        fluid
-        onPress={handleOnClickNext}
+      <SignUpButtons
+        handleOnPressNextButton={handleOnPressNextButton}
       />
     </View>
   )

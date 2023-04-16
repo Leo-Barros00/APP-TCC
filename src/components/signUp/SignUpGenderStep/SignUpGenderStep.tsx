@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { View } from 'react-native'
 
 import SignUpErrors from '@Components/signUp/SignUpErrors'
-import TextButton from '@Components/atomic/TextButton'
 import SelectedCard from '@Components/atomic/SelectedCard/SelectedCard'
+import SignUpButtons from '../SignUpButtons'
 
 import { useAppDispatch, useAppSelector } from '@Hooks/redux'
 import { insertSignUpInfo, nextStep } from '@Store/reducers/signUp'
@@ -20,9 +20,8 @@ const SignUpGenderStep = () => {
     setGenderErrors([])
   }
 
-  function handleOnClickNext() {
+  function handleOnPressNextButton() {
     const genderValidation = validateRequired('Genero', gender)
-
 
     if(!genderValidation.success) {
       setGenderErrors(genderValidation.errors)
@@ -50,11 +49,8 @@ const SignUpGenderStep = () => {
           fluid
         />
       </View>
-      <TextButton
-        text="Avançar"
-        variant='primary'
-        fluid
-        onPress={handleOnClickNext}
+      <SignUpButtons
+        handleOnPressNextButton={handleOnPressNextButton}
       />
     </View>
   )
