@@ -1,11 +1,12 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
-import signUp from './reducers/signUp';
+import signUp from './reducers/signUp'
+import addressData from './reducers/addressData'
 
-const reducer = combineReducers({ signUp });
+const reducer = combineReducers({ signUp, addressData })
 
-const store = configureStore({ reducer });
+const store = configureStore({ reducer })
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
-export default store;
+export default store
