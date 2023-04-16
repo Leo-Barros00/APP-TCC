@@ -42,6 +42,7 @@ const SignUpCpfStep = () => {
         placeholder="CPF"
         blurOnSubmit={false}
         returnKeyType="next"
+        keyboardType="number-pad"
         onSubmitEditing={handleOnPressNextButton}
       />
       <SignUpButtons handleOnPressNextButton={handleOnPressNextButton} />
