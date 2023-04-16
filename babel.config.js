@@ -10,6 +10,7 @@ module.exports = function(api) {
           "@Hooks": "./src/hooks",
           "@Store": "./src/store",
           "@Utils": "./src/utils",
+          "@Api": "./src/api",
         }
       }],
     ]
