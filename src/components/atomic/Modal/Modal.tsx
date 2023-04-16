@@ -7,7 +7,7 @@ import { IModal } from './interface'
 
 const ModalOverlay = styled.View`
   flex: 1;
-  background-color: rgba(0, 0, 0, 0.247);
+  background-color: rgba(0, 0, 0, 0.6);
   justify-content: center;
   align-items: center;
 `
@@ -16,7 +16,7 @@ const ModalContainer = styled.ScrollView`
   background-color: #fff;
   width: 90%;
   max-height: 50%;
-  padding: 16px;
+  padding: 0 16px;
   border-radius: 16px;
 `
 
@@ -24,6 +24,7 @@ const ModalHeader = styled.View`
   width: 100%;
   flex-direction: row;
   justify-content: space-between;
+  padding: 16px 0;
 `
 
 const ModalTitle = styled.Text`
