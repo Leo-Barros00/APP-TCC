@@ -1,8 +1,8 @@
-import { Variant } from "../../../../typings/theme";
+import { Variant } from '../../../../typings/theme'
 
 export interface IRadioButton {
-    text: string;
-    onPress: () => void;
-    variant: Variant;
-    fluid?: boolean;
+  text: string
+  onPress: () => void
+  variant: Variant
+  fluid?: boolean
 }

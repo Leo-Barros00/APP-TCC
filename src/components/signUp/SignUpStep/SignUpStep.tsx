@@ -11,7 +11,7 @@ import SignUpGenderStep from '@Components/signUp/SignUpGenderStep'
 import { useAppSelector } from '@Hooks/redux'
 
 const Container = styled.View`
-  flex: 1; 
+  flex: 1;
   width: 100%;
   justify-content: space-between;
 `
@@ -26,24 +26,24 @@ const Instruction = styled.Text`
 const signUpSteps = [
   {
     instruction: 'Primeiramente, insira seu e-mail',
-    form: <SignUpEmailStep />
+    form: <SignUpEmailStep />,
   },
   {
     instruction: 'Perfeito, agora insira seu nome e sobrenome',
-    form: <SignUpNameStep />
+    form: <SignUpNameStep />,
   },
   {
     instruction: 'Insira agora o seu CPF',
-    form: <SignUpCpfStep />
+    form: <SignUpCpfStep />,
   },
   {
     instruction: 'Nos conte agora a sua data de nascimento',
-    form: <SignUpBirthDateStep />
+    form: <SignUpBirthDateStep />,
   },
   {
     instruction: 'Qual gênero você se identifica?',
-    form: <SignUpGenderStep />
-  }
+    form: <SignUpGenderStep />,
+  },
 ] as const
 
 const SignUpStep: React.FC = () => {
@@ -52,12 +52,8 @@ const SignUpStep: React.FC = () => {
 
   return (
     <Container>
-      <Instruction>
-        { instruction }
-      </Instruction>
-      <View>
-        { form }
-      </View>
+      <Instruction>{instruction}</Instruction>
+      <View>{form}</View>
     </Container>
   )
 }

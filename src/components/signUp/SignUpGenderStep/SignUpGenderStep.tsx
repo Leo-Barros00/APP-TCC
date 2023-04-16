@@ -23,10 +23,10 @@ const SignUpGenderStep = () => {
   function handleOnPressNextButton() {
     const genderValidation = validateRequired('Genero', gender)
 
-    if(!genderValidation.success) {
+    if (!genderValidation.success) {
       setGenderErrors(genderValidation.errors)
 
-      return;
+      return
     }
 
     dispatch(nextStep())
@@ -35,12 +35,12 @@ const SignUpGenderStep = () => {
   return (
     <View>
       <SignUpErrors errors={genderErrors} />
-      <View style={{paddingBottom: 32}}>
-        <SelectedCard 
+      <View style={{ paddingBottom: 32 }}>
+        <SelectedCard
           text={'Masculino'}
           onPress={() => handleOnClickGenderSelected('Masculino')}
           variant={'secondary'}
-          fluid 
+          fluid
         />
         <SelectedCard
           text={'Feminino'}
@@ -49,9 +49,7 @@ const SignUpGenderStep = () => {
           fluid
         />
       </View>
-      <SignUpButtons
-        handleOnPressNextButton={handleOnPressNextButton}
-      />
+      <SignUpButtons handleOnPressNextButton={handleOnPressNextButton} />
     </View>
   )
 }

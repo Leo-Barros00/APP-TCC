@@ -20,12 +20,12 @@ const OnboardingTextContainer = styled.View`
 `
 
 const WelcomeTextTitle = styled.Text`
-  font-family: "Poppins-Bold";
+  font-family: 'Poppins-Bold';
   font-size: 40px;
 `
 
 const WelcomeTextSubTitle = styled.Text`
-  font-family: "Poppins-SemiBold";
+  font-family: 'Poppins-SemiBold';
   font-size: 30px;
   line-height: 36px;
 `
@@ -38,41 +38,41 @@ const WelcomeTextHighlight = styled.Text`
 const OnboardingScreen: React.FC<ScreenType> = ({ navigation }) => {
   const dispatch = useAppDispatch()
 
-  function handleOnPressLoginButton() {
-
-  }
+  function handleOnPressLoginButton() {}
 
   function handleOnPressSignInButton() {
     dispatch(insertSignUpInfo({ step: 0 }))
     navigation.navigate('SignUp')
   }
-  
+
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Container>
         <OnboardingTextContainer>
-          <WelcomeTextTitle>
-            Bem-vindo(a)
-          </WelcomeTextTitle>
+          <WelcomeTextTitle>Bem-vindo(a)</WelcomeTextTitle>
           <WelcomeTextSubTitle>
-            Simplifique a conexão de <WelcomeTextHighlight>quem necessita</WelcomeTextHighlight>, com <WelcomeTextHighlight>quem tem habilidades para realizar</WelcomeTextHighlight>.
+            Simplifique a conexão de{' '}
+            <WelcomeTextHighlight>quem necessita</WelcomeTextHighlight>, com{' '}
+            <WelcomeTextHighlight>
+              quem tem habilidades para realizar
+            </WelcomeTextHighlight>
+            .
           </WelcomeTextSubTitle>
         </OnboardingTextContainer>
         <Button
           fluid
-          variant='primary'
-          text='Criar conta'
+          variant="primary"
+          text="Criar conta"
           onPress={handleOnPressSignInButton}
         />
         <Button
           fluid
-          variant='secondary'
-          text='Fazer login'
+          variant="secondary"
+          text="Fazer login"
           onPress={handleOnPressLoginButton}
         />
       </Container>
     </SafeAreaView>
-
   )
 }
 

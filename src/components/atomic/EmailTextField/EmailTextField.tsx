@@ -7,11 +7,12 @@ import { IEmailTextField } from './interface'
 const EmailTextField: React.FC<IEmailTextField> = ({ ...props }) => {
   return (
     <TextField
-    {...props}
-    keyboardType='email-address'
-    autoComplete='email'
-    textContentType='emailAddress'
-    autoCapitalize='none'    />
+      {...props}
+      keyboardType="email-address"
+      autoComplete="email"
+      textContentType="emailAddress"
+      autoCapitalize="none"
+    />
   )
 }
 

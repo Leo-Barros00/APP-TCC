@@ -6,7 +6,7 @@ import { hexToHsl } from '../../../utils/color'
 import { IButton, IText } from './interface'
 
 const Container = styled.TouchableHighlight<Omit<IButton, 'text'>>`
-  width: ${({ fluid }) => fluid ? '100%' : 'auto'};
+  width: ${({ fluid }) => (fluid ? '100%' : 'auto')};
   min-height: 64px;
   border-radius: 12px;
   padding: 12px 16px;
@@ -14,24 +14,27 @@ const Container = styled.TouchableHighlight<Omit<IButton, 'text'>>`
   justify-content: center;
   margin: 4px 0;
 
-  ${({ ghost, variant, theme }) => !ghost ?
-    css`
-      background-color: ${theme.colors[variant].main};
-    ` : css`
-      background-color: ${theme.colors[variant].main}33;
-      border: 4px solid ${theme.colors[variant].main};
-    `}
+  ${({ ghost, variant, theme }) =>
+    !ghost
+      ? css`
+          background-color: ${theme.colors[variant].main};
+        `
+      : css`
+          background-color: ${theme.colors[variant].main}33;
+          border: 4px solid ${theme.colors[variant].main};
+        `}
 `
 
 const ButtonText = styled.Text<IText>`
   font-size: 20px;
   font-family: 'Poppins-SemiBold';
 
-  color: ${({ ghost, variant, theme }) => theme.colors[variant][!ghost ? 'constrastText' : 'main']};
+  color: ${({ ghost, variant, theme }) =>
+    theme.colors[variant][!ghost ? 'constrastText' : 'main']};
 `
 
 function getMinButtonUnderlayColorLightness(currentLightness: number): number {
-  const decreasedLightness = Math.max(10, currentLightness -15)
+  const decreasedLightness = Math.max(10, currentLightness - 15)
   return Math.min(currentLightness, decreasedLightness)
 }
 
@@ -47,10 +50,7 @@ const TextButton: React.FC<IButton> = ({ children, text, variant, ...props }) =>
       variant={variant}
       {...props}
     >
-      <ButtonText 
-        variant={variant}
-        {...props}
-      >
+      <ButtonText variant={variant} {...props}>
         {text}
       </ButtonText>
     </Container>

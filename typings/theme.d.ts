@@ -1,9 +1,9 @@
-import 'styled-components';
+import 'styled-components'
 
 export type Variant = 'primary' | 'secondary' | 'error' | 'warning' | 'success'
 
 interface ColorPallete {
-  main: string,
+  main: string
   constrastText: string
 }
 

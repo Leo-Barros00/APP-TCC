@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { View } from 'react-native'
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker'
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from '@react-native-community/datetimepicker'
 import { subYears, isSameDay, format } from 'date-fns'
 
 import TextButton from '@Components/atomic/TextButton'
@@ -27,14 +29,13 @@ const SignUpBirthDateStep = () => {
 
   function handleOnChangeBirthDate({ type }: DateTimePickerEvent, date?: Date) {
     setShowDatePicker(false)
-  
-    if(type === 'set')
-      setErrors([])
+
+    if (type === 'set') setErrors([])
     dispatch(insertSignUpInfo({ birthDate: date?.toISOString() }))
   }
 
   function handleOnPressNextButton() {
-    if(!dateSelected) {
+    if (!dateSelected) {
       setErrors(['A data deve ser selecionada'])
     }
 
@@ -43,7 +44,7 @@ const SignUpBirthDateStep = () => {
 
   return (
     <View>
-      {showDatePicker && 
+      {showDatePicker && (
         <DateTimePicker
           testID="dateTimePicker"
           value={birthDateParsed}
@@ -52,17 +53,15 @@ const SignUpBirthDateStep = () => {
           is24Hour={true}
           onChange={handleOnChangeBirthDate}
         />
-      }
+      )}
       <SignUpErrors errors={errors} />
       <TextButton
-        text={dateSelected ? format(birthDateParsed, 'dd/MM/yyyy') : "Selecionar Data"}
-        variant='secondary'
+        text={dateSelected ? format(birthDateParsed, 'dd/MM/yyyy') : 'Selecionar Data'}
+        variant="secondary"
         fluid
         onPressIn={handleOnPressDateField}
       />
-      <SignUpButtons
-        handleOnPressNextButton={handleOnPressNextButton}
-      />
+      <SignUpButtons handleOnPressNextButton={handleOnPressNextButton} />
     </View>
   )
 }

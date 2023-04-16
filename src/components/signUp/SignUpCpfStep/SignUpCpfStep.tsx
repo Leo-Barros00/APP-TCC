@@ -24,7 +24,7 @@ const SignUpCpfStep = () => {
   function handleOnPressNextButton() {
     const cpfValidation = validateCpf(cpf)
 
-    if(!cpfValidation.success) {
+    if (!cpfValidation.success) {
       return setErrors(cpfValidation.errors)
     }
 
@@ -35,7 +35,7 @@ const SignUpCpfStep = () => {
     <View>
       <SignUpErrors errors={errors} />
       <TextField
-        variant='primary'
+        variant="primary"
         fluid
         onChangeText={handleOnChangeCpfField}
         value={cpf}
@@ -44,9 +44,7 @@ const SignUpCpfStep = () => {
         returnKeyType="next"
         onSubmitEditing={handleOnPressNextButton}
       />
-      <SignUpButtons
-        handleOnPressNextButton={handleOnPressNextButton}
-      />
+      <SignUpButtons handleOnPressNextButton={handleOnPressNextButton} />
     </View>
   )
 }

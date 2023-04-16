@@ -24,7 +24,7 @@ const SignUpEmailStep = () => {
   function handleOnPressNextButton() {
     const emailValidation = validateEmail(email)
 
-    if(!emailValidation.success) {
+    if (!emailValidation.success) {
       return setErrors(emailValidation.errors)
     }
 
@@ -35,7 +35,7 @@ const SignUpEmailStep = () => {
     <View>
       <SignUpErrors errors={errors} />
       <EmailTextField
-        variant='primary'
+        variant="primary"
         fluid
         onChangeText={handleOnChangeEmailField}
         value={email}
@@ -43,9 +43,7 @@ const SignUpEmailStep = () => {
         returnKeyType="next"
         onSubmitEditing={handleOnPressNextButton}
       />
-      <SignUpButtons
-        handleOnPressNextButton={handleOnPressNextButton}
-      />
+      <SignUpButtons handleOnPressNextButton={handleOnPressNextButton} />
     </View>
   )
 }

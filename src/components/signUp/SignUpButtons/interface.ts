@@ -1,4 +1,4 @@
-import { GestureResponderEvent } from "react-native";
+import { GestureResponderEvent } from 'react-native'
 
 export interface ISignUpButtons {
   handleOnPressNextButton: (event: GestureResponderEvent) => void

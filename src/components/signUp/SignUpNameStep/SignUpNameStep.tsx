@@ -31,11 +31,11 @@ const SignUpNameStep = () => {
     const nameValidation = validateRequired('Nome', name)
     const surnameValidation = validateRequired('Sobrenome', surname)
 
-    if(!nameValidation.success || !surnameValidation.success) {
+    if (!nameValidation.success || !surnameValidation.success) {
       setNameErrors(nameValidation.errors)
       setSurnameErrors(surnameValidation.errors)
 
-      return;
+      return
     }
 
     dispatch(nextStep())
@@ -45,7 +45,7 @@ const SignUpNameStep = () => {
     <View>
       <SignUpErrors errors={[...nameErrors, ...surnameErrors]} />
       <TextField
-        variant='primary'
+        variant="primary"
         fluid
         onChangeText={handleOnChangeNameField}
         value={name}
@@ -54,7 +54,7 @@ const SignUpNameStep = () => {
         returnKeyType="next"
       />
       <TextField
-        variant='primary'
+        variant="primary"
         fluid
         onChangeText={handleOnChangeSurnameField}
         value={surname}
@@ -63,9 +63,7 @@ const SignUpNameStep = () => {
         returnKeyType="next"
         onSubmitEditing={handleOnPressNextButton}
       />
-      <SignUpButtons
-        handleOnPressNextButton={handleOnPressNextButton}
-      />
+      <SignUpButtons handleOnPressNextButton={handleOnPressNextButton} />
     </View>
   )
 }
