@@ -1,5 +1,5 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, Modal } from 'react-native'
 import styled from 'styled-components/native'
 
 import SignUpEmailStep from '@Components/signUp/SignUpEmailStep'
@@ -8,6 +8,8 @@ import SignUpCpfStep from '@Components/signUp/SignUpCpfStep'
 import SignUpBirthDateStep from '@Components/signUp/SignUpBirthDateStep'
 import SignUpGenderStep from '@Components/signUp/SignUpGenderStep'
 import SignUpPasswordStep from '@Components/signUp/SignUpPasswordStep'
+import SignUpAddressFirstStep from '@Components/signUp/SignUpAddressFirstStep'
+import SignUpAddressSecondStep from '@Components/signUp/SignUpAddressSecondStep'
 
 import { useAppSelector } from '@Hooks/redux'
 
@@ -48,6 +50,14 @@ const signUpSteps = [
   {
     instruction: 'Informe agora a sua senha para cadastro',
     form: <SignUpPasswordStep />,
+  },
+  {
+    instruction: 'Precisamos agora saber o seu endereço',
+    form: <SignUpAddressFirstStep />,
+  },
+  {
+    instruction: 'Precisamos agora saber o seu endereço',
+    form: <SignUpAddressSecondStep />,
   },
 ] as const
 
