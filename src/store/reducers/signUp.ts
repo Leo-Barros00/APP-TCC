@@ -17,6 +17,10 @@ interface SignUpState {
   cpf: string
   birthDate: string
   gender: string
+  cityId: string
+  neighborhoodId: string
+  addressDescription: string
+  addressNumber: string
 }
 
 const initialState: SignUpState = {
@@ -29,6 +33,10 @@ const initialState: SignUpState = {
   cpf: '',
   birthDate: subYears(new Date(), 18).toISOString(),
   gender: '',
+  cityId: '',
+  neighborhoodId: '',
+  addressDescription: '',
+  addressNumber: '',
 }
 
 const signUpslice = createSlice({
