@@ -48,16 +48,16 @@ const signUpSteps = [
     form: <SignUpGenderStep />,
   },
   {
-    instruction: 'Informe agora a sua senha para cadastro',
-    form: <SignUpPasswordStep />,
-  },
-  {
     instruction: 'Precisamos agora saber o seu endereço',
     form: <SignUpAddressFirstStep />,
   },
   {
     instruction: 'Precisamos agora saber o seu endereço',
     form: <SignUpAddressSecondStep />,
+  },
+  {
+    instruction: 'Informe agora a sua senha para cadastro',
+    form: <SignUpPasswordStep />,
   },
 ] as const
 
