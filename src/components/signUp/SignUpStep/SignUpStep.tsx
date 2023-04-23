@@ -44,7 +44,7 @@ const signUpSteps = [
     form: <SignUpBirthDateStep />,
   },
   {
-    instruction: 'Qual gênero você se identifica?',
+    instruction: 'Qual gênero você se identifica? Escolha uma das opções',
     form: <SignUpGenderStep />,
   },
   {

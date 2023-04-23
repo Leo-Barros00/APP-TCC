@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled, { css, useTheme } from 'styled-components/native'
 
 import { hexToHsl } from '../../../utils/color'
 import { IRadioButton } from './interface'
 import { IButton, IText } from '../TextButton/interface'
 
-const Container = styled.TouchableHighlight<Omit<IButton, 'text'>>`
+const Container = styled.TouchableHighlight<Omit<IRadioButton, 'text'>>`
   width: ${({ fluid }) => (fluid ? '100%' : 'auto')};
   min-height: 64px;
   border-radius: 12px;
@@ -14,14 +14,14 @@ const Container = styled.TouchableHighlight<Omit<IButton, 'text'>>`
   justify-content: center;
   margin: 4px 0;
 
-  ${({ ghost, variant, theme }) =>
-    !ghost
+  ${({ variant, theme, selected }) =>
+    !!selected
       ? css`
           background-color: ${theme.colors[variant].main};
+          border: 4px solid ${theme.colors['primary'].main};
         `
       : css`
-          background-color: ${theme.colors[variant].main}33;
-          border: 4px solid ${theme.colors[variant].main};
+          background-color: ${theme.colors[variant].main}66;
         `}
 `
 
@@ -38,13 +38,13 @@ function getMinButtonUnderlayColorLightness(currentLightness: number): number {
   return Math.min(currentLightness, decreasedLightness)
 }
 
-const SelectedCard: React.FC<IRadioButton> = ({ text, variant, ...props }) => {
+const SelectedCard: React.FC<IRadioButton> = ({ selected, text, variant, ...props }) => {
   const { colors } = useTheme()
   const { hue, saturation, lightness } = hexToHsl(colors[variant].main)
-
   const underlayLightness = getMinButtonUnderlayColorLightness(lightness)
   return (
     <Container
+      selected={selected}
       underlayColor={`hsl(${hue} ${saturation}% ${underlayLightness}%)`}
       variant={variant}
       {...props}

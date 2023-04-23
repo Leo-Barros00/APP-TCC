@@ -5,4 +5,6 @@ export interface IRadioButton {
   onPress: () => void
   variant: Variant
   fluid?: boolean
+  selected: boolean;
+  ghost?: boolean
 }

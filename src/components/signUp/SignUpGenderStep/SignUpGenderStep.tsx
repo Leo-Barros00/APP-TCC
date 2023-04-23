@@ -12,6 +12,8 @@ import { validateRequired } from '@Utils/validation'
 const SignUpGenderStep = () => {
   const { gender } = useAppSelector(({ signUp }) => signUp)
   const [genderErrors, setGenderErrors] = useState<string[]>([])
+  const [ femaleSelected, setFemaleSelected ] = useState<boolean>(false);
+  const [ maleSelected, setMaleSelected ] = useState<boolean>(false);
 
   const dispatch = useAppDispatch()
 
@@ -37,14 +39,24 @@ const SignUpGenderStep = () => {
       <SignUpErrors errors={genderErrors} />
       <View style={{ paddingBottom: 32 }}>
         <SelectedCard
+          selected={maleSelected}
           text={'Masculino'}
-          onPress={() => handleOnClickGenderSelected('Masculino')}
+          onPress={() => {
+            setMaleSelected(!maleSelected);
+            setFemaleSelected(false);
+            handleOnClickGenderSelected('Masculino')
+          }}
           variant={'secondary'}
           fluid
         />
         <SelectedCard
+          selected={femaleSelected}
           text={'Feminino'}
-          onPress={() => handleOnClickGenderSelected('Feminino')}
+          onPress={() => {
+            setFemaleSelected(!femaleSelected);
+            setMaleSelected(false)
+            handleOnClickGenderSelected('Feminino')
+          }}
           variant={'secondary'}
           fluid
         />
