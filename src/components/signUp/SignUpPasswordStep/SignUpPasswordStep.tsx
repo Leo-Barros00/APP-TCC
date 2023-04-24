@@ -6,7 +6,7 @@ import SignUpErrors from '@Components/signUp/SignUpErrors'
 import SignUpButtons from '@Components/signUp/SignUpButtons'
 
 import { useAppDispatch, useAppSelector } from '@Hooks/redux'
-import { insertSignUpInfo, nextStep } from '@Store/reducers/signUp'
+import { insertSignUpInfo, sendUserData } from '@Store/reducers/signUp'
 
 const SignUpPasswordStep = () => {
   const { password, passwordConfirm } = useAppSelector(({ signUp }) => signUp)
@@ -24,13 +24,14 @@ const SignUpPasswordStep = () => {
     setErrors([])
   }
 
-  function handleOnPressNextButton() {
+  async function handleOnPressNextButton() {
     if (password !== passwordConfirm) {
       setErrors(['As senhas devem coincidir'])
       return
     }
 
-    dispatch(nextStep())
+    const signUpRequisition = await dispatch(sendUserData())
+    console.log(signUpRequisition.payload)
   }
 
   return (
