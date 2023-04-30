@@ -7,10 +7,12 @@ import SignUpButtons from '@Components/signUp/SignUpButtons'
 
 import { useAppDispatch, useAppSelector } from '@Hooks/redux'
 import { insertSignUpInfo, sendUserData } from '@Store/reducers/signUp'
+import { useNavigation } from '@react-navigation/native'
 
 const SignUpPasswordStep = () => {
   const { password, passwordConfirm } = useAppSelector(({ signUp }) => signUp)
   const [errors, setErrors] = useState<string[]>([])
+  const navigation = useNavigation()
 
   const dispatch = useAppDispatch()
 
@@ -32,6 +34,7 @@ const SignUpPasswordStep = () => {
 
     const signUpRequisition = await dispatch(sendUserData())
     console.log(signUpRequisition.payload)
+    navigation.navigate('Home');
   }
 
   return (

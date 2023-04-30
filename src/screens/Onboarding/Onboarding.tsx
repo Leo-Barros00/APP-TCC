@@ -38,9 +38,11 @@ const WelcomeTextHighlight = styled.Text`
 const OnboardingScreen: React.FC<ScreenType> = ({ navigation }) => {
   const dispatch = useAppDispatch()
 
-  function handleOnPressLoginButton() {}
-
   function handleOnPressSignInButton() {
+    navigation.navigate('SignIn')
+  }
+
+  function handleOnPressSignUnButton() {
     dispatch(insertSignUpInfo({ step: 0 }))
     navigation.navigate('SignUp')
   }
@@ -63,13 +65,13 @@ const OnboardingScreen: React.FC<ScreenType> = ({ navigation }) => {
           fluid
           variant="primary"
           text="Criar conta"
-          onPress={handleOnPressSignInButton}
+          onPress={handleOnPressSignUnButton}
         />
         <Button
           fluid
           variant="secondary"
           text="Fazer login"
-          onPress={handleOnPressLoginButton}
+          onPress={handleOnPressSignInButton}
         />
       </Container>
     </SafeAreaView>
