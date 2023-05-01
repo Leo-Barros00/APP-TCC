@@ -1,8 +1,8 @@
-import React from 'react';
-import { View } from 'react-native';
+import React from 'react'
+import { View } from 'react-native'
 
-const Home: React.FC = () => {
-    return (<View></View>)
-};
+const Home: React.FC<ScreenType> = () => {
+  return <View></View>
+}
 
-export default Home;
+export default Home
