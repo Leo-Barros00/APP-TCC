@@ -4,14 +4,8 @@ import { AxiosError, AxiosResponse } from 'axios'
 
 import api from '@Api/index'
 
-export enum SignUpStep {
-  Email,
-  Name,
-  BirthDate,
-}
-
 interface SignUpState {
-  step: SignUpStep
+  step: number
   email: string
   password: string
   passwordConfirm?: string
@@ -24,11 +18,10 @@ interface SignUpState {
   neighborhoodId: string
   addressDescription: string
   addressNumber: string
-  type: string
 }
 
 const initialState: SignUpState = {
-  step: SignUpStep.Email,
+  step: 0,
   email: '',
   password: '',
   passwordConfirm: '',
@@ -41,7 +34,6 @@ const initialState: SignUpState = {
   neighborhoodId: '',
   addressDescription: '',
   addressNumber: '',
-  type: ''
 }
 
 export const sendUserData = createAsyncThunk<AxiosResponse<any, any>>(
