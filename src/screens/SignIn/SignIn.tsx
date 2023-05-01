@@ -44,7 +44,7 @@ const SignIn = () => {
     const loginResponse = await UserService.signIn(email, password)
 
         if(loginResponse) {
-            navigation.navigate('Home');
+            navigation.navigate('Main');
         }
     }
 
