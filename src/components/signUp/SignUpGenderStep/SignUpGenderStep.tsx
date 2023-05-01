@@ -12,18 +12,16 @@ import { validateRequired } from '@Utils/validation'
 const SignUpGenderStep = () => {
   const { gender } = useAppSelector(({ signUp }) => signUp)
   const [genderErrors, setGenderErrors] = useState<string[]>([])
-  const [ femaleSelected, setFemaleSelected ] = useState<boolean>(false);
-  const [ maleSelected, setMaleSelected ] = useState<boolean>(false);
 
   const dispatch = useAppDispatch()
 
-  function handleOnClickGenderSelected(value: string) {
-    dispatch(insertSignUpInfo({ gender: value }))
+  function handleOnClickGenderSelected(gender: string) {
+    dispatch(insertSignUpInfo({ gender }))
     setGenderErrors([])
   }
 
   function handleOnPressNextButton() {
-    const genderValidation = validateRequired('Genero', gender)
+    const genderValidation = validateRequired('gênero', gender)
 
     if (!genderValidation.success) {
       setGenderErrors(genderValidation.errors)
@@ -39,22 +37,18 @@ const SignUpGenderStep = () => {
       <SignUpErrors errors={genderErrors} />
       <View style={{ paddingBottom: 32 }}>
         <SelectedCard
-          selected={maleSelected}
+          selected={gender === 'Masculino'}
           text={'Masculino'}
           onPress={() => {
-            setMaleSelected(!maleSelected);
-            setFemaleSelected(false);
             handleOnClickGenderSelected('Masculino')
           }}
           variant={'secondary'}
           fluid
         />
         <SelectedCard
-          selected={femaleSelected}
+          selected={gender === 'Feminino'}
           text={'Feminino'}
           onPress={() => {
-            setFemaleSelected(!femaleSelected);
-            setMaleSelected(false)
             handleOnClickGenderSelected('Feminino')
           }}
           variant={'secondary'}
