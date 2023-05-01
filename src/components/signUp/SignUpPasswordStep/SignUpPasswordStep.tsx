@@ -34,7 +34,7 @@ const SignUpPasswordStep = () => {
 
     const signUpRequisition = await dispatch(sendUserData())
     console.log(signUpRequisition.payload)
-    navigation.navigate('Home');
+    navigation.navigate('Home')
   }
 
   return (

@@ -4,7 +4,9 @@ import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs'
 
 export type RootStackParamList = {
   Onboarding: undefined
-  Login: undefined
+  SignUp: undefined
+  SignIn: undefined
+  Home: undefined
 }
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<
