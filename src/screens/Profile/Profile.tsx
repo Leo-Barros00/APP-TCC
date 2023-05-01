@@ -16,16 +16,16 @@ const BodyContainer = styled.View`
   padding: 16px;
 `
 
-const Home: React.FC = () => {
+const Profile: React.FC = () => {
     return (
     <Container>
         <SafeAreaView>
             <BodyContainer>
-                <Text>HOME</Text>
+                <Text>Profile</Text>
             </BodyContainer>
         </SafeAreaView>
     </Container>
     );
 };
 
-export default Home
+export default Profile;

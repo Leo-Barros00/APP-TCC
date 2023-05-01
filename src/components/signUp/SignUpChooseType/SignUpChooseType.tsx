@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { View } from 'react-native'
 
-import TextField from '@Components/atomic/TextField'
 import SignUpErrors from '@Components/signUp/SignUpErrors'
 import SignUpButtons from '@Components/signUp/SignUpButtons'
 
