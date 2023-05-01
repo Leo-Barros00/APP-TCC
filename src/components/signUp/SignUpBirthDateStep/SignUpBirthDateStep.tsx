@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker'
-import { subYears, isSameDay, format } from 'date-fns'
+import { subYears, format } from 'date-fns'
 
 import TextButton from '@Components/atomic/TextButton'
 import SignUpErrors from '@Components/signUp/SignUpErrors'
@@ -21,7 +21,7 @@ const SignUpBirthDateStep = () => {
 
   const birthDateParsed = new Date(birthDate)
   const adultDate = subYears(new Date(), 18)
-  const dateSelected = !isSameDay(birthDateParsed, adultDate)
+  const dateSelected = !!birthDate
 
   function handleOnPressDateField() {
     setShowDatePicker(true)
@@ -47,7 +47,7 @@ const SignUpBirthDateStep = () => {
       {showDatePicker && (
         <DateTimePicker
           testID="dateTimePicker"
-          value={birthDateParsed}
+          value={!dateSelected ? adultDate : birthDateParsed}
           mode="date"
           maximumDate={adultDate}
           is24Hour={true}
