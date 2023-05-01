@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { subYears } from 'date-fns'
 import { AxiosError, AxiosResponse } from 'axios'
 
 import api from '@Api/index'
@@ -35,7 +34,7 @@ const initialState: SignUpState = {
   name: '',
   surname: '',
   cpf: '',
-  birthDate: subYears(new Date(), 18).toISOString(),
+  birthDate: '',
   gender: '',
   cityId: '',
   neighborhoodId: '',
