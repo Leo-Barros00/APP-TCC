@@ -13,6 +13,7 @@ const ButtonsContainer = styled.View`
   display: flex;
   flex-direction: row;
   gap: 8px;
+  margin-top: 16px;
 `
 
 const IndividualButtonContainer = styled.View`
@@ -25,8 +26,7 @@ const SignUpButtons: React.FC<ISignUpButtons> = ({ handleOnPressNextButton }) =>
   const navigation = useNavigation()
 
   function handleOnPressBackButton() {
-    if(step === 0)
-      return navigation.goBack()
+    if (step === 0) return navigation.goBack()
 
     dispatch(previousStep())
   }
@@ -34,18 +34,10 @@ const SignUpButtons: React.FC<ISignUpButtons> = ({ handleOnPressNextButton }) =>
   return (
     <ButtonsContainer>
       <IndividualButtonContainer>
-        <TextButton
-          text='Voltar'
-          variant='secondary'
-          onPress={handleOnPressBackButton}
-        />
+        <TextButton text="Voltar" variant="secondary" onPress={handleOnPressBackButton} />
       </IndividualButtonContainer>
       <IndividualButtonContainer>
-        <TextButton
-          text="Avançar"
-          variant='primary'
-          onPress={handleOnPressNextButton}
-        />
+        <TextButton text="Avançar" variant="primary" onPress={handleOnPressNextButton} />
       </IndividualButtonContainer>
     </ButtonsContainer>
   )

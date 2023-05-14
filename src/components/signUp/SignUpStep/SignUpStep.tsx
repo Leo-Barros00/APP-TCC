@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Modal } from 'react-native'
+import { View } from 'react-native'
 import styled from 'styled-components/native'
 
 import SignUpEmailStep from '@Components/signUp/SignUpEmailStep'

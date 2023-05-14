@@ -35,7 +35,7 @@ const SignUpGenderStep = () => {
   return (
     <View>
       <SignUpErrors errors={genderErrors} />
-      <View style={{ paddingBottom: 32 }}>
+      <View>
         <SelectedCard
           selected={gender === 'Masculino'}
           text={'Masculino'}
