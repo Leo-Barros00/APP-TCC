@@ -32,8 +32,11 @@ const WelcomeTextSubTitle = styled.Text`
 `
 
 const WelcomeTextHighlight = styled.Text`
-  /* text-decoration: underline; */
   color: ${({ theme }) => theme.colors.primary.main};
+`
+
+const ButtonsContainer = styled.View`
+  width: 100%;
 `
 
 const OnboardingScreen = () => {
@@ -63,18 +66,20 @@ const OnboardingScreen = () => {
             .
           </WelcomeTextSubTitle>
         </OnboardingTextContainer>
-        <Button
-          fluid
-          variant="primary"
-          text="Criar conta"
-          onPress={handleOnPressSignUnButton}
-        />
-        <Button
-          fluid
-          variant="secondary"
-          text="Fazer login"
-          onPress={handleOnPressSignInButton}
-        />
+        <ButtonsContainer>
+          <Button
+            fluid
+            variant="primary"
+            text="Criar conta"
+            onPress={handleOnPressSignUnButton}
+          />
+          <Button
+            fluid
+            variant="secondary"
+            text="Fazer login"
+            onPress={handleOnPressSignInButton}
+          />
+        </ButtonsContainer>
       </Container>
     </SafeAreaView>
   )

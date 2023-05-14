@@ -1,4 +1,3 @@
-import UserService from '@Api/services/userService'
 import { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
@@ -8,6 +7,8 @@ import EmailTextField from '@Components/atomic/EmailTextField/EmailTextField'
 import PasswordTextField from '@Components/atomic/PasswordTextField/PasswordTextField'
 import TextButton from '@Components/atomic/TextButton/TextButton'
 import SignUpErrors from '@Components/signUp/SignUpErrors/SignUpErrors'
+
+import UserService from '@Api/services/userService'
 
 const Container = styled.View`
   flex: 1;
@@ -32,11 +33,16 @@ const Instruction = styled.Text`
   font-family: 'Poppins-SemiBold';
   text-align: center;
 `
-const InputContainer = styled.View`
+const FormContainer = styled.View`
   flex: 1;
   justify-content: flex-end;
   width: 100%;
 `
+
+const InputContainer = styled.View`
+  width: 100%;
+`
+
 const SignIn = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -61,33 +67,35 @@ const SignIn = () => {
           <SignUpTitle>Login: </SignUpTitle>
           <Instruction>Insira seus dados corretamente</Instruction>
         </TitleContainer>
-        <InputContainer>
-          <SignUpErrors errors={errors} />
-          <EmailTextField
-            variant="primary"
-            fluid
-            onChangeText={setEmail}
-            placeholder="E-mail"
-            value={email}
-            blurOnSubmit={false}
-            returnKeyType="next"
-          />
-          <PasswordTextField
-            variant="primary"
-            fluid
-            onChangeText={setPassword}
-            value={password}
-            placeholder="Senha"
-            blurOnSubmit={false}
-            returnKeyType="next"
-          />
-          <TextButton
-            text={'Entrar'}
-            variant={'primary'}
-            fluid
-            onPress={handleLoginPressButton}
-          />
-        </InputContainer>
+        <FormContainer>
+          <InputContainer>
+            <SignUpErrors errors={errors} />
+            <EmailTextField
+              variant="primary"
+              fluid
+              onChangeText={setEmail}
+              placeholder="E-mail"
+              value={email}
+              blurOnSubmit={false}
+              returnKeyType="next"
+            />
+            <PasswordTextField
+              variant="primary"
+              fluid
+              onChangeText={setPassword}
+              value={password}
+              placeholder="Senha"
+              blurOnSubmit={false}
+              returnKeyType="next"
+            />
+            <TextButton
+              text={'Entrar'}
+              variant={'primary'}
+              fluid
+              onPress={handleLoginPressButton}
+            />
+          </InputContainer>
+        </FormContainer>
       </Container>
     </SafeAreaView>
   )
