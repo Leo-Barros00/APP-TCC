@@ -3,6 +3,7 @@ import { ThemeProvider } from 'styled-components/native'
 import * as Font from 'expo-font'
 import * as SplashScreen from 'expo-splash-screen'
 import { Provider } from 'react-redux'
+import { RootSiblingParent } from 'react-native-root-siblings'
 
 import RootNavigation from './src/RootNavigation'
 
@@ -17,7 +18,9 @@ export default function App() {
   return (
     <Provider store={store}>
       <ThemeProvider theme={{ ...basicTheme, ...lightTheme }}>
-        <RootApp />
+        <RootSiblingParent>
+          <RootApp />
+        </RootSiblingParent>
       </ThemeProvider>
     </Provider>
   )
