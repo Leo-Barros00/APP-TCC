@@ -1,5 +1,6 @@
 import { View } from 'react-native'
 import React, { useState } from 'react'
+import Toast from 'react-native-root-toast'
 
 import PasswordTextField from '@Components/atomic/PasswordTextField'
 import SignUpErrors from '@Components/signUp/SignUpErrors'
@@ -32,8 +33,20 @@ const SignUpPasswordStep = () => {
       return
     }
 
-    const signUpRequisition = await dispatch(sendUserData())
-    console.log(signUpRequisition.payload)
+    const { payload } = (await dispatch(sendUserData())) as any
+
+    if (payload?.status === 'error') {
+      Toast.show(payload?.message, {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.CENTER,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+      })
+      return dispatch(insertSignUpInfo({ step: 0 }))
+    }
+
+    // TO-DO: Login with token implementation after sign up
     navigation.navigate('Home')
   }
 

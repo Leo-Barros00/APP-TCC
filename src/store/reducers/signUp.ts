@@ -45,12 +45,13 @@ export const sendUserData = createAsyncThunk<AxiosResponse<any, any>>(
   'data/sendUserData',
   async (_, { getState }) => {
     const signUpData = (getState() as any).signUp as SignUpState
+
     try {
       const response = await api.post('/users', signUpData)
-      console.log({ response })
       return response.data
     } catch (error) {
-      if (error instanceof AxiosError) return error.response?.data
+      const err = error as AxiosError
+      return err.response?.data
     }
   }
 )
