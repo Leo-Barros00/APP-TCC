@@ -23,7 +23,6 @@ interface SignUpState {
   neighborhoodId: string
   addressDescription: string
   addressNumber: string
-  type: string
 }
 
 const initialState: SignUpState = {
@@ -40,7 +39,6 @@ const initialState: SignUpState = {
   neighborhoodId: '',
   addressDescription: '',
   addressNumber: '',
-  type: ''
 }
 
 export const sendUserData = createAsyncThunk<AxiosResponse<any, any>>(

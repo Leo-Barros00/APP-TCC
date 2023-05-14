@@ -12,7 +12,6 @@ import SignUpAddressFirstStep from '@Components/signUp/SignUpAddressFirstStep'
 import SignUpAddressSecondStep from '@Components/signUp/SignUpAddressSecondStep'
 
 import { useAppSelector } from '@Hooks/redux'
-import SignUpChooseType from '../SignUpChooseType/SignUpChooseType'
 
 const Container = styled.View`
   flex: 1;
@@ -57,14 +56,9 @@ const signUpSteps = [
     form: <SignUpAddressSecondStep />,
   },
   {
-    instruction: 'Você deseja exercer o papel de Contratante ou Prestador de serviços aqui no App? Escolha um, por gentileza',
-    form: <SignUpChooseType />,
-  },
-  {
     instruction: 'Informe agora a sua senha para cadastro',
     form: <SignUpPasswordStep />,
   },
-
 ] as const
 
 const SignUpStep: React.FC = () => {
