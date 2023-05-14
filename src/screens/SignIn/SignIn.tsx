@@ -9,6 +9,8 @@ import TextButton from '@Components/atomic/TextButton/TextButton'
 import SignUpErrors from '@Components/signUp/SignUpErrors/SignUpErrors'
 
 import UserService from '@Api/services/userService'
+import { useAppDispatch } from '@Hooks/redux'
+import { insertAuthInfo } from '@Store/reducers/auth'
 
 const Container = styled.View`
   flex: 1;
@@ -44,16 +46,19 @@ const InputContainer = styled.View`
 `
 
 const SignIn = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const dispatch = useAppDispatch()
+  const [email, setEmail] = useState('filipe@gmail.com')
+  const [password, setPassword] = useState('123415263')
   const [errors, setErrors] = useState<string[]>([])
   const navigation = useNavigation()
 
   async function handleLoginPressButton() {
+    setErrors([])
     const loginResponse = await UserService.signIn(email, password)
     console.log(JSON.stringify(loginResponse))
+
     if (loginResponse.status !== 'error') {
-      setErrors([])
+      dispatch(insertAuthInfo(loginResponse))
       navigation.navigate('Main')
     } else {
       setErrors(['Dados insieridos estão inválidos! Tente novamente'])
