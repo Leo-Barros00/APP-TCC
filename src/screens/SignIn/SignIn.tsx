@@ -1,12 +1,13 @@
 import UserService from '@Api/services/userService'
+import { useState } from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import styled from 'styled-components/native'
+import { useNavigation } from '@react-navigation/native'
+
 import EmailTextField from '@Components/atomic/EmailTextField/EmailTextField'
 import PasswordTextField from '@Components/atomic/PasswordTextField/PasswordTextField'
 import TextButton from '@Components/atomic/TextButton/TextButton'
 import SignUpErrors from '@Components/signUp/SignUpErrors/SignUpErrors'
-import { useNavigation } from '@react-navigation/native'
-import { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import styled from 'styled-components/native'
 
 const Container = styled.View`
   flex: 1;
@@ -46,7 +47,7 @@ const SignIn = () => {
     const loginResponse = await UserService.signIn(email, password)
     console.log(JSON.stringify(loginResponse))
     if (loginResponse.status !== 'error') {
-      setErrors([]);
+      setErrors([])
       navigation.navigate('Main')
     } else {
       setErrors(['Dados insieridos estão inválidos! Tente novamente'])

@@ -1,13 +1,13 @@
-import React from 'react';
-import { Text, View } from 'react-native';
-import styled from 'styled-components/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React from 'react'
+import { Text } from 'react-native'
+import styled from 'styled-components/native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Container = styled.View`
   flex: 1;
   width: 100%;
   height: 100%;
-  justify-content: space-between ;
+  justify-content: space-between;
 `
 
 const BodyContainer = styled.View`
@@ -17,15 +17,15 @@ const BodyContainer = styled.View`
 `
 
 const Home: React.FC = () => {
-    return (
+  return (
     <Container>
-        <SafeAreaView>
-            <BodyContainer>
-                <Text>HOME</Text>
-            </BodyContainer>
-        </SafeAreaView>
+      <SafeAreaView>
+        <BodyContainer>
+          <Text>HOME</Text>
+        </BodyContainer>
+      </SafeAreaView>
     </Container>
-    );
-};
+  )
+}
 
 export default Home

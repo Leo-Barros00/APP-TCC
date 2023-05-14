@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components/native'
 import { SafeAreaView } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 import Button from '@Components/atomic/TextButton/TextButton'
 
@@ -35,8 +36,9 @@ const WelcomeTextHighlight = styled.Text`
   color: ${({ theme }) => theme.colors.primary.main};
 `
 
-const OnboardingScreen: React.FC<ScreenType> = ({ navigation }) => {
+const OnboardingScreen = () => {
   const dispatch = useAppDispatch()
+  const navigation = useNavigation()
 
   function handleOnPressSignInButton() {
     navigation.navigate('SignIn')
