@@ -22,7 +22,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     insertAuthInfo(state, action: PayloadAction<Partial<AuthState>>) {
-      state = {
+      return {
         ...state,
         ...action.payload,
       }

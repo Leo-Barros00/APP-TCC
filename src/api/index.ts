@@ -1,7 +1,11 @@
 import axios, { AxiosInstance } from 'axios'
 
-const api: AxiosInstance = axios.create({
-  baseURL: 'http://192.168.0.10:3332',
+const HOST = 'http://172.16.237.70'
+const mainApi: AxiosInstance = axios.create({
+  baseURL: `${HOST}:3333`,
 })
 
-export default api
+export const authApi: AxiosInstance = axios.create({
+  baseURL: `${HOST}:3330`,
+})
+export default mainApi

@@ -47,15 +47,14 @@ const InputContainer = styled.View`
 
 const SignIn = () => {
   const dispatch = useAppDispatch()
-  const [email, setEmail] = useState('filipe@gmail.com')
-  const [password, setPassword] = useState('123415263')
+  const [email, setEmail] = useState('neves@email.com')
+  const [password, setPassword] = useState('filipe123')
   const [errors, setErrors] = useState<string[]>([])
   const navigation = useNavigation()
 
   async function handleLoginPressButton() {
     setErrors([])
     const loginResponse = await UserService.signIn(email, password)
-    console.log(JSON.stringify(loginResponse))
 
     if (loginResponse.status !== 'error') {
       dispatch(insertAuthInfo(loginResponse))
