@@ -47,8 +47,8 @@ const InputContainer = styled.View`
 
 const SignIn = () => {
   const dispatch = useAppDispatch()
-  const [email, setEmail] = useState('neves@email.com')
-  const [password, setPassword] = useState('filipe123')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [errors, setErrors] = useState<string[]>([])
   const navigation = useNavigation()
 
@@ -60,7 +60,7 @@ const SignIn = () => {
       dispatch(insertAuthInfo(loginResponse))
       navigation.navigate('Main')
     } else {
-      setErrors(['Dados insieridos estão inválidos! Tente novamente'])
+      setErrors(['Dados inválidos! Tente novamente'])
     }
   }
 
