@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 
 import api from '@Api/index'
-import { City } from 'src/typings'
+import { State } from 'src/typings'
 
 interface DataState {
-  data: City[] | null
+  data: State[] | null
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error: string | null
 }
@@ -15,8 +15,8 @@ const initialState: DataState = {
   error: null,
 }
 
-const fetchAddressData = createAsyncThunk<City[]>('data/fetchAddressData', async () => {
-  const response = await api.get('/address/cities')
+const fetchAddressData = createAsyncThunk<State[]>('data/fetchAddressData', async () => {
+  const response = await api.get('/address/states')
   return response.data
 })
 
@@ -29,7 +29,7 @@ const dataSlice = createSlice({
       .addCase(fetchAddressData.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(fetchAddressData.fulfilled, (state, action: PayloadAction<City[]>) => {
+      .addCase(fetchAddressData.fulfilled, (state, action: PayloadAction<State[]>) => {
         state.status = 'succeeded'
         state.data = action.payload
       })

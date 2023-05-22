@@ -9,3 +9,10 @@ export interface City {
   name: string
   neighborhoods: Neighborhood[]
 }
+
+export interface State {
+  id: string
+  name: string
+  uf: string
+  cities: City[]
+}
