@@ -11,11 +11,15 @@ import { insertSignUpInfo, nextStep } from '@Store/reducers/signUp'
 const SignUpAddressFirstStep = () => {
   const {
     addressData: { data },
-    signUp: { cityId, neighborhoodId },
+    signUp: { stateId, cityId, neighborhoodId },
   } = useAppSelector((state) => state)
   const [errors, setErrors] = useState<string[]>([])
 
   const dispatch = useAppDispatch()
+
+  function handleOnSelectState(stateId: string) {
+    dispatch(insertSignUpInfo({ stateId, cityId: '', neighborhoodId: '' }))
+  }
 
   function handleOnSelectCity(cityId: string) {
     dispatch(insertSignUpInfo({ cityId, neighborhoodId: '' }))
@@ -35,13 +39,19 @@ const SignUpAddressFirstStep = () => {
     dispatch(nextStep())
   }
 
-  const mappedCityDataSelect = data?.map(({ id, name }) => ({ id, value: name }))
-  const selectedCity = mappedCityDataSelect?.find(({ id }) => id === cityId)
+  const mappedStateDataSelect = data?.map(({ id, name }) => ({ id, value: name }))
+  const selectedState = data?.find(({ id }) => id === stateId)
 
-  const mappedNeighborhoodDataSelect = data
-    ?.find(({ id }) => id === selectedCity?.id)
-    ?.neighborhoods.map(({ id, name }) => ({ id, value: name }))
-  const selectedNeighborhood = mappedNeighborhoodDataSelect?.find(
+  const mappedCityDataSelect = selectedState?.cities.map(({ id, name }) => ({
+    id,
+    value: name,
+  }))
+  const selectedCity = selectedState?.cities.find(({ id }) => id === cityId)
+
+  const mappedNeighborhoodDataSelect = selectedCity?.neighborhoods.map(
+    ({ id, name }) => ({ id, value: name })
+  )
+  const selectedNeighborhood = selectedCity?.neighborhoods.find(
     ({ id }) => id === neighborhoodId
   )
 
@@ -49,15 +59,23 @@ const SignUpAddressFirstStep = () => {
     <View>
       <SignUpErrors errors={errors} />
       <Select
-        title={'Selecione sua cidade'}
-        selectedOption={selectedCity}
-        options={mappedCityDataSelect}
-        onSelect={handleOnSelectCity}
+        title={'Selecione seu estado'}
+        selectedOption={selectedState?.id}
+        options={mappedStateDataSelect}
+        onSelect={handleOnSelectState}
       />
+      {stateId && (
+        <Select
+          title={'Selecione sua cidade'}
+          selectedOption={selectedCity?.id}
+          options={mappedCityDataSelect}
+          onSelect={handleOnSelectCity}
+        />
+      )}
       {cityId && (
         <Select
           title={'Selecione seu bairro'}
-          selectedOption={selectedNeighborhood}
+          selectedOption={selectedNeighborhood?.id}
           options={mappedNeighborhoodDataSelect}
           onSelect={handleOnSelectNeighborhood}
         />

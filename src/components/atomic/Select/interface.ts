@@ -5,7 +5,7 @@ interface ISelectOption {
 
 export interface ISelect {
   title: string
-  selectedOption?: ISelectOption
+  selectedOption?: string
   options?: ISelectOption[]
   onSelect: (selectedOption: string) => void
   disabled?: boolean

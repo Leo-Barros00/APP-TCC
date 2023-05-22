@@ -19,6 +19,7 @@ interface SignUpState {
   cpf: string
   birthDate: string
   gender: string
+  stateId: string
   cityId: string
   neighborhoodId: string
   addressDescription: string

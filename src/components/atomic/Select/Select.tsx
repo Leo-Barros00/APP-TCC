@@ -24,13 +24,16 @@ const Select: React.FC<ISelect> = ({
     setIsModalVisible(false)
   }
 
+  const selectedOptionObject = options?.find(({ id }) => id === selectedOption)
+
   return (
     <View>
       <TextButton
-        text={selectedOption ? selectedOption.value : title}
+        text={selectedOptionObject ? selectedOptionObject.value : title}
         variant="primary"
         onPress={handleOnPressSelectButton}
         disabled={disabled}
+        ghost={!!selectedOptionObject}
       />
       <Modal
         isModalVisible={isModalVisible}
