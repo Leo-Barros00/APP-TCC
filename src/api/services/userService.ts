@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios'
 
-import { authApi } from '@Api/index'
+import mainApi, { authApi } from '@Api/index'
 
 class UserService {
   public static async signIn(email: string, password: string) {
@@ -23,6 +23,21 @@ class UserService {
         { RefreshToken: refreshToken },
         { headers: { Authorization: `Bearer ${token}` } }
       )
+      return response.data
+    } catch (error) {
+      if (error instanceof AxiosError)
+        return {
+          ...error.response?.data,
+          status: 'error',
+        }
+    }
+  }
+
+  public static async savePreferences(preferences: any, authToken: string) {
+    try {
+      const response = await mainApi.put('/users/preferences', preferences, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
       return response.data
     } catch (error) {
       if (error instanceof AxiosError)
