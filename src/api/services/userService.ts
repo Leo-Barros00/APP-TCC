@@ -8,7 +8,28 @@ class UserService {
       const response = await authApi.post('/login', { email, password })
       return response.data
     } catch (error) {
-      if (error instanceof AxiosError) return error.response?.data
+      if (error instanceof AxiosError)
+        return {
+          ...error.response?.data,
+          status: 'error',
+        }
+    }
+  }
+
+  public static async refreshToken(token: string, refreshToken: string) {
+    try {
+      const response = await authApi.post(
+        '/refresh',
+        { RefreshToken: refreshToken },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      return response.data
+    } catch (error) {
+      if (error instanceof AxiosError)
+        return {
+          ...error.response?.data,
+          status: 'error',
+        }
     }
   }
 }
