@@ -27,8 +27,11 @@ const authSlice = createSlice({
         ...action.payload,
       }
     },
+    reset() {
+      return initialState
+    },
   },
 })
 
-export const { insertAuthInfo } = authSlice.actions
+export const { insertAuthInfo, reset } = authSlice.actions
 export default authSlice.reducer
