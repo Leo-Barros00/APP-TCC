@@ -38,7 +38,7 @@ const NavBarItems = [
   },
   {
     screen: 'SearchServices',
-    label: 'Pospostas',
+    label: 'Serviços',
     icon: <Octicons name="search" size={24} color="black" />,
     selectedIcon: <Octicons name="search" size={24} color="#3030C2" />,
   },
@@ -55,7 +55,7 @@ const NavBar: React.FC<BottomTabBarProps> = ({ navigation }) => {
   const currentRouteName = routeNames[routeIndex]
 
   function handleOnPressNavBarItem(screen: string) {
-    if (screen !== currentRouteName) navigation.navigate(screen)
+    navigation.navigate(screen)
   }
 
   return (
@@ -63,7 +63,11 @@ const NavBar: React.FC<BottomTabBarProps> = ({ navigation }) => {
       {NavBarItems.map(({ label, screen, icon, selectedIcon }) => {
         const isRouteSelected = currentRouteName === screen
         return (
-          <ButtonContainer key={screen} onPress={() => handleOnPressNavBarItem(screen)}>
+          <ButtonContainer
+            key={screen}
+            onPress={() => handleOnPressNavBarItem(screen)}
+            disabled={isRouteSelected}
+          >
             <ButtonContent>
               {isRouteSelected ? selectedIcon : icon}
               <NavBarButtonText text={label} isRouteSelected={isRouteSelected} />
