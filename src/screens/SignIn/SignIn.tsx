@@ -66,7 +66,7 @@ const SignIn = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <Container>
         <TitleContainer>
-          <SignUpTitle>Login: </SignUpTitle>
+          <SignUpTitle>Login</SignUpTitle>
           <Instruction>Insira seus dados corretamente</Instruction>
         </TitleContainer>
         <FormContainer>
