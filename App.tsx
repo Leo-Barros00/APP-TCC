@@ -11,6 +11,13 @@ import { basicTheme, lightTheme } from './src/theme'
 import store from '@Store/configureStore'
 import { fetchAddressData } from '@Store/reducers/addressData'
 import { useAppDispatch } from '@Hooks/redux'
+import {
+  deleteSecureStoreValue,
+  getSecureStoreValue,
+  secureStoreSave,
+} from '@Utils/secureStore'
+import UserService from '@Api/services/userService'
+import { insertAuthInfo } from '@Store/reducers/auth'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -43,10 +50,34 @@ function RootApp() {
     await dispatch(fetchAddressData()).unwrap()
   }
 
+  async function verifyLogin() {
+    const storedTokens = await getSecureStoreValue('secureToken')
+
+    if (storedTokens === null) return
+
+    const parsedTokens = JSON.parse(storedTokens)
+
+    const refreshResponse = await UserService.refreshToken(
+      parsedTokens.token.value,
+      parsedTokens.refreshToken.value
+    )
+
+    if (refreshResponse.status === 'error') return deleteSecureStoreValue('secureToken')
+
+    const newTokenObject = {
+      ...parsedTokens,
+      ...refreshResponse,
+    }
+
+    dispatch(insertAuthInfo({ ...newTokenObject, isLogged: true }))
+    secureStoreSave('secureToken', JSON.stringify(newTokenObject))
+  }
+
   useEffect(() => {
     async function prepare() {
       await loadFonts()
       await loadAddressData()
+      await verifyLogin()
 
       setAppIsReady(true)
     }
