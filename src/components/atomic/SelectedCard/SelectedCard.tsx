@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled, { css, useTheme } from 'styled-components/native'
 
 import { hexToHsl } from '../../../utils/color'
 import { IRadioButton } from './interface'
-import { IButton, IText } from '../TextButton/interface'
+import { IText } from '../TextButton/interface'
 
 const Container = styled.TouchableHighlight<Omit<IRadioButton, 'text'>>`
   width: ${({ fluid }) => (fluid ? '100%' : 'auto')};

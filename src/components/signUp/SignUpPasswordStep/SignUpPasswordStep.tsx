@@ -47,7 +47,7 @@ const SignUpPasswordStep = () => {
     }
 
     // TO-DO: Login with token implementation after sign up
-    navigation.navigate('Home')
+    navigation.navigate('Main')
   }
 
   return (

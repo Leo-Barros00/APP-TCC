@@ -15,6 +15,18 @@ class HouseService {
       if (error instanceof AxiosError) return error.response?.data
     }
   }
+
+  public static async setNewHouse(reqBody: IHouse) {
+    try {
+      const response = await mainApi.post('/house', {
+        ...reqBody,
+        ownerId: 'c175bcc5-35db-42c8-a926-423859e84586',
+      })
+      return response.data
+    } catch (error) {
+      if (error instanceof AxiosError) return error.response?.data
+    }
+  }
 }
 
 export default HouseService

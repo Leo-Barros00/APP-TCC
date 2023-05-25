@@ -11,6 +11,7 @@ import Profile from '@Screens/Profile/Profile'
 import SignIn from '@Screens/SignIn/SignIn'
 import SearchServices from '@Screens/SearchServices/SearchServices'
 import AddHouse from '@Screens/AddHouse/AddHouse'
+import HousesList from '@Screens/Profile/HousesList/HousesList'
 import ProposalsScreen from '@Screens/Proposals'
 import { useAppSelector } from '@Hooks/redux'
 import Preferences from '@Screens/Preferences/Preferences'
@@ -44,6 +45,7 @@ const AuthenticatedNavigation = () => {
       <Stack.Screen name="Main" component={MainNavigation} />
       <Stack.Screen name="AddHouse" component={AddHouse} />
       <Stack.Screen name="Preferences" component={Preferences} />
+      <Stack.Screen name="HouseList" component={HousesList} />
     </Stack.Navigator>
   )
 }
@@ -57,8 +59,8 @@ const MainNavigation = () => {
     >
       <Tab.Screen name="Proposals" component={ProposalsScreen} />
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Profile" component={Profile} />
       <Tab.Screen name="SearchServices" component={SearchServices} />
+      <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   )
 }

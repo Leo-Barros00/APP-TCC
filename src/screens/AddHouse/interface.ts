@@ -3,4 +3,6 @@ interface IHouse {
   neighborhoodId: string
   addressDescription: string
   addressNumber: string
+  stateId: string
+  metersBuilt: number
 }
