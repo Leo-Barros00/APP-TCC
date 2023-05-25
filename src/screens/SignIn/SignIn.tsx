@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
-import { useNavigation } from '@react-navigation/native'
 
 import EmailTextField from '@Components/atomic/EmailTextField/EmailTextField'
 import PasswordTextField from '@Components/atomic/PasswordTextField/PasswordTextField'
@@ -11,6 +10,7 @@ import SignUpErrors from '@Components/signUp/SignUpErrors/SignUpErrors'
 import UserService from '@Api/services/userService'
 import { useAppDispatch } from '@Hooks/redux'
 import { insertAuthInfo } from '@Store/reducers/auth'
+import { secureStoreSave } from '@Utils/secureStore'
 
 const Container = styled.View`
   flex: 1;
@@ -50,18 +50,16 @@ const SignIn = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState<string[]>([])
-  const navigation = useNavigation()
 
   async function handleLoginPressButton() {
     setErrors([])
     const loginResponse = await UserService.signIn(email, password)
 
-    if (loginResponse.status !== 'error') {
-      dispatch(insertAuthInfo(loginResponse))
-      navigation.navigate('Main')
-    } else {
-      setErrors(['Dados inválidos! Tente novamente'])
-    }
+    if (loginResponse.status === 'error')
+      return setErrors(['Dados inválidos! Tente novamente'])
+
+    dispatch(insertAuthInfo({ ...loginResponse, isLogged: true }))
+    secureStoreSave('secureToken', JSON.stringify(loginResponse))
   }
 
   return (
