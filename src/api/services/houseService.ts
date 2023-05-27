@@ -16,12 +16,9 @@ class HouseService {
     }
   }
 
-  public static async setNewHouse(reqBody: IHouse) {
+  public static async setNewHouse(reqBody: IHouse, token: string) {
     try {
-      const response = await mainApi.post('/house', {
-        ...reqBody,
-        ownerId: 'c175bcc5-35db-42c8-a926-423859e84586',
-      })
+      const response = await mainApi.post('/house', reqBody, header(token))
       return response.data
     } catch (error) {
       if (error instanceof AxiosError) return error.response?.data

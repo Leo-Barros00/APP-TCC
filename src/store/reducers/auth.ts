@@ -5,7 +5,7 @@ interface Token {
   expiresIn: number
 }
 
-interface AuthState {
+export interface AuthState {
   isLogged: boolean
   token: Token | null
   refreshToken: Token | null

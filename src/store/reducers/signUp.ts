@@ -40,6 +40,7 @@ const initialState: SignUpState = {
   neighborhoodId: '',
   addressDescription: '',
   addressNumber: '',
+  stateId: '',
 }
 
 export const sendUserData = createAsyncThunk<AxiosResponse<any, any>>(

@@ -53,7 +53,7 @@ const houseInitialValues: IHouse = {
   addressDescription: '',
   addressNumber: '',
   stateId: '',
-  metersBuilt: 0,
+  metersBuilt: 50,
 }
 
 const AddHouse: React.FC = () => {
@@ -63,18 +63,15 @@ const AddHouse: React.FC = () => {
   const [errors, setErrors] = useState<string[]>([])
   const [house, setHouse] = useState(houseInitialValues)
   const { token } = useAppSelector(({ auth }) => auth)
-  const [maximumMetersBuilt, setMaximumMetersBuilt] = useState(50)
   const [finished, setFinished] = useState(false)
   const navigation = useNavigation()
 
   function handleOnPressDecreaseMeters() {
-    setMaximumMetersBuilt((prevValue) => prevValue - 5)
-    setHouse({ ...house, metersBuilt: maximumMetersBuilt })
+    setHouse({ ...house, metersBuilt: house.metersBuilt - 5 })
   }
 
   function handleOnPressIncreaseMeters() {
-    setMaximumMetersBuilt((prevValue) => prevValue + 5)
-    setHouse({ ...house, metersBuilt: maximumMetersBuilt })
+    setHouse({ ...house, metersBuilt: house.metersBuilt + 5 })
   }
 
   function handleOnChangeMeters(value: string) {
@@ -82,7 +79,6 @@ const AddHouse: React.FC = () => {
 
     if (isNaN(numericValue)) return
 
-    setMaximumMetersBuilt(numericValue)
     setHouse({ ...house, metersBuilt: numericValue })
   }
 
@@ -111,6 +107,8 @@ const AddHouse: React.FC = () => {
     setErrors([])
   }
 
+  console.log(house)
+
   async function handleOnPressNextButton() {
     if (
       !finished &&
@@ -125,9 +123,9 @@ const AddHouse: React.FC = () => {
       return
     }
 
-    const response = await HouseService.setNewHouse(house)
+    const response = await HouseService.setNewHouse(house, token!.value)
 
-    if (response.status === 204) {
+    if (response.status === 201) {
       setFinished(true)
     }
   }
@@ -182,13 +180,13 @@ const AddHouse: React.FC = () => {
               <TextButton
                 text={'-'}
                 variant="primary"
-                disabled={maximumMetersBuilt <= 0}
+                disabled={house.metersBuilt <= 0}
                 fluid
                 onPress={handleOnPressDecreaseMeters}
               />
               <TextField
                 variant="primary"
-                value={String(maximumMetersBuilt)}
+                value={String(house.metersBuilt)}
                 fluid
                 onChangeText={handleOnChangeMeters}
                 keyboardType="number-pad"

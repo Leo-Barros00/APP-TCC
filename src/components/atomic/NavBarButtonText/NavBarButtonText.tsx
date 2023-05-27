@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components/native'
 import { INavBarButtonText } from './interface'
 
 const Text = styled.Text<Omit<INavBarButtonText, 'text'>>`
+  text-align: center;
   ${({ isRouteSelected, theme }) =>
     isRouteSelected &&
     css`

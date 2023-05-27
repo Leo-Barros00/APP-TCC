@@ -60,6 +60,8 @@ const HousesList: React.FC = () => {
     getAllHouses()
   }, [])
 
+  console.log(houses)
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Container>
@@ -74,7 +76,7 @@ const HousesList: React.FC = () => {
         )}
         {!loading && (
           <FlatList
-            style={{ width: '100%' }}
+            style={{ width: '100%', marginBottom: 120 }}
             data={houses}
             ListEmptyComponent={() => (
               <EmptyListView>
