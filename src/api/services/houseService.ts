@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios'
 
-import mainApi from '@Api/index'
+import { mainApi } from '@Api/index'
 
 const header = (token: string) => {
   return { headers: { Authorization: `Bearer ${token}` } }

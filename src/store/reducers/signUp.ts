@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError, AxiosResponse } from 'axios'
 
-import api from '@Api/index'
+import { mainApi } from '@Api/index'
 
 export enum SignUpStep {
   Email,
@@ -28,19 +28,19 @@ interface SignUpState {
 
 const initialState: SignUpState = {
   step: SignUpStep.Email,
-  email: '',
-  password: '',
-  passwordConfirm: '',
-  name: '',
-  surname: '',
-  cpf: '',
+  email: 'filipe@gmail.com',
+  password: '123415263',
+  passwordConfirm: '123415263',
+  name: 'filipe',
+  surname: 'neves',
+  cpf: '02732320536',
   birthDate: '',
   gender: '',
+  stateId: '',
   cityId: '',
   neighborhoodId: '',
-  addressDescription: '',
-  addressNumber: '',
-  stateId: '',
+  addressDescription: 'rua E',
+  addressNumber: '710',
 }
 
 export const sendUserData = createAsyncThunk<AxiosResponse<any, any>>(
@@ -49,7 +49,7 @@ export const sendUserData = createAsyncThunk<AxiosResponse<any, any>>(
     const signUpData = (getState() as any).signUp as SignUpState
 
     try {
-      const response = await api.post('/users', signUpData)
+      const response = await mainApi.post('/users', signUpData)
       return response.data
     } catch (error) {
       const err = error as AxiosError

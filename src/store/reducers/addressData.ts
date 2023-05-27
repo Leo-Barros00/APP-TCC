@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 
-import api from '@Api/index'
-import { State } from 'src/typings'
+import { mainApi } from '@Api/index'
+import { State } from '@Typings/address'
 
 interface DataState {
   data: State[] | null
@@ -16,7 +16,7 @@ const initialState: DataState = {
 }
 
 const fetchAddressData = createAsyncThunk<State[]>('data/fetchAddressData', async () => {
-  const response = await api.get('/address/states')
+  const response = await mainApi.get('/address/states')
   return response.data
 })
 

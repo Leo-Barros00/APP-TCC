@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios'
 
-import mainApi, { authApi } from '@Api/index'
+import { mainApi, authApi } from '@Api/index'
 
 class UserService {
   public static async signIn(email: string, password: string) {
