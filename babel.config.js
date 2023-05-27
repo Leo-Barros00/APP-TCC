@@ -11,6 +11,7 @@ module.exports = function(api) {
           "@Store": "./src/store",
           "@Utils": "./src/utils",
           "@Api": "./src/api",
+          "@Typings": "./src/typings",
         }
       }],
     ]
