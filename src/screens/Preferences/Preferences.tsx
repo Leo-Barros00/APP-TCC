@@ -12,6 +12,7 @@ import Toast from 'react-native-root-toast'
 const Container = styled.ScrollView`
   flex: 1;
   padding: 24px 16px;
+  padding-bottom: 24px;
 `
 
 const Title = styled.Text`
@@ -61,6 +62,10 @@ const LocationTextSelect = styled.Text`
 
 const NestedSelectContainer = styled.View`
   padding-left: 24px;
+`
+
+const SavaButton = styled(TextButton)`
+  /* margin-bottom: 24px; */
 `
 
 const Preferences = () => {
@@ -125,8 +130,6 @@ const Preferences = () => {
       },
       token?.value ?? ''
     )
-
-    console.log({ preferencesResponse })
 
     if (preferencesResponse.status !== 'error') {
       Toast.show('Preferências salvas com sucesso.', {
@@ -240,7 +243,7 @@ const Preferences = () => {
             ))}
           </View>
         </PreferenceGroup>
-        <TextButton
+        <SavaButton
           text={'Salvar Preferências'}
           variant="primary"
           onPress={handleOnPressSavePreferences}

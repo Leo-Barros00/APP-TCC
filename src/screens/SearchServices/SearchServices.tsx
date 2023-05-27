@@ -8,6 +8,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from 'styled-components'
 import { useNavigation } from '@react-navigation/native'
 import { Keyboard, KeyboardAvoidingView, TextInput, View } from 'react-native'
+import ProvidersList from './components/ProvidersList'
 
 const Container = styled.View`
   flex: 1;
@@ -75,6 +76,7 @@ const SearchServices: React.FC = () => {
           placeholder={'Procure por serviços'}
           onPress={handleOnPressSearchText}
         />
+        <ProvidersList />
         {isKeyboardVisible && houses && (
           <AddButton onPress={handleOnPressAddHouse}>
             <>

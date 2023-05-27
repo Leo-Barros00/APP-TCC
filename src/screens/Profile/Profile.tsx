@@ -5,8 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import { FontAwesome5 } from '@expo/vector-icons'
-import TextButton from '@Components/atomic/TextButton/TextButton'
-import { useAppDispatch } from '@Hooks/redux'
+import { useAppDispatch, useAppSelector } from '@Hooks/redux'
 import { reset } from '@Store/reducers/auth'
 import { deleteSecureStoreValue } from '@Utils/secureStore'
 
@@ -86,10 +85,19 @@ const AddText = styled.Text`
   color: ${({ theme }) => theme.colors['primary']['main']};
 `
 
+const AvatarWords = styled.Text`
+  font-size: 36px;
+  font-family: 'Poppins-SemiBold';
+
+  padding: 8px;
+  color: black;
+`
+
 const Profile: React.FC = () => {
   const theme = useTheme()
   const navigation = useNavigation()
   const dispatch = useAppDispatch()
+  const { name, surname } = useAppSelector(({ user }) => user)
 
   function handleOnPressLogoutButton() {
     dispatch(reset())
@@ -99,8 +107,12 @@ const Profile: React.FC = () => {
   return (
     <Container>
       <HeaderContainer>
-        <Avatar />
-        <StyledText>{'Nome do Usuário'}</StyledText>
+        <Avatar>
+          <AvatarWords>
+            {name.slice(0, 1).toUpperCase() + surname.slice(0, 1).toUpperCase()}
+          </AvatarWords>
+        </Avatar>
+        <StyledText>{name + ' ' + surname}</StyledText>
       </HeaderContainer>
       <SafeAreaView>
         <BodyContainer>
