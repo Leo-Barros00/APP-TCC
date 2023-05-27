@@ -33,21 +33,6 @@ class UserService {
     }
   }
 
-  public static async savePreferences(preferences: any, authToken: string) {
-    try {
-      const response = await mainApi.put('/users/preferences', preferences, {
-        headers: { Authorization: `Bearer ${authToken}` },
-      })
-      return response.data
-    } catch (error) {
-      if (error instanceof AxiosError)
-        return {
-          ...error.response?.data,
-          status: 'error',
-        }
-    }
-  }
-
   public static async getAllProviders(authToken: string) {
     try {
       const response = await mainApi.get('/users/providers', {

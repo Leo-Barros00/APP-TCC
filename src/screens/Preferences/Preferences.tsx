@@ -1,13 +1,14 @@
 import React, { Fragment, useState } from 'react'
+import { View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import styled, { css } from 'styled-components/native'
+import styled from 'styled-components/native'
+import Toast from 'react-native-root-toast'
 
 import TextButton from '@Components/atomic/TextButton/TextButton'
 import TextField from '@Components/atomic/TextField/TextField'
 import { useAppSelector } from '@Hooks/redux'
-import { View } from 'react-native'
-import UserService from '@Api/services/userService'
-import Toast from 'react-native-root-toast'
+
+import PreferenceService from '@Api/services/preferenceService'
 
 const Container = styled.ScrollView`
   flex: 1;
@@ -122,7 +123,7 @@ const Preferences = () => {
   }
 
   async function handleOnPressSavePreferences() {
-    const preferencesResponse = await UserService.savePreferences(
+    const preferencesResponse = await PreferenceService.savePreferences(
       {
         animals,
         maximumMetersBuilt,
