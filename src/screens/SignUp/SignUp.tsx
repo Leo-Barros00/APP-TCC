@@ -28,7 +28,7 @@ const StepContainer = styled.View`
   justify-content: flex-end;
 `
 
-const SignUp: React.FC<ScreenType> = () => {
+const SignUp: React.FC = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Container>
