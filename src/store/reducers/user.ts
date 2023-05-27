@@ -7,7 +7,7 @@ export interface LoggedUserState {
   password: string
   cpf: string
   gender: string
-  birthDate: Date
+  birthDate: string
   addressId: string
   preferenceId: string | null
 }
@@ -19,7 +19,7 @@ const initialState: LoggedUserState = {
   password: '',
   cpf: '',
   gender: '',
-  birthDate: new Date(),
+  birthDate: '',
   addressId: '',
   preferenceId: null,
 }
