@@ -75,9 +75,7 @@ function RootApp() {
 
   useEffect(() => {
     async function prepare() {
-      await loadFonts()
-      await loadAddressData()
-      await verifyLogin()
+      await Promise.all([loadFonts(), loadAddressData(), verifyLogin()])
 
       setAppIsReady(true)
     }
