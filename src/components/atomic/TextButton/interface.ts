@@ -1,5 +1,5 @@
 import { TouchableHighlightProps } from 'react-native'
-import { Variant } from '../../../../typings/theme'
+import { Variant } from '@Typings/theme'
 
 export interface IButton extends TouchableHighlightProps {
   text: string
