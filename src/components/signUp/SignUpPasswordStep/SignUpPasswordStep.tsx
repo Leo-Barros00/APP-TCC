@@ -1,21 +1,34 @@
 import { View } from 'react-native'
 import React, { useState } from 'react'
 import Toast from 'react-native-root-toast'
+import { useNavigation } from '@react-navigation/native'
 
 import PasswordTextField from '@Components/atomic/PasswordTextField'
 import SignUpErrors from '@Components/signUp/SignUpErrors'
 import SignUpButtons from '@Components/signUp/SignUpButtons'
+import TransitionScreen from '@Components/atomic/TransitionScreen/TransitionScreen'
 
 import { useAppDispatch, useAppSelector } from '@Hooks/redux'
 import { insertSignUpInfo, sendUserData } from '@Store/reducers/signUp'
-import { useNavigation } from '@react-navigation/native'
+import { insertAuthInfo } from '@Store/reducers/auth'
+import UserService from '@Api/services/userService'
+import { secureStoreSave } from '@Utils/secureStore'
 
 const SignUpPasswordStep = () => {
-  const { password, passwordConfirm } = useAppSelector(({ signUp }) => signUp)
+  const { email, password, passwordConfirm } = useAppSelector(({ signUp }) => signUp)
   const [errors, setErrors] = useState<string[]>([])
+  const [loading, setLoading] = useState(false)
+  const [finished, setFinished] = useState(false)
   const navigation = useNavigation()
 
   const dispatch = useAppDispatch()
+
+  function navigateToHome() {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Main', params: { screen: 'SearchServices' } }],
+    })
+  }
 
   function handleOnChangePasswordField(value: string) {
     dispatch(insertSignUpInfo({ password: value }))
@@ -33,6 +46,8 @@ const SignUpPasswordStep = () => {
       return
     }
 
+    setLoading(true)
+
     const { payload } = (await dispatch(sendUserData())) as any
 
     if (payload?.status === 'error') {
@@ -43,11 +58,23 @@ const SignUpPasswordStep = () => {
         animation: true,
         hideOnPress: true,
       })
+      setLoading(false)
       return dispatch(insertSignUpInfo({ step: 0 }))
     }
 
-    // TO-DO: Login with token implementation after sign up
-    navigation.navigate('Main')
+    const loginResponse = await UserService.signIn(email, password)
+    secureStoreSave('secureToken', JSON.stringify(loginResponse))
+    dispatch(insertAuthInfo({ ...loginResponse, isLogged: true }))
+    setFinished(true)
+  }
+
+  if (finished) {
+    return (
+      <TransitionScreen
+        message="Cadastro finalizado com sucesso!"
+        navigatesTo={navigateToHome}
+      />
+    )
   }
 
   return (
@@ -73,7 +100,10 @@ const SignUpPasswordStep = () => {
         returnKeyType="next"
         onSubmitEditing={handleOnPressNextButton}
       />
-      <SignUpButtons handleOnPressNextButton={handleOnPressNextButton} />
+      <SignUpButtons
+        handleOnPressNextButton={handleOnPressNextButton}
+        nextButtonLoading={loading}
+      />
     </View>
   )
 }

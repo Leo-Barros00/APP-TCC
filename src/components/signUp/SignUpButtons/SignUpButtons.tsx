@@ -20,7 +20,10 @@ const IndividualButtonContainer = styled.View`
   flex: 1;
 `
 
-const SignUpButtons: React.FC<ISignUpButtons> = ({ handleOnPressNextButton }) => {
+const SignUpButtons: React.FC<ISignUpButtons> = ({
+  handleOnPressNextButton,
+  nextButtonLoading,
+}) => {
   const { step } = useAppSelector(({ signUp }) => signUp)
   const dispatch = useAppDispatch()
   const navigation = useNavigation()
@@ -37,7 +40,12 @@ const SignUpButtons: React.FC<ISignUpButtons> = ({ handleOnPressNextButton }) =>
         <TextButton text="Voltar" variant="secondary" onPress={handleOnPressBackButton} />
       </IndividualButtonContainer>
       <IndividualButtonContainer>
-        <TextButton text="Avançar" variant="primary" onPress={handleOnPressNextButton} />
+        <TextButton
+          text="Avançar"
+          variant="primary"
+          onPress={handleOnPressNextButton}
+          loading={nextButtonLoading}
+        />
       </IndividualButtonContainer>
     </ButtonsContainer>
   )
