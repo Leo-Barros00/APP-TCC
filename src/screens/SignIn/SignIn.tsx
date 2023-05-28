@@ -50,16 +50,21 @@ const SignIn = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState<string[]>([])
+  const [loading, setLoading] = useState(false)
 
   async function handleLoginPressButton() {
+    setLoading(true)
     setErrors([])
     const loginResponse = await UserService.signIn(email, password)
 
-    if (loginResponse.status === 'error')
-      return setErrors(['Dados inválidos! Tente novamente'])
+    if (loginResponse.status === 'error') {
+      setErrors(['Dados inválidos! Tente novamente'])
+      setLoading(false)
+      return
+    }
 
-    dispatch(insertAuthInfo({ ...loginResponse, isLogged: true }))
     secureStoreSave('secureToken', JSON.stringify(loginResponse))
+    dispatch(insertAuthInfo({ ...loginResponse, isLogged: true }))
   }
 
   return (
@@ -95,6 +100,7 @@ const SignIn = () => {
               variant={'primary'}
               fluid
               onPress={handleLoginPressButton}
+              loading={loading}
             />
           </InputContainer>
         </FormContainer>
