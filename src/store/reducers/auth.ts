@@ -1,17 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
-interface Token {
-  value: string
-  expiresIn: number
-}
+import { AuthObject } from '@Typings/auth'
 
-export interface AuthState {
-  isLogged: boolean
-  token: Token | null
-  refreshToken: Token | null
-}
-
-const initialState: AuthState = {
+const initialState: AuthObject = {
   isLogged: false,
   token: null,
   refreshToken: null,
@@ -21,7 +12,7 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    insertAuthInfo(state, action: PayloadAction<Partial<AuthState>>) {
+    insertAuthInfo(state, action: PayloadAction<Partial<AuthObject>>) {
       return {
         ...state,
         ...action.payload,
