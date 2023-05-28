@@ -1,44 +1,26 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { mainApi } from '@Api/index'
 import { State } from '@Typings/address'
 
 interface DataState {
   data: State[] | null
-  status: 'idle' | 'loading' | 'succeeded' | 'failed'
-  error: string | null
 }
 
 const initialState: DataState = {
   data: null,
-  status: 'idle',
-  error: null,
 }
 
-const fetchAddressData = createAsyncThunk<State[]>('data/fetchAddressData', async () => {
-  const response = await mainApi.get('/address/states')
-  return response.data
-})
-
 const dataSlice = createSlice({
-  name: 'data',
+  name: 'addressData',
   initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchAddressData.pending, (state) => {
-        state.status = 'loading'
-      })
-      .addCase(fetchAddressData.fulfilled, (state, action: PayloadAction<State[]>) => {
-        state.status = 'succeeded'
-        state.data = action.payload
-      })
-      .addCase(fetchAddressData.rejected, (state, action) => {
-        state.status = 'failed'
-        state.error = action.error.message ?? null
-      })
+  reducers: {
+    insertAddressData(_, { payload }: PayloadAction<State[]>) {
+      return {
+        data: payload,
+      }
+    },
   },
 })
 
-export { fetchAddressData }
+export const { insertAddressData } = dataSlice.actions
 export default dataSlice.reducer

@@ -7,17 +7,21 @@ import { RootSiblingParent } from 'react-native-root-siblings'
 
 import RootNavigation from './src/RootNavigation'
 
+import { useAppDispatch } from '@Hooks/redux'
+
 import { basicTheme, lightTheme } from './src/theme'
 import store from '@Store/configureStore'
-import { fetchAddressData } from '@Store/reducers/addressData'
-import { useAppDispatch } from '@Hooks/redux'
+import { insertAuthInfo } from '@Store/reducers/auth'
+import { insertAddressData } from '@Store/reducers/addressData'
+
 import {
   deleteSecureStoreValue,
   getSecureStoreValue,
   secureStoreSave,
 } from '@Utils/secureStore'
+
 import UserService from '@Api/services/userService'
-import { insertAuthInfo } from '@Store/reducers/auth'
+import AddressService from '@Api/services/addressService'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -47,7 +51,8 @@ function RootApp() {
   }
 
   async function loadAddressData() {
-    await dispatch(fetchAddressData()).unwrap()
+    const addressData = await AddressService.getAllStateData()
+    dispatch(insertAddressData(addressData))
   }
 
   async function verifyLogin() {
