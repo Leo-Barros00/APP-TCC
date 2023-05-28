@@ -6,6 +6,7 @@ export interface IButton extends TouchableHighlightProps {
   variant: Variant
   fluid?: boolean
   ghost?: boolean
+  loading?: boolean
 }
 
 export interface IText extends TouchableHighlightProps {

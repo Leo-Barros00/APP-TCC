@@ -1,5 +1,6 @@
 import React from 'react'
 import styled, { css, useTheme } from 'styled-components/native'
+import AnimatedLottieView from 'lottie-react-native'
 
 import { hexToHsl } from '../../../utils/color'
 
@@ -40,7 +41,14 @@ function getMinButtonUnderlayColorLightness(currentLightness: number): number {
   return Math.min(currentLightness, decreasedLightness)
 }
 
-const TextButton: React.FC<IButton> = ({ children, text, variant, ...props }) => {
+const TextButton: React.FC<IButton> = ({
+  children,
+  text,
+  variant,
+  loading,
+  disabled,
+  ...props
+}) => {
   const { colors } = useTheme()
   const { hue, saturation, lightness } = hexToHsl(colors[variant].main)
 
@@ -50,11 +58,20 @@ const TextButton: React.FC<IButton> = ({ children, text, variant, ...props }) =>
     <Container
       underlayColor={`hsl(${hue} ${saturation}% ${underlayLightness}%)`}
       variant={variant}
+      disabled={disabled || loading}
       {...props}
     >
-      <ButtonText variant={variant} {...props}>
-        {text}
-      </ButtonText>
+      {loading ? (
+        <AnimatedLottieView
+          source={require('./button_loading_dots_animation.json')}
+          autoPlay
+          loop={true}
+        />
+      ) : (
+        <ButtonText variant={variant} {...props}>
+          {text}
+        </ButtonText>
+      )}
     </Container>
   )
 }
