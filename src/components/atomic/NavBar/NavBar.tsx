@@ -32,13 +32,13 @@ const NavBarItems = [
   // },
   {
     screen: 'Proposals',
-    label: 'Propostas',
+    label: 'Propostas\nRecebidas',
     icon: <Ionicons name="document-text-outline" size={24} color="black" />,
     selectedIcon: <Ionicons name="document-text" size={24} color="#3030C2" />,
   },
   {
     screen: 'SearchServices',
-    label: 'Serviços',
+    label: 'Procurar\nDiaristas',
     icon: <Octicons name="search" size={24} color="black" />,
     selectedIcon: <Octicons name="search" size={24} color="#3030C2" />,
   },
