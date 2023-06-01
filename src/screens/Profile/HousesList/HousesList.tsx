@@ -44,6 +44,7 @@ const EmptyListView = styled.View`
 
 const HousesList: React.FC = () => {
   const { token } = useAppSelector(({ auth }) => auth)
+  const user = useAppSelector(({ user }) => user)
   const [houses, setHouses] = useState()
   const [loading, setLoading] = useState<boolean>(true)
   const navigation = useNavigation()
@@ -60,8 +61,6 @@ const HousesList: React.FC = () => {
     getAllHouses()
   }, [])
 
-  console.log(houses)
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Container>
@@ -77,7 +76,7 @@ const HousesList: React.FC = () => {
         {!loading && (
           <FlatList
             style={{ width: '100%', marginBottom: 120 }}
-            data={houses}
+            data={user.houses}
             ListEmptyComponent={() => (
               <EmptyListView>
                 <LottieView
@@ -92,8 +91,9 @@ const HousesList: React.FC = () => {
             renderItem={({ item }) => {
               return (
                 <InfoCardIcon
-                  title={item.addressId}
-                  subtitle={item.ownerId}
+                  title={item.address.description + ', ' + item.address.number}
+                  subtitle={item.address.neighborhood.name}
+                  size={item.metersBuilt}
                   icon={<MaterialIcons name="house" size={32} color="black" />}
                   bgColor={false}
                 />

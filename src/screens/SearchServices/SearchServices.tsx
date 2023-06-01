@@ -7,8 +7,10 @@ import HouseService from '@Api/services/houseService'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from 'styled-components'
 import { useNavigation } from '@react-navigation/native'
-import { Keyboard, KeyboardAvoidingView, TextInput, View } from 'react-native'
+import { Keyboard } from 'react-native'
 import ProvidersList from './components/ProvidersList'
+import MessageWarning from '@Components/atomic/MessageWarning/MessageWarning'
+import LottieView from 'lottie-react-native'
 
 const Container = styled.View`
   flex: 1;
@@ -36,23 +38,20 @@ const AddText = styled.Text`
 
 const SearchServices: React.FC = () => {
   const { token } = useAppSelector(({ auth }) => auth)
+  const { houses } = useAppSelector(({ user }) => user)
   const theme = useTheme()
   const navigation = useNavigation()
-  const [houses, setHouses] = useState<boolean | null>(null)
+  // const [houses, setHouses] = useState<boolean | null>(null)
   const [isKeyboardVisible, setKeyboardVisible] = useState(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
-  async function handleOnPressSearchText() {
-    const getHousesByUser = await HouseService.getHouses(token!.value)
-    if (getHousesByUser.length > 0) {
-      setHouses(false)
-    } else {
-      setHouses(true)
-    }
-  }
+  const hasHouse = houses.length > 0
 
   function handleOnPressAddHouse() {
     navigation.navigate('AddHouse')
   }
+
+  // console.log({ houses })
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () =>
@@ -72,12 +71,19 @@ const SearchServices: React.FC = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Container>
-        <SearchBar
-          placeholder={'Procure por serviços'}
-          onPress={handleOnPressSearchText}
-        />
-        <ProvidersList />
-        {isKeyboardVisible && houses && (
+        <SearchBar placeholder={'Procure por serviços'} onPress={() => {}} />
+        {hasHouse && <ProvidersList />}
+        {!isKeyboardVisible && !hasHouse && (
+          <MessageWarning
+            title={'Você ainda não possui residência!'}
+            text={
+              'Adicione uma residência para começar a buscar os serviços disponíveis.'
+            }
+            buttonText={'Adicionar residência'}
+            navigateTo={'AddHouse'}
+          />
+        )}
+        {isKeyboardVisible && hasHouse && (
           <AddButton onPress={handleOnPressAddHouse}>
             <>
               <MaterialIcons

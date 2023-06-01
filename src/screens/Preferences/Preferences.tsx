@@ -9,11 +9,16 @@ import TextField from '@Components/atomic/TextField/TextField'
 import { useAppSelector } from '@Hooks/redux'
 
 import PreferenceService from '@Api/services/preferenceService'
+import { View } from 'react-native'
+import UserService from '@Api/services/userService'
+import TransitionScreen from '@Components/atomic/TransitionScreen/TransitionScreen'
+import { useNavigation } from '@react-navigation/native'
 
 const Container = styled.ScrollView`
-  flex: 1;
+  /* flex: 1; */
   padding: 24px 16px;
   padding-bottom: 24px;
+  /* margin-bottom: 24px; */
 `
 
 const Title = styled.Text`
@@ -65,8 +70,11 @@ const NestedSelectContainer = styled.View`
   padding-left: 24px;
 `
 
-const SavaButton = styled(TextButton)`
-  /* margin-bottom: 24px; */
+const SaveButton = styled(TextButton)`
+  /* height: 64px;
+  margin-bottom: 30px; */
+  /* padding: 24px 16px;
+  margin-bottom: 24px; */
 `
 
 const Preferences = () => {
@@ -79,6 +87,8 @@ const Preferences = () => {
   const [selectedStates, setSelectedStates] = useState<string[]>([])
   const [selectedCities, setSelectedCities] = useState<string[]>([])
   const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<string[]>([])
+  const [finished, setFinished] = useState(false)
+  const navigation = useNavigation()
 
   function handleOnPressDecreaseMeters() {
     setMaximumMetersBuilt((prevValue) => prevValue - 5)
@@ -133,18 +143,28 @@ const Preferences = () => {
     )
 
     if (preferencesResponse.status !== 'error') {
-      Toast.show('Preferências salvas com sucesso.', {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.CENTER,
-        shadow: true,
-        animation: true,
-        hideOnPress: true,
-      })
+      setFinished(true)
     }
+  }
+
+  function navigateToHome() {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Main', params: { screen: 'Preferences' } }],
+    })
   }
 
   const isFormFulfilled =
     animals !== null && maximumMetersBuilt > 0 && selectedNeighborhoods.length > 0
+
+  if (finished) {
+    return (
+      <TransitionScreen
+        message="Preferências cadastradas com sucesso!"
+        navigatesTo={navigateToHome}
+      />
+    )
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -244,7 +264,7 @@ const Preferences = () => {
             ))}
           </View>
         </PreferenceGroup>
-        <SavaButton
+        <SaveButton
           text={'Salvar Preferências'}
           variant="primary"
           onPress={handleOnPressSavePreferences}

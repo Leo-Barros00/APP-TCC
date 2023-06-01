@@ -68,7 +68,6 @@ class UserService {
       const response = await mainApi.get('/users', {
         headers: { Authorization: `Bearer ${token}` },
       })
-      console.log(response.data)
       return response.data
     } catch (error) {
       const err = error as AxiosError

@@ -5,4 +5,5 @@ export interface IInfoCardIcon {
   subtitle: string
   icon: ReactNode
   bgColor: boolean
+  size?: string
 }

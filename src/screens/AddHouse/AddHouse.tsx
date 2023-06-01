@@ -4,12 +4,13 @@ import TextButton from '@Components/atomic/TextButton/TextButton'
 import TextField from '@Components/atomic/TextField/TextField'
 import TransitionScreen from '@Components/atomic/TransitionScreen/TransitionScreen'
 import SignUpErrors from '@Components/signUp/SignUpErrors'
-import { useAppSelector } from '@Hooks/redux'
+import { useAppDispatch, useAppSelector } from '@Hooks/redux'
 import { useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
 import { Dimensions, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
+import { insertHouse } from '@Store/reducers/user'
 
 const Container = styled.View`
   flex: 1;
@@ -54,6 +55,7 @@ const houseInitialValues: IHouse = {
   addressNumber: '',
   stateId: '',
   metersBuilt: 50,
+  animals: false,
 }
 
 const AddHouse: React.FC = () => {
@@ -65,6 +67,8 @@ const AddHouse: React.FC = () => {
   const { token } = useAppSelector(({ auth }) => auth)
   const [finished, setFinished] = useState(false)
   const navigation = useNavigation()
+  const dispatch = useAppDispatch()
+  // const [animals, setAnimals] = useState<boolean | null>(null)
 
   function handleOnPressDecreaseMeters() {
     setHouse({ ...house, metersBuilt: house.metersBuilt - 5 })
@@ -107,8 +111,6 @@ const AddHouse: React.FC = () => {
     setErrors([])
   }
 
-  console.log(house)
-
   async function handleOnPressNextButton() {
     if (
       !finished &&
@@ -126,6 +128,7 @@ const AddHouse: React.FC = () => {
     const response = await HouseService.setNewHouse(house, token!.value)
 
     if (response.status === 201) {
+      dispatch(insertHouse())
       setFinished(true)
     }
   }
@@ -137,9 +140,9 @@ const AddHouse: React.FC = () => {
     })
   }
 
-  function navigateGoBack() {
-    navigation.goBack()
-  }
+  // function navigateGoBack() {
+  //   navigation.goBack()
+  // }
 
   const mappedStateDataSelect = data?.map(({ id, name }) => ({ id, value: name }))
   const selectedState = data?.find(({ id }) => id === house.stateId)
@@ -175,6 +178,23 @@ const AddHouse: React.FC = () => {
           </Instruction>
           <View>
             <SignUpErrors errors={errors} />
+            <ButtonsTitle>Tamanho máximo da residência (m²)</ButtonsTitle>
+            <ButtonsInlineContainer>
+              <TextButton
+                text={'Sim'}
+                variant="primary"
+                ghost={house.animals === null || house.animals === false}
+                fluid
+                onPress={() => setHouse({ ...house, animals: true })}
+              />
+              <TextButton
+                text={'Não'}
+                variant="primary"
+                ghost={house.animals === null || house.animals === true}
+                fluid
+                onPress={() => setHouse({ ...house, animals: false })}
+              />
+            </ButtonsInlineContainer>
             <ButtonsTitle>Tamanho máximo da residência (m²)</ButtonsTitle>
             <ButtonsInlineContainer>
               <TextButton

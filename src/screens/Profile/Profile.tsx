@@ -25,11 +25,10 @@ const HeaderContainer = styled.View`
 `
 
 const Avatar = styled.View`
-  width: 90px;
-  height: 90px;
+  width: 92px;
+  height: 92px;
   align-items: center;
   justify-content: center;
-  padding: 16px;
   border-radius: 50px;
   background-color: white;
   margin-bottom: 24px;
@@ -91,6 +90,8 @@ const AvatarWords = styled.Text`
 
   padding: 8px;
   color: black;
+  text-align: center;
+  line-height: 48px;
 `
 
 const Profile: React.FC = () => {
