@@ -9,13 +9,14 @@ import SignUpButtons from '@Components/signUp/SignUpButtons'
 import TransitionScreen from '@Components/atomic/TransitionScreen/TransitionScreen'
 
 import { useAppDispatch, useAppSelector } from '@Hooks/redux'
-import { insertSignUpInfo, sendUserData } from '@Store/reducers/signUp'
+import { insertSignUpInfo } from '@Store/reducers/signUp'
 import { insertAuthInfo } from '@Store/reducers/auth'
 import UserService from '@Api/services/userService'
 import { secureStoreSave } from '@Utils/secureStore'
 
 const SignUpPasswordStep = () => {
-  const { email, password, passwordConfirm } = useAppSelector(({ signUp }) => signUp)
+  const signUpState = useAppSelector(({ signUp }) => signUp)
+  const { email, password, passwordConfirm } = signUpState
   const [errors, setErrors] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
   const [finished, setFinished] = useState(false)
@@ -48,17 +49,16 @@ const SignUpPasswordStep = () => {
 
     setLoading(true)
 
-    const { payload } = (await dispatch(sendUserData())) as any
+    const signUpResponse = await UserService.signUp(signUpState)
 
-    if (payload?.status === 'error') {
-      Toast.show(payload?.message, {
+    if (signUpResponse?.status === 'error') {
+      Toast.show(signUpResponse?.message, {
         duration: Toast.durations.LONG,
         position: Toast.positions.CENTER,
         shadow: true,
         animation: true,
         hideOnPress: true,
       })
-      setLoading(false)
       return dispatch(insertSignUpInfo({ step: 0 }))
     }
 
