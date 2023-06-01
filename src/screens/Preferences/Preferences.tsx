@@ -1,16 +1,11 @@
 import React, { Fragment, useState } from 'react'
-import { View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
-import Toast from 'react-native-root-toast'
-
 import TextButton from '@Components/atomic/TextButton/TextButton'
 import TextField from '@Components/atomic/TextField/TextField'
 import { useAppSelector } from '@Hooks/redux'
-
 import PreferenceService from '@Api/services/preferenceService'
 import { View } from 'react-native'
-import UserService from '@Api/services/userService'
 import TransitionScreen from '@Components/atomic/TransitionScreen/TransitionScreen'
 import { useNavigation } from '@react-navigation/native'
 
