@@ -16,7 +16,6 @@ const Container = styled.View`
   flex: 1;
   flex-grow: 1;
   width: 100%;
-  height: ${Dimensions.get('window').height}px;
   justify-content: space-between;
   padding: 16px 16px;
 `
@@ -55,7 +54,7 @@ const houseInitialValues: IHouse = {
   addressNumber: '',
   stateId: '',
   metersBuilt: 50,
-  animals: false,
+  animals: null,
 }
 
 const AddHouse: React.FC = () => {
@@ -68,7 +67,6 @@ const AddHouse: React.FC = () => {
   const [finished, setFinished] = useState(false)
   const navigation = useNavigation()
   const dispatch = useAppDispatch()
-  // const [animals, setAnimals] = useState<boolean | null>(null)
 
   function handleOnPressDecreaseMeters() {
     setHouse({ ...house, metersBuilt: house.metersBuilt - 5 })
@@ -111,6 +109,11 @@ const AddHouse: React.FC = () => {
     setErrors([])
   }
 
+  function handleOnSelectAnimals(animals: boolean) {
+    setHouse({ ...house, animals })
+    setErrors([])
+  }
+
   async function handleOnPressNextButton() {
     if (
       !finished &&
@@ -119,16 +122,19 @@ const AddHouse: React.FC = () => {
         !house.addressDescription ||
         !house.addressNumber ||
         !house.stateId ||
-        !house.metersBuilt)
+        !house.metersBuilt ||
+        house.animals === null)
     ) {
-      setErrors(['Deve-se selecionar o bairro e a cidade'])
+      console.log(house)
+      setErrors(['Deve-se selecionar todos os elementos!'])
       return
     }
 
     const response = await HouseService.setNewHouse(house, token!.value)
 
+    console.log(response)
     if (response.status === 201) {
-      dispatch(insertHouse())
+      dispatch(insertHouse(response.userHouse))
       setFinished(true)
     }
   }
@@ -139,10 +145,6 @@ const AddHouse: React.FC = () => {
       routes: [{ name: 'Main', params: { screen: 'SearchServices' } }],
     })
   }
-
-  // function navigateGoBack() {
-  //   navigation.goBack()
-  // }
 
   const mappedStateDataSelect = data?.map(({ id, name }) => ({ id, value: name }))
   const selectedState = data?.find(({ id }) => id === house.stateId)
@@ -171,7 +173,7 @@ const AddHouse: React.FC = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollContainer>
+      <ScrollContainer contentContainerStyle={{ flexGrow: 1 }}>
         <Container>
           <Instruction>
             {'Precisamos saber o endereço da residência que deseja contratar um serviço'}
@@ -185,14 +187,14 @@ const AddHouse: React.FC = () => {
                 variant="primary"
                 ghost={house.animals === null || house.animals === false}
                 fluid
-                onPress={() => setHouse({ ...house, animals: true })}
+                onPress={() => handleOnSelectAnimals(true)}
               />
               <TextButton
                 text={'Não'}
                 variant="primary"
                 ghost={house.animals === null || house.animals === true}
                 fluid
-                onPress={() => setHouse({ ...house, animals: false })}
+                onPress={() => handleOnSelectAnimals(false)}
               />
             </ButtonsInlineContainer>
             <ButtonsTitle>Tamanho máximo da residência (m²)</ButtonsTitle>

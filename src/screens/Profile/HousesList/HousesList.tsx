@@ -9,6 +9,7 @@ import InfoCardIcon from '@Components/atomic/InfoCardIcon/InfoCardIcon'
 import { MaterialIcons } from '@expo/vector-icons'
 import TextButton from '@Components/atomic/TextButton/TextButton'
 import { useNavigation } from '@react-navigation/native'
+import { Feather } from '@expo/vector-icons'
 
 const Container = styled.View`
   flex: 1;
@@ -93,8 +94,9 @@ const HousesList: React.FC = () => {
                 <InfoCardIcon
                   title={item.address.description + ', ' + item.address.number}
                   subtitle={item.address.neighborhood.name}
-                  size={item.metersBuilt}
+                  size={item.metersBuilt + ' m²'}
                   icon={<MaterialIcons name="house" size={32} color="black" />}
+                  secondIcon={<Feather name="edit" size={24} color="black" />}
                   bgColor={false}
                 />
               )

@@ -3,14 +3,12 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useAppSelector } from '@Hooks/redux'
-import HouseService from '@Api/services/houseService'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from 'styled-components'
 import { useNavigation } from '@react-navigation/native'
 import { Keyboard } from 'react-native'
 import ProvidersList from './components/ProvidersList'
 import MessageWarning from '@Components/atomic/MessageWarning/MessageWarning'
-import LottieView from 'lottie-react-native'
 
 const Container = styled.View`
   flex: 1;
@@ -37,21 +35,16 @@ const AddText = styled.Text`
 `
 
 const SearchServices: React.FC = () => {
-  const { token } = useAppSelector(({ auth }) => auth)
   const { houses } = useAppSelector(({ user }) => user)
   const theme = useTheme()
   const navigation = useNavigation()
-  // const [houses, setHouses] = useState<boolean | null>(null)
   const [isKeyboardVisible, setKeyboardVisible] = useState(false)
-  const [loading, setLoading] = useState<boolean>(false)
 
   const hasHouse = houses.length > 0
 
   function handleOnPressAddHouse() {
     navigation.navigate('AddHouse')
   }
-
-  // console.log({ houses })
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () =>
@@ -61,7 +54,6 @@ const SearchServices: React.FC = () => {
       setKeyboardVisible(false)
     )
 
-    // Clean up the event listeners when the component unmounts
     return () => {
       keyboardDidShowListener.remove()
       keyboardDidHideListener.remove()
@@ -71,7 +63,7 @@ const SearchServices: React.FC = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Container>
-        <SearchBar placeholder={'Procure por serviços'} onPress={() => {}} />
+        {/* <SearchBar placeholder={'Procure por serviços'} onPress={() => {}} /> */}
         {hasHouse && <ProvidersList />}
         {!isKeyboardVisible && !hasHouse && (
           <MessageWarning

@@ -1,6 +1,5 @@
 import styled from 'styled-components/native'
 import { IInfoCardIcon } from './interface'
-import { Feather } from '@expo/vector-icons'
 
 const Container = styled.View`
   flex-direction: row;
@@ -14,7 +13,6 @@ const Container = styled.View`
 `
 
 const TextContainer = styled.View`
-  /* width: 100%; */
   padding-left: 36px;
   align-items: flex-start;
   justify-content: center;
@@ -22,13 +20,11 @@ const TextContainer = styled.View`
 `
 
 const FirstContainer = styled.View`
-  /* width: 100%; */
   flex-direction: row;
   justify-content: center;
 `
 
 const IconContainer = styled.View`
-  /* width: 100%; */
   justify-content: center;
   align-items: center;
 `
@@ -59,13 +55,19 @@ const Size = styled.Text`
   color: black;
 `
 
-const InfoCardIcon: React.FC<IInfoCardIcon> = ({ title, subtitle, icon, size }) => {
+const InfoCardIcon: React.FC<IInfoCardIcon> = ({
+  title,
+  subtitle,
+  icon,
+  size,
+  secondIcon,
+}) => {
   return (
     <Container>
       <FirstContainer>
         <IconContainer>
           {icon}
-          <Size>{size} m²</Size>
+          <Size>{size}</Size>
         </IconContainer>
         <TextContainer>
           <Title numberOfLines={1} ellipsizeMode="tail">
@@ -82,7 +84,7 @@ const InfoCardIcon: React.FC<IInfoCardIcon> = ({ title, subtitle, icon, size }) 
           console.log('vai editar')
         }}
       >
-        <Feather name="edit" size={24} color="black" />
+        {secondIcon}
       </EditButton>
     </Container>
   )

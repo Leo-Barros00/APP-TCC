@@ -5,5 +5,5 @@ interface IHouse {
   addressNumber: string
   stateId: string
   metersBuilt: number
-  animals?: boolean
+  animals?: boolean | null
 }

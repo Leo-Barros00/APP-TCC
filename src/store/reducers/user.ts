@@ -36,14 +36,18 @@ const initialState: LoggedUserState = {
   birthDate: '',
   addressId: '',
   preferenceId: null,
+  houses: [],
 }
 
 const loggedUserSlice = createSlice({
   name: 'loggedUser',
   initialState,
   reducers: {
-    insertHouse(state) {
-      console.log(state)
+    insertHouse(state, action: PayloadAction<HouseState>) {
+      return {
+        ...state,
+        houses: [...state.houses, action.payload],
+      }
     },
     insertLoggedUserInfo(state, action: PayloadAction<Partial<LoggedUserState>>) {
       return {
