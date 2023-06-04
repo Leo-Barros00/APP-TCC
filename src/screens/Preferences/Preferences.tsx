@@ -173,7 +173,6 @@ const Preferences = () => {
     if (preferencesResponse.status !== 'error') {
       dispatch(updatePreferences(preferencesResponse))
       setFinished(true)
-      dispatch(insertLoggedUserInfo(preferencesResponse))
     }
 
     setIsLoading(false)

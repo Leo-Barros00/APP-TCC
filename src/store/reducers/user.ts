@@ -45,10 +45,11 @@ const loggedUserSlice = createSlice({
   name: 'loggedUser',
   initialState,
   reducers: {
-    updatePreferences(state, action: PayloadAction<string>) {
+    updatePreferences(state, action: PayloadAction<Preferences>) {
       return {
         ...state,
-        preferenceId: action.payload,
+        preferenceId: action.payload.id,
+        preference: action.payload,
       }
     },
     insertHouse(state, action: PayloadAction<HouseState>) {
