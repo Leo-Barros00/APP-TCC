@@ -5,6 +5,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useAppDispatch, useAppSelector } from '@Hooks/redux'
 import UserService from '@Api/services/userService'
 import { insertLoggedUserInfo } from '@Store/reducers/user'
+import { insertAuthInfo } from '@Store/reducers/auth'
+import { secureStoreSave } from '@Utils/secureStore'
 
 const Container = styled.View`
   flex: 1;
@@ -21,11 +23,29 @@ const BodyContainer = styled.View`
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch()
-  const { token } = useAppSelector(({ auth }) => auth)
+  const { token, refreshToken } = useAppSelector(({ auth }) => auth)
 
   async function loadLoggedUser() {
     const response = await UserService.getLoggedUser(token!.value)
     dispatch(insertLoggedUserInfo(response))
+
+    setInterval(async () => {
+      if (!token || !refreshToken) return
+
+      const refreshResponse = await UserService.refreshToken(
+        token.value,
+        refreshToken.value
+      )
+
+      const newTokenObject = {
+        token,
+        refreshToken,
+        ...refreshResponse,
+      }
+
+      dispatch(insertAuthInfo({ ...newTokenObject, isLogged: true }))
+      secureStoreSave('secureToken', JSON.stringify(newTokenObject))
+    }, 600000)
   }
 
   useEffect(() => {
