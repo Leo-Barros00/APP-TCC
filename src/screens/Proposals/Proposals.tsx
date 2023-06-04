@@ -72,10 +72,11 @@ const mockProposals = [
     city: 'Campinas',
   },
 ]
+
 const ProposalsScreen = () => {
   const { preferenceId } = useAppSelector(({ user }) => user)
 
-  if (preferenceId) {
+  if (!preferenceId) {
     return (
       <SafeAreaContainer>
         <MessageWarning
@@ -87,6 +88,7 @@ const ProposalsScreen = () => {
       </SafeAreaContainer>
     )
   }
+
   return (
     <SafeAreaContainer>
       <Title>{'Suas propostas de serviço:'}</Title>
