@@ -100,9 +100,38 @@ const Preferences = () => {
     setMaximumMetersBuilt(numericValue)
   }
 
+  console.log({ selectedNeighborhoods })
+
+  function removeCitiesFromState(stateId: string) {
+    const state = statesData?.find(({ id }) => stateId)
+    if (!state) return
+
+    state.cities.forEach(({ id: cityId }) => {
+      setSelectedCities((prevState) => prevState.filter((id) => id !== cityId))
+      removeNeighborhoodsFromCity(cityId)
+    })
+  }
+
+  function removeNeighborhoodsFromCity(cityId: string) {
+    const state = statesData?.find(({ cities }) => cities.find(({ id }) => id === cityId))
+    if (!state) return
+
+    const city = state.cities.find(({ id }) => id === cityId)
+
+    if (!city) return
+
+    const neighborhoodsToRemove = city.neighborhoods.map(({ id }) => id)
+    neighborhoodsToRemove.forEach((neighborhoodId) => {
+      setSelectedNeighborhoods((prevState) =>
+        prevState.filter((id) => id !== neighborhoodId)
+      )
+    })
+  }
+
   function handleOnPressSelectState(stateId: string) {
     if (selectedStates.includes(stateId)) {
       setSelectedStates((prevState) => prevState.filter((id) => id !== stateId))
+      removeCitiesFromState(stateId)
     } else {
       setSelectedStates((prevState) => [...prevState, stateId])
     }
@@ -111,6 +140,7 @@ const Preferences = () => {
   function handleOnPressSelectCity(cityId: string) {
     if (selectedCities.includes(cityId)) {
       setSelectedCities((prevState) => prevState.filter((id) => id !== cityId))
+      removeNeighborhoodsFromCity(cityId)
     } else {
       setSelectedCities((prevState) => [...prevState, cityId])
     }
@@ -150,14 +180,13 @@ const Preferences = () => {
     })
   }
 
-  if (finished) {
+  if (finished)
     return (
       <TransitionScreen
         message="Preferências cadastradas com sucesso!"
         navigatesTo={navigateToHome}
       />
     )
-  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
