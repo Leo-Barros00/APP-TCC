@@ -100,8 +100,6 @@ const Preferences = () => {
     setMaximumMetersBuilt(numericValue)
   }
 
-  console.log({ selectedNeighborhoods })
-
   function removeCitiesFromState(stateId: string) {
     const state = statesData?.find(({ id }) => stateId)
     if (!state) return
