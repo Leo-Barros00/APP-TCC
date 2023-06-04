@@ -1,6 +1,5 @@
-import HouseService from '@Api/services/houseService'
 import { useAppSelector } from '@Hooks/redux'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { FlatList, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
@@ -30,9 +29,8 @@ const EmptyListText = styled.Text`
   font-size: 18px;
   font-family: 'Poppins-SemiBold';
   text-align: center;
-
-  padding: 8px 8px;
-  color: ${({ theme }) => theme.colors['primary']['main']};
+  padding: 8px;
+  color: ${({ theme }) => theme.colors.primary.main};
 `
 
 const EmptyListView = styled.View`
@@ -44,71 +42,40 @@ const EmptyListView = styled.View`
 `
 
 const HousesList: React.FC = () => {
-  const { token } = useAppSelector(({ auth }) => auth)
-  const user = useAppSelector(({ user }) => user)
-  const [houses, setHouses] = useState()
-  const [loading, setLoading] = useState<boolean>(true)
+  const { houses } = useAppSelector(({ user }) => user)
   const navigation = useNavigation()
-
-  async function getAllHouses() {
-    const searchedHouses = await HouseService.getHouses(token!.value)
-    setHouses(searchedHouses)
-    setTimeout(() => {
-      setLoading(false)
-    }, 1000)
-  }
-
-  useEffect(() => {
-    getAllHouses()
-  }, [])
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Container>
         <ScreenTitle>{'Aqui está a lista das suas casas cadastradas!'}</ScreenTitle>
-        {loading && (
-          <LottieView
-            style={{ height: 120, width: 120 }}
-            source={require('./loading_dots_animation.json')}
-            autoPlay
-            loop={true}
-          />
-        )}
-        {!loading && (
-          <FlatList
-            style={{ width: '100%', marginBottom: 120 }}
-            data={user.houses}
-            ListEmptyComponent={() => (
-              <EmptyListView>
-                <LottieView
-                  style={{ height: 120, width: 120 }}
-                  source={require('./empty-list.json')}
-                  autoPlay
-                  loop={true}
-                />
-                <EmptyListText>{'Você não possui casas cadastradas!'}</EmptyListText>
-              </EmptyListView>
-            )}
-            renderItem={({ item }) => {
-              return (
-                <InfoCardIcon
-                  title={item.address.description + ', ' + item.address.number}
-                  subtitle={item.address.neighborhood.name}
-                  size={item.metersBuilt + ' m²'}
-                  icon={<MaterialIcons name="house" size={32} color="black" />}
-                  secondIcon={<Feather name="edit" size={24} color="black" />}
-                  bgColor={false}
-                />
-              )
-            }}
-          />
-        )}
+        <FlatList
+          style={{ width: '100%', marginBottom: 120 }}
+          data={houses}
+          ListEmptyComponent={() => (
+            <EmptyListView>
+              <LottieView
+                style={{ height: 120, width: 120 }}
+                source={require('./empty-list.json')}
+                autoPlay
+                loop={true}
+              />
+              <EmptyListText>{'Você não possui casas cadastradas!'}</EmptyListText>
+            </EmptyListView>
+          )}
+          renderItem={({ item }) => (
+            <InfoCardIcon
+              title={item.address.description + ', ' + item.address.number}
+              subtitle={item.address.neighborhood.name}
+              size={item.metersBuilt + ' m²'}
+              icon={<MaterialIcons name="house" size={32} color="black" />}
+              secondIcon={<Feather name="edit" size={24} color="black" />}
+              bgColor={false}
+            />
+          )}
+        />
         <View style={{ width: '100%', position: 'absolute', bottom: 16 }}>
-          <TextButton
-            text="Voltar"
-            variant="primary"
-            onPress={() => navigation.goBack()}
-          />
+          <TextButton text="Voltar" variant="primary" onPress={navigation.goBack} />
         </View>
       </Container>
     </SafeAreaView>
