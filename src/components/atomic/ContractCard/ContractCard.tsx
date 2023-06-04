@@ -70,9 +70,11 @@ const ContractCard: React.FC<IContractCard> = ({
   contractorName,
   jobDescription,
   locale,
+  onPress,
 }) => {
   return (
     <ProposalCard
+      onPress={onPress}
       style={{
         shadowColor: '#000000',
         shadowOffset: {

@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import { GestureResponderEvent } from 'react-native'
 
 export interface IContractCard {
   value: string
@@ -7,4 +8,5 @@ export interface IContractCard {
   contractorName: string
   jobDescription: string
   locale: string
+  onPress?: (event: GestureResponderEvent) => void
 }
