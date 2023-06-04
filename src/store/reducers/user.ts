@@ -43,6 +43,12 @@ const loggedUserSlice = createSlice({
   name: 'loggedUser',
   initialState,
   reducers: {
+    updatePreferences(state, action: PayloadAction<string>) {
+      return {
+        ...state,
+        preferenceId: action.payload,
+      }
+    },
     insertHouse(state, action: PayloadAction<HouseState>) {
       return {
         ...state,
@@ -58,5 +64,6 @@ const loggedUserSlice = createSlice({
   },
 })
 
-export const { insertLoggedUserInfo, insertHouse } = loggedUserSlice.actions
+export const { insertLoggedUserInfo, insertHouse, updatePreferences } =
+  loggedUserSlice.actions
 export default loggedUserSlice.reducer

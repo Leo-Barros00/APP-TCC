@@ -7,7 +7,7 @@ import SignUpErrors from '@Components/signUp/SignUpErrors'
 import { useAppDispatch, useAppSelector } from '@Hooks/redux'
 import { useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
-import { Dimensions, View } from 'react-native'
+import { View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 import { insertHouse } from '@Store/reducers/user'
@@ -125,14 +125,12 @@ const AddHouse: React.FC = () => {
         !house.metersBuilt ||
         house.animals === null)
     ) {
-      console.log(house)
       setErrors(['Deve-se selecionar todos os elementos!'])
       return
     }
 
     const response = await HouseService.setNewHouse(house, token!.value)
 
-    console.log(response)
     if (response.status === 201) {
       dispatch(insertHouse(response.userHouse))
       setFinished(true)

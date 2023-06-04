@@ -33,6 +33,12 @@ const AddText = styled.Text`
   padding: 8px 8px;
   color: ${({ theme }) => theme.colors['primary']['main']};
 `
+const PageTitle = styled.Text`
+  font-size: 26px;
+  line-height: 40px;
+  font-family: 'Poppins-SemiBold';
+  text-align: center;
+`
 
 const SearchServices: React.FC = () => {
   const { houses } = useAppSelector(({ user }) => user)
@@ -64,6 +70,7 @@ const SearchServices: React.FC = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <Container>
         {/* <SearchBar placeholder={'Procure por serviços'} onPress={() => {}} /> */}
+        <PageTitle>{'Procure por prestadores aqui'}</PageTitle>
         {hasHouse && <ProvidersList />}
         {!isKeyboardVisible && !hasHouse && (
           <MessageWarning

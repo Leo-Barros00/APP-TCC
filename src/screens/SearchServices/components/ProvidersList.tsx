@@ -6,7 +6,7 @@ import { FlatList } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 import { AntDesign } from '@expo/vector-icons'
-import { Feather } from '@expo/vector-icons'
+import { FontAwesome } from '@expo/vector-icons'
 
 const CardContainer = styled.View`
   width: 100%;
@@ -29,7 +29,7 @@ const ProvidersList: React.FC = () => {
   return (
     <SafeAreaView style={{ flex: 1, width: '100%' }}>
       <FlatList
-        style={{ paddingHorizontal: 24 }}
+        style={{ paddingHorizontal: 16 }}
         data={providers}
         renderItem={({ item }) => (
           <CardContainer>
@@ -38,7 +38,7 @@ const ProvidersList: React.FC = () => {
               subtitle={'⭐ ⭐ ⭐ ⭐ ⭐'}
               size={''}
               icon={<AntDesign name="infocirlce" size={24} color="black" />}
-              secondIcon={<Feather name="external-link" size={24} color="black" />}
+              secondIcon={<FontAwesome name="send-o" size={24} color="black" />}
               bgColor={false}
             />
           </CardContainer>
