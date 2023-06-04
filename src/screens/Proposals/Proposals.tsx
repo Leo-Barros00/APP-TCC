@@ -6,10 +6,10 @@ import { useAppSelector } from '@Hooks/redux'
 import styled from 'styled-components/native'
 import { FlatList } from 'react-native'
 import ContractCard from '@Components/atomic/ContractCard/ContractCard'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
-const SafeAreaContainer = styled.SafeAreaView`
+const SafeAreaContainer = styled(SafeAreaView)`
   flex: 1;
-  margin-top: 24px;
 `
 
 const ProposalsContainer = styled.View`
@@ -19,7 +19,7 @@ const ProposalsContainer = styled.View`
 const Title = styled.Text`
   padding-top: 16px;
   margin-bottom: 32px;
-  font-size: 36px;
+  font-size: 28px;
   line-height: 40px;
   font-family: 'Poppins-SemiBold';
   text-align: center;
@@ -91,7 +91,7 @@ const ProposalsScreen = () => {
 
   return (
     <SafeAreaContainer>
-      <Title>{'Suas propostas de serviço:'}</Title>
+      <Title>Suas propostas de serviço</Title>
       <ProposalsContainer>
         <FlatList
           style={{ paddingHorizontal: 16 }}
