@@ -3,17 +3,19 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 import TextButton from '@Components/atomic/TextButton/TextButton'
 import TextField from '@Components/atomic/TextField/TextField'
-import { useAppSelector } from '@Hooks/redux'
+import { useAppDispatch, useAppSelector } from '@Hooks/redux'
 import PreferenceService from '@Api/services/preferenceService'
 import { View } from 'react-native'
 import TransitionScreen from '@Components/atomic/TransitionScreen/TransitionScreen'
 import { useNavigation } from '@react-navigation/native'
+import { insertLoggedUserInfo } from '@Store/reducers/user'
+
+const ScrollContainer = styled.ScrollView`
+  flex: 1;
+`
 
 const Container = styled.ScrollView`
-  /* flex: 1; */
-  padding: 24px 16px;
-  padding-bottom: 24px;
-  /* margin-bottom: 24px; */
+  padding: 24px 16px 24px;
 `
 
 const Title = styled.Text`
@@ -65,25 +67,22 @@ const NestedSelectContainer = styled.View`
   padding-left: 24px;
 `
 
-const SaveButton = styled(TextButton)`
-  /* height: 64px;
-  margin-bottom: 30px; */
-  /* padding: 24px 16px;
-  margin-bottom: 24px; */
-`
-
 const Preferences = () => {
   const {
     addressData: { data: statesData },
-    auth: { token },
   } = useAppSelector((state) => state)
+  const dispatch = useAppDispatch()
   const [animals, setAnimals] = useState<boolean | null>(null)
   const [maximumMetersBuilt, setMaximumMetersBuilt] = useState(50)
   const [selectedStates, setSelectedStates] = useState<string[]>([])
   const [selectedCities, setSelectedCities] = useState<string[]>([])
   const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<string[]>([])
+  const [isLoading, setIsLoading] = useState(false)
   const [finished, setFinished] = useState(false)
   const navigation = useNavigation()
+
+  const isFormFulfilled =
+    animals !== null && maximumMetersBuilt > 0 && selectedNeighborhoods.length > 0
 
   function handleOnPressDecreaseMeters() {
     setMaximumMetersBuilt((prevValue) => prevValue - 5)
@@ -128,18 +127,20 @@ const Preferences = () => {
   }
 
   async function handleOnPressSavePreferences() {
-    const preferencesResponse = await PreferenceService.savePreferences(
-      {
-        animals,
-        maximumMetersBuilt,
-        neighborhoods: selectedNeighborhoods,
-      },
-      token?.value ?? ''
-    )
+    if (!isFormFulfilled) return
+    setIsLoading(true)
+    const preferencesResponse = await PreferenceService.savePreferences({
+      animals,
+      maximumMetersBuilt,
+      neighborhoods: selectedNeighborhoods,
+    })
 
     if (preferencesResponse.status !== 'error') {
       setFinished(true)
+      dispatch(insertLoggedUserInfo(preferencesResponse))
     }
+
+    setIsLoading(false)
   }
 
   function navigateToHome() {
@@ -148,9 +149,6 @@ const Preferences = () => {
       routes: [{ name: 'Main', params: { screen: 'Preferences' } }],
     })
   }
-
-  const isFormFulfilled =
-    animals !== null && maximumMetersBuilt > 0 && selectedNeighborhoods.length > 0
 
   if (finished) {
     return (
@@ -163,109 +161,112 @@ const Preferences = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Container>
-        <Title>Selecione suas preferências</Title>
-        <PreferenceGroup>
-          <PreferenceTitle>Residência com animais</PreferenceTitle>
-          <ButtonsInlineContainer>
-            <TextButton
-              text={'Sim'}
-              variant="primary"
-              ghost={animals === null || animals === false}
-              fluid
-              onPress={() => setAnimals(true)}
-            />
-            <TextButton
-              text={'Não'}
-              variant="primary"
-              ghost={animals === null || animals === true}
-              fluid
-              onPress={() => setAnimals(false)}
-            />
-          </ButtonsInlineContainer>
-        </PreferenceGroup>
-        <PreferenceGroup>
-          <PreferenceTitle>Tamanho máximo da residência (m²)</PreferenceTitle>
-          <ButtonsInlineContainer>
-            <TextButton
-              text={'-'}
-              variant="primary"
-              disabled={maximumMetersBuilt <= 0}
-              fluid
-              onPress={handleOnPressDecreaseMeters}
-            />
-            <MaximumMetersField
-              variant="primary"
-              value={String(maximumMetersBuilt)}
-              fluid
-              onChangeText={handleOnChangeMeters}
-              keyboardType="number-pad"
-            />
-            <TextButton
-              text={'+'}
-              variant="primary"
-              fluid
-              onPress={handleOnPressIncreaseMeters}
-            />
-          </ButtonsInlineContainer>
-        </PreferenceGroup>
-        <PreferenceGroup>
-          <PreferenceTitle>Localidades</PreferenceTitle>
-          <View>
-            {statesData?.map(({ id: stateId, name: stateName, cities }) => (
-              <Fragment key={stateId}>
-                <LocationButtonSelect
-                  onPress={() => handleOnPressSelectState(stateId)}
-                  selected={selectedStates.includes(stateId)}
-                >
-                  <LocationTextSelect>{stateName}</LocationTextSelect>
-                </LocationButtonSelect>
-                {selectedStates.includes(stateId) && (
-                  <NestedSelectContainer>
-                    {cities.map(({ id: cityId, name: cityName, neighborhoods }) => (
-                      <Fragment key={cityId}>
-                        <LocationButtonSelect
-                          onPress={() => handleOnPressSelectCity(cityId)}
-                          selected={selectedCities.includes(cityId)}
-                        >
-                          <LocationTextSelect>{cityName}</LocationTextSelect>
-                        </LocationButtonSelect>
-                        {selectedCities.includes(cityId) && (
-                          <NestedSelectContainer>
-                            {neighborhoods.map(
-                              ({ id: neighborhoodId, name: neighborhoodName }) => (
-                                <LocationButtonSelect
-                                  key={neighborhoodId}
-                                  onPress={() =>
-                                    handleOnPressSelectNeighborhood(neighborhoodId)
-                                  }
-                                  selected={selectedNeighborhoods.includes(
-                                    neighborhoodId
-                                  )}
-                                >
-                                  <LocationTextSelect>
-                                    {neighborhoodName}
-                                  </LocationTextSelect>
-                                </LocationButtonSelect>
-                              )
-                            )}
-                          </NestedSelectContainer>
-                        )}
-                      </Fragment>
-                    ))}
-                  </NestedSelectContainer>
-                )}
-              </Fragment>
-            ))}
-          </View>
-        </PreferenceGroup>
-        <SaveButton
-          text={'Salvar Preferências'}
-          variant="primary"
-          onPress={handleOnPressSavePreferences}
-          disabled={!isFormFulfilled}
-        />
-      </Container>
+      <ScrollContainer>
+        <Container>
+          <Title>Selecione suas preferências</Title>
+          <PreferenceGroup>
+            <PreferenceTitle>Residência com animais</PreferenceTitle>
+            <ButtonsInlineContainer>
+              <TextButton
+                text={'Sim'}
+                variant="primary"
+                ghost={animals === null || animals === false}
+                fluid
+                onPress={() => setAnimals(true)}
+              />
+              <TextButton
+                text={'Não'}
+                variant="primary"
+                ghost={animals === null || animals === true}
+                fluid
+                onPress={() => setAnimals(false)}
+              />
+            </ButtonsInlineContainer>
+          </PreferenceGroup>
+          <PreferenceGroup>
+            <PreferenceTitle>Tamanho máximo da residência (m²)</PreferenceTitle>
+            <ButtonsInlineContainer>
+              <TextButton
+                text={'-'}
+                variant="primary"
+                disabled={maximumMetersBuilt <= 0}
+                fluid
+                onPress={handleOnPressDecreaseMeters}
+              />
+              <MaximumMetersField
+                variant="primary"
+                value={String(maximumMetersBuilt)}
+                fluid
+                onChangeText={handleOnChangeMeters}
+                keyboardType="number-pad"
+              />
+              <TextButton
+                text={'+'}
+                variant="primary"
+                fluid
+                onPress={handleOnPressIncreaseMeters}
+              />
+            </ButtonsInlineContainer>
+          </PreferenceGroup>
+          <PreferenceGroup>
+            <PreferenceTitle>Localidades</PreferenceTitle>
+            <View>
+              {statesData?.map(({ id: stateId, name: stateName, cities }) => (
+                <Fragment key={stateId}>
+                  <LocationButtonSelect
+                    onPress={() => handleOnPressSelectState(stateId)}
+                    selected={selectedStates.includes(stateId)}
+                  >
+                    <LocationTextSelect>{stateName}</LocationTextSelect>
+                  </LocationButtonSelect>
+                  {selectedStates.includes(stateId) && (
+                    <NestedSelectContainer>
+                      {cities.map(({ id: cityId, name: cityName, neighborhoods }) => (
+                        <Fragment key={cityId}>
+                          <LocationButtonSelect
+                            onPress={() => handleOnPressSelectCity(cityId)}
+                            selected={selectedCities.includes(cityId)}
+                          >
+                            <LocationTextSelect>{cityName}</LocationTextSelect>
+                          </LocationButtonSelect>
+                          {selectedCities.includes(cityId) && (
+                            <NestedSelectContainer>
+                              {neighborhoods.map(
+                                ({ id: neighborhoodId, name: neighborhoodName }) => (
+                                  <LocationButtonSelect
+                                    key={neighborhoodId}
+                                    onPress={() =>
+                                      handleOnPressSelectNeighborhood(neighborhoodId)
+                                    }
+                                    selected={selectedNeighborhoods.includes(
+                                      neighborhoodId
+                                    )}
+                                  >
+                                    <LocationTextSelect>
+                                      {neighborhoodName}
+                                    </LocationTextSelect>
+                                  </LocationButtonSelect>
+                                )
+                              )}
+                            </NestedSelectContainer>
+                          )}
+                        </Fragment>
+                      ))}
+                    </NestedSelectContainer>
+                  )}
+                </Fragment>
+              ))}
+            </View>
+          </PreferenceGroup>
+          <TextButton
+            text={'Salvar Preferências'}
+            variant="primary"
+            onPress={handleOnPressSavePreferences}
+            disabled={!isFormFulfilled}
+            loading={isLoading}
+          />
+        </Container>
+      </ScrollContainer>
     </SafeAreaView>
   )
 }
