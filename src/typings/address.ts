@@ -16,3 +16,11 @@ export interface State {
   uf: string
   cities: City[]
 }
+
+export interface House {
+  id: string
+  addressId: string
+  metersBuilt: number
+  ownerId: string
+  animals: boolean | null
+}

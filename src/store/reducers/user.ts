@@ -4,12 +4,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 interface NeighborhoodState {
   name: string
 }
-interface AddressState {
+export interface AddressState {
   description: string
   number: string
   neighborhood: NeighborhoodState
 }
 interface HouseState {
+  id: string
   metersBuilt: string
   address: AddressState
 }
