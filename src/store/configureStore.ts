@@ -4,8 +4,15 @@ import signUp from './reducers/signUp'
 import addressData from './reducers/addressData'
 import auth from './reducers/auth'
 import user from './reducers/user'
+import services from './reducers/services'
 
-const reducer = combineReducers({ signUp, addressData, auth, user })
+const reducer = combineReducers({
+  signUp,
+  addressData,
+  auth,
+  user,
+  services,
+})
 
 const store = configureStore({ reducer })
 
