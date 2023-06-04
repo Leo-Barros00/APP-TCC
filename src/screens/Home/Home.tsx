@@ -26,7 +26,7 @@ const Home: React.FC = () => {
   const { token, refreshToken } = useAppSelector(({ auth }) => auth)
 
   async function loadLoggedUser() {
-    const response = await UserService.getLoggedUser(token!.value)
+    const response = await UserService.getLoggedUser()
     dispatch(insertLoggedUserInfo(response))
 
     setInterval(async () => {

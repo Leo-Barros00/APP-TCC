@@ -63,11 +63,9 @@ class UserService {
     }
   }
 
-  public static async getLoggedUser(token: string) {
+  public static async getLoggedUser() {
     try {
-      const response = await mainApi.get('/users', {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      const response = await mainApi.get('/users')
       return response.data
     } catch (error) {
       const err = error as AxiosError
