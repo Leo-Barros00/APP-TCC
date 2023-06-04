@@ -180,7 +180,7 @@ const AddHouse: React.FC = () => {
           </Instruction>
           <View>
             <SignUpErrors errors={errors} />
-            <ButtonsTitle>Tamanho máximo da residência (m²)</ButtonsTitle>
+            <ButtonsTitle>A casa tem animais?</ButtonsTitle>
             <ButtonsInlineContainer>
               <TextButton
                 text={'Sim'}
@@ -197,7 +197,7 @@ const AddHouse: React.FC = () => {
                 onPress={() => handleOnSelectAnimals(false)}
               />
             </ButtonsInlineContainer>
-            <ButtonsTitle>Tamanho máximo da residência (m²)</ButtonsTitle>
+            <ButtonsTitle>Tamanho da residência (m²)</ButtonsTitle>
             <ButtonsInlineContainer>
               <TextButton
                 text={'-'}
