@@ -1,3 +1,4 @@
+import { Preferences } from '@Typings/user'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface NeighborhoodState {
@@ -23,6 +24,7 @@ export interface LoggedUserState {
   birthDate: string
   addressId: string
   preferenceId: string | null
+  preference?: Preferences
   houses: HouseState[]
 }
 
