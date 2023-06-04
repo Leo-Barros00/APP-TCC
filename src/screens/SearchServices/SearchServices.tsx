@@ -34,7 +34,7 @@ const AddText = styled.Text`
   color: ${({ theme }) => theme.colors['primary']['main']};
 `
 const PageTitle = styled.Text`
-  font-size: 26px;
+  font-size: 28px;
   line-height: 40px;
   font-family: 'Poppins-SemiBold';
   text-align: center;
@@ -70,7 +70,7 @@ const SearchServices: React.FC = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <Container>
         {/* <SearchBar placeholder={'Procure por serviços'} onPress={() => {}} /> */}
-        <PageTitle>{'Procure por prestadores aqui'}</PageTitle>
+        <PageTitle>Procure por prestadores</PageTitle>
         {hasHouse && <ProvidersList />}
         {!isKeyboardVisible && !hasHouse && (
           <MessageWarning
