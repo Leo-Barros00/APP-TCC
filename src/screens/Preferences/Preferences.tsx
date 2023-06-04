@@ -71,15 +71,20 @@ const NestedSelectContainer = styled.View`
 const Preferences = () => {
   const {
     addressData: { data: statesData },
+    user: { preference },
   } = useAppSelector((state) => state)
-  const [animals, setAnimals] = useState<boolean | null>(null)
-  const [maximumMetersBuilt, setMaximumMetersBuilt] = useState(50)
+
+  const [animals, setAnimals] = useState<boolean | null>(preference?.animals ?? null)
+  const [maximumMetersBuilt, setMaximumMetersBuilt] = useState<number>(
+    preference?.maximumMetersBuilt ?? 50
+  )
   const [selectedStates, setSelectedStates] = useState<string[]>([])
   const [selectedCities, setSelectedCities] = useState<string[]>([])
-  const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<string[]>([])
+  const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<string[]>(
+    preference?.neighborhoods.map(({ neighborhoodId }: any) => neighborhoodId) ?? []
+  )
   const [isLoading, setIsLoading] = useState(false)
   const [finished, setFinished] = useState(false)
-  const { token } = useAppSelector(({ auth }) => auth)
   const navigation = useNavigation()
   const dispatch = useAppDispatch()
 
@@ -159,14 +164,11 @@ const Preferences = () => {
   async function handleOnPressSavePreferences() {
     if (!isFormFulfilled) return
     setIsLoading(true)
-    const preferencesResponse = await PreferenceService.savePreferences(
-      {
-        animals,
-        maximumMetersBuilt,
-        neighborhoods: selectedNeighborhoods,
-      },
-      token!.value
-    )
+    const preferencesResponse = await PreferenceService.savePreferences({
+      animals,
+      maximumMetersBuilt,
+      neighborhoods: selectedNeighborhoods,
+    })
 
     if (preferencesResponse.status !== 'error') {
       dispatch(updatePreferences(preferencesResponse))

@@ -3,11 +3,9 @@ import { AxiosError } from 'axios'
 import { mainApi } from '@Api/index'
 
 class PreferenceService {
-  public static async savePreferences(preferences: any, authToken: string) {
+  public static async savePreferences(preferences: any) {
     try {
-      const response = await mainApi.put('/users/preferences', preferences, {
-        headers: { Authorization: `Bearer ${authToken}` },
-      })
+      const response = await mainApi.put('/users/preferences', preferences)
       return response.data
     } catch (error) {
       if (error instanceof AxiosError)
