@@ -129,7 +129,7 @@ const AddHouse: React.FC = () => {
       return
     }
 
-    const response = await HouseService.setNewHouse(house, token!.value)
+    const response = await HouseService.setNewHouse(house)
 
     if (response.status === 201) {
       dispatch(insertHouse(response.userHouse))
