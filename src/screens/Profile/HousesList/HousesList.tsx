@@ -71,6 +71,7 @@ const HousesList: React.FC = () => {
               icon={<MaterialIcons name="house" size={32} color="black" />}
               secondIcon={<Feather name="edit" size={24} color="black" />}
               bgColor={false}
+              onPress={() => {}}
             />
           )}
         />

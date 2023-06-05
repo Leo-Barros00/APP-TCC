@@ -61,6 +61,7 @@ const InfoCardIcon: React.FC<IInfoCardIcon> = ({
   icon,
   size,
   secondIcon,
+  onPress,
 }) => {
   return (
     <Container>
@@ -79,13 +80,7 @@ const InfoCardIcon: React.FC<IInfoCardIcon> = ({
         </TextContainer>
       </FirstContainer>
 
-      <EditButton
-        onPress={() => {
-          console.log('vai editar')
-        }}
-      >
-        {secondIcon}
-      </EditButton>
+      <EditButton onPress={onPress}>{secondIcon}</EditButton>
     </Container>
   )
 }

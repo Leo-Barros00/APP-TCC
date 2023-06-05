@@ -44,14 +44,14 @@ const PageTitle = styled.Text`
 
 const SearchServices: React.FC = () => {
   const { houses } = useAppSelector(({ user }) => user)
-  const theme = useTheme()
+  // const theme = useTheme()
   const navigation = useNavigation()
 
   const hasHouse = houses.length > 0
 
-  function handleOnPressAddHouse() {
-    navigation.navigate('AddHouse')
-  }
+  // function handleOnPressAddHouse() {
+  //   navigation.navigate('AddHouse')
+  // }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

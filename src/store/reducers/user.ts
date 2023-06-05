@@ -1,8 +1,18 @@
 import { Preferences } from '@Typings/user'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+interface StateState {
+  name: string
+  uf: string
+}
+interface CityState {
+  name: string
+  state: StateState
+}
+
 interface NeighborhoodState {
   name: string
+  city: CityState
 }
 export interface AddressState {
   description: string
@@ -13,6 +23,7 @@ interface HouseState {
   id: string
   metersBuilt: string
   address: AddressState
+  animals: boolean
 }
 
 export interface LoggedUserState {

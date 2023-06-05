@@ -15,6 +15,7 @@ import HousesList from '@Screens/Profile/HousesList/HousesList'
 import ProposalsScreen from '@Screens/Proposals'
 import { useAppSelector } from '@Hooks/redux'
 import Preferences from '@Screens/Preferences/Preferences'
+import SendContract from '@Screens/SendContract/SendContract'
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -46,6 +47,7 @@ const AuthenticatedNavigation = () => {
       <Stack.Screen name="AddHouse" component={AddHouse} />
       <Stack.Screen name="Preferences" component={Preferences} />
       <Stack.Screen name="HouseList" component={HousesList} />
+      <Stack.Screen name="SendContract" component={SendContract} />
     </Stack.Navigator>
   )
 }

@@ -7,4 +7,5 @@ export interface IInfoCardIcon {
   secondIcon?: ReactNode
   bgColor: boolean
   size?: string
+  onPress: () => void
 }
