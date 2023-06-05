@@ -9,15 +9,16 @@ import { View } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 import { useState } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
-const SafeAreaContainer = styled.SafeAreaView`
+const SafeAreaContainer = styled(SafeAreaView)`
   flex: 1;
 `
 
 const Container = styled.ScrollView`
   padding: 24px;
   width: 100%;
-  margin-top: 16px;
+  padding: 16px;
 `
 
 const ButtonsInlineContainer = styled.View`
@@ -90,12 +91,24 @@ const DescriptionField = styled.TextInput`
   text-align: left;
 `
 
+const DateField = styled.Text<{ selected?: boolean }>`
+  font-size: 20px;
+  line-height: 32px;
+  font-family: 'Poppins-Regular';
+  text-align: left;
+  color: #${({ selected }) => (selected ? '000' : 'aaa')};
+`
+
 const AddButton = styled.TouchableOpacity`
   min-height: 20px;
   padding: 8px 8px;
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
+`
+
+const FormButton = styled(TextButton)`
+  flex: 1;
 `
 
 const SendContract = () => {
@@ -107,6 +120,7 @@ const SendContract = () => {
   const provider = providers![providerIndexSelected!]
   const userHouseSelected = houses.filter((item) => item.id === houseSelected)[0]
   const [showDatePicker, setShowDatePicker] = useState(false)
+  const [showTimePicker, setShowTimePicker] = useState(false)
   const [errors, setErrors] = useState<string[]>([])
   const dispatch = useAppDispatch()
   const [description, setDescription] = useState<string>('')
@@ -130,8 +144,30 @@ const SendContract = () => {
   return (
     <SafeAreaContainer>
       <Container>
+        {showDatePicker && (
+          <DateTimePicker
+            testID="datePicker"
+            value={new Date()}
+            mode="date"
+            minimumDate={new Date()}
+            onChange={handleOnChangeBirthDate}
+            onTouchCancel={() => setShowDatePicker(false)}
+          />
+        )}
+        {showTimePicker && (
+          <DateTimePicker
+            testID="timePicker"
+            value={new Date()}
+            mode="time"
+            minimumDate={new Date()}
+            is24Hour
+            onChange={handleOnChangeBirthDate}
+            onTouchCancel={() => setShowTimePicker(false)}
+            onTouchEnd={() => setShowTimePicker(false)}
+          />
+        )}
         <FormContainer>
-          <PageTitle>{'Confirmação de proposta'}</PageTitle>
+          <PageTitle>Envio de proposta</PageTitle>
           <InfoContainer>
             <InfoItemsContainer>
               <Title>{'Prestador:'}</Title>
@@ -181,6 +217,27 @@ const SendContract = () => {
                   <AddText>{dateSelected ? '' : 'Escolha a data aqui'}</AddText>
                 </AddButton>
               )} */}
+              <DateField onPress={() => setShowDatePicker(true)}>--/--/----</DateField>
+            </InfoItemsContainer>
+
+            <InfoItemsContainer>
+              <Title>{'Hora:'}</Title>
+              {/* {showDatePicker && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={!dateSelected ? new Date() : dateSelected}
+                  minimumDate={new Date()}
+                  mode="date"
+                  is24Hour={true}
+                  onChange={handleOnChangeBirthDate}
+                />
+              )}
+              {!showDatePicker && (
+                <AddButton onPress={handleOnPressDateField}>
+                  <AddText>{dateSelected ? '' : 'Escolha a data aqui'}</AddText>
+                </AddButton>
+              )} */}
+              <DateField onPress={() => setShowTimePicker(true)}>--:--</DateField>
             </InfoItemsContainer>
 
             <InfoItemsContainer>
@@ -207,20 +264,16 @@ const SendContract = () => {
           </InfoContainer>
         </FormContainer>
         <ButtonsInlineContainer>
-          <TextButton
-            text={'Recusar'}
+          <FormButton
+            text={'Cancelar'}
             variant={'primary'}
-            onPress={() => {
-              navigation.goBack()
-            }}
+            onPress={navigation.goBack}
             ghost
-            fluid
           />
-          <TextButton
-            text={'Aceitar'}
+          <FormButton
+            text={'Enviar'}
             variant={'primary'}
             onPress={handleOnPressSendContract}
-            fluid
           />
         </ButtonsInlineContainer>
       </Container>
