@@ -8,7 +8,7 @@ const Container = styled.View`
   justify-content: space-between;
   border-width: 2px;
   border-color: ${({ theme }) => theme.colors['primary']['main']};
-  border-radius: 8px;
+  border-radius: 22px;
   margin-top: 24px;
 `
 

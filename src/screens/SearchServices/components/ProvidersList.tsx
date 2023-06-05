@@ -23,7 +23,6 @@ const ProvidersList: React.FC = () => {
 
   return (
     <FlatList
-      style={{ paddingHorizontal: 16 }}
       data={providers}
       renderItem={({ item, index }) => (
         <CardContainer>
