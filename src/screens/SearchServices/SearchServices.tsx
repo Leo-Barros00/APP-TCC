@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native'
 import { Keyboard } from 'react-native'
 import ProvidersList from './components/ProvidersList'
 import MessageWarning from '@Components/atomic/MessageWarning/MessageWarning'
+import ServicesList from '@Components/atomic/ServicesList'
 
 const Container = styled.View`
   flex: 1;
@@ -17,22 +18,23 @@ const Container = styled.View`
   padding: 16px;
 `
 
-const AddButton = styled.TouchableOpacity`
-  min-height: 20px;
-  padding: 8px 8px;
-  align-items: center;
-  justify-content: center;
-  margin: 16px 0;
-  flex-direction: row;
-`
+// const AddButton = styled.TouchableOpacity`
+//   min-height: 20px;
+//   padding: 8px 8px;
+//   align-items: center;
+//   justify-content: center;
+//   margin: 16px 0;
+//   flex-direction: row;
+// `
 
-const AddText = styled.Text`
-  font-size: 18px;
-  font-family: 'Poppins-SemiBold';
+// const AddText = styled.Text`
+//   font-size: 18px;
+//   font-family: 'Poppins-SemiBold';
 
-  padding: 8px 8px;
-  color: ${({ theme }) => theme.colors['primary']['main']};
-`
+//   padding: 8px 8px;
+//   color: ${({ theme }) => theme.colors['primary']['main']};
+// `
+
 const PageTitle = styled.Text`
   font-size: 28px;
   line-height: 40px;
@@ -44,7 +46,6 @@ const SearchServices: React.FC = () => {
   const { houses } = useAppSelector(({ user }) => user)
   const theme = useTheme()
   const navigation = useNavigation()
-  const [isKeyboardVisible, setKeyboardVisible] = useState(false)
 
   const hasHouse = houses.length > 0
 
@@ -52,27 +53,11 @@ const SearchServices: React.FC = () => {
     navigation.navigate('AddHouse')
   }
 
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () =>
-      setKeyboardVisible(true)
-    )
-    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () =>
-      setKeyboardVisible(false)
-    )
-
-    return () => {
-      keyboardDidShowListener.remove()
-      keyboardDidHideListener.remove()
-    }
-  }, [])
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Container>
-        {/* <SearchBar placeholder={'Procure por serviços'} onPress={() => {}} /> */}
         <PageTitle>Procure por prestadores</PageTitle>
-        {hasHouse && <ProvidersList />}
-        {!isKeyboardVisible && !hasHouse && (
+        {!hasHouse ? (
           <MessageWarning
             title={'Você ainda não possui residência!'}
             text={
@@ -81,8 +66,13 @@ const SearchServices: React.FC = () => {
             buttonText={'Adicionar residência'}
             navigateTo={'AddHouse'}
           />
+        ) : (
+          <>
+            <ServicesList />
+          </>
         )}
-        {isKeyboardVisible && hasHouse && (
+
+        {/* {hasHouse && (
           <AddButton onPress={handleOnPressAddHouse}>
             <>
               <MaterialIcons
@@ -93,7 +83,7 @@ const SearchServices: React.FC = () => {
               <AddText>{'Adicione sua residencia aqui'}</AddText>
             </>
           </AddButton>
-        )}
+        )} */}
       </Container>
     </SafeAreaView>
   )
