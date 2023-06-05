@@ -10,14 +10,22 @@ const initialState: ServiceObject = {
   providers: null,
 }
 
-const servicesSlide = createSlice({
+const servicesSlice = createSlice({
   name: 'services',
   initialState,
   reducers: {
-    setSelectedHouse(state, action: PayloadAction<string>) {
+    setSelectedHouse({ houseSelected }, { payload }: PayloadAction<string>) {
+      if (payload === houseSelected) return
+
+      return {
+        houseSelected: payload,
+        providers: null,
+      }
+    },
+    insertProviders(state, action: PayloadAction<any[]>) {
       return {
         ...state,
-        houseSelected: action.payload,
+        providers: action.payload,
       }
     },
     reset() {
@@ -26,5 +34,5 @@ const servicesSlide = createSlice({
   },
 })
 
-export const { setSelectedHouse, reset } = servicesSlide.actions
-export default servicesSlide.reducer
+export const { setSelectedHouse, insertProviders, reset } = servicesSlice.actions
+export default servicesSlice.reducer
