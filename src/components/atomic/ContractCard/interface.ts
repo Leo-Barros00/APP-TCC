@@ -8,5 +8,6 @@ export interface IContractCard {
   contractorName: string
   jobDescription: string
   locale: string
+  date: Date
   onPress?: (event: GestureResponderEvent) => void
 }

@@ -1,5 +1,6 @@
 import styled from 'styled-components/native'
 import { IContractCard } from './interface'
+import { getDateString, getTimeString } from '@Utils/date'
 
 const CardTitle = styled.Text`
   font-size: 24px;
@@ -70,6 +71,7 @@ const ContractCard: React.FC<IContractCard> = ({
   contractorName,
   jobDescription,
   locale,
+  date,
   onPress,
 }) => {
   return (
@@ -87,11 +89,14 @@ const ContractCard: React.FC<IContractCard> = ({
       }}
     >
       <LeftContainerCard>
-        <CardTitle>{'R$' + value + ',00'}</CardTitle>
+        <CardTitle>{value}</CardTitle>
         <HouseInfoCard>
           {icon}
           <CardDescription>{houseSize + ' m²'}</CardDescription>
         </HouseInfoCard>
+        <CardDescription>
+          {getDateString(date) + ' - ' + getTimeString(date)}
+        </CardDescription>
       </LeftContainerCard>
 
       <InfoContainerCard>

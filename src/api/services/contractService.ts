@@ -13,7 +13,7 @@ class ContractService {
     }
   }
 
-  public static async getContracts(req: Contract) {
+  public static async getContracts() {
     try {
       const response = await mainApi.get('/contract')
 
