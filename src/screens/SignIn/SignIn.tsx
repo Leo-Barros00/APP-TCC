@@ -47,8 +47,8 @@ const InputContainer = styled.View`
 
 const SignIn = () => {
   const dispatch = useAppDispatch()
-  const [email, setEmail] = useState('filipe@email.com')
-  const [password, setPassword] = useState('senha')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [errors, setErrors] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
 

@@ -16,3 +16,12 @@ export interface State {
   uf: string
   cities: City[]
 }
+
+export interface Contract {
+  value: number
+  date: Date
+  description: string
+  houseId: string
+  providerId: string
+  accepted?: boolean
+}

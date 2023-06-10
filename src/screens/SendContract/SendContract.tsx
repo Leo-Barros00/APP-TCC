@@ -2,14 +2,18 @@ import TextButton from '@Components/atomic/TextButton/TextButton'
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker'
-import { useAppDispatch, useAppSelector } from '@Hooks/redux'
-import { calculateServiceValue } from '@Utils/serviceValue'
+import { useAppSelector } from '@Hooks/redux'
+import { calculateServiceValue, formatServiceValueToString } from '@Utils/serviceValue'
 import { useNavigation } from '@react-navigation/native'
 import { View } from 'react-native'
-import styled, { useTheme } from 'styled-components/native'
+import styled from 'styled-components/native'
 import { useState } from 'react'
-import { MaterialIcons } from '@expo/vector-icons'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { Contract } from 'src/typings'
+import ContractService from '@Api/services/contractService'
+import { getDateString, getTimeString } from '@Utils/date'
+import SignUpErrors from '@Components/signUp/SignUpErrors/SignUpErrors'
+import TransitionScreen from '@Components/atomic/TransitionScreen/TransitionScreen'
 
 const SafeAreaContainer = styled(SafeAreaView)`
   flex: 1;
@@ -26,12 +30,6 @@ const ButtonsInlineContainer = styled.View`
   flex-direction: row;
   width: 100%;
   gap: 8px;
-`
-
-const AddText = styled.Text`
-  font-size: 18px;
-  font-family: 'Poppins-SemiBold';
-  color: ${({ theme }) => theme.colors['primary']['main']};
 `
 
 const FormContainer = styled.View`
@@ -99,14 +97,6 @@ const DateField = styled.Text<{ selected?: boolean }>`
   color: #${({ selected }) => (selected ? '000' : 'aaa')};
 `
 
-const AddButton = styled.TouchableOpacity`
-  min-height: 20px;
-  padding: 8px 8px;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: row;
-`
-
 const FormButton = styled(TextButton)`
   flex: 1;
 `
@@ -120,50 +110,79 @@ const SendContract = () => {
   const provider = providers![providerIndexSelected!]
   const userHouseSelected = houses.filter((item) => item.id === houseSelected)[0]
   const [showDatePicker, setShowDatePicker] = useState(false)
+  const [dateTimePicked, setDateTimePicked] = useState<Date | null>(null)
   const [showTimePicker, setShowTimePicker] = useState(false)
-  const [errors, setErrors] = useState<string[]>([])
-  const dispatch = useAppDispatch()
   const [description, setDescription] = useState<string>('')
-  const [date, setDate] = useState<Date | null>(null)
+  const [errors, setErrors] = useState<string[]>([])
+  const [finished, setFinished] = useState(false)
+  const totalValue = calculateServiceValue(
+    userHouseSelected.metersBuilt as unknown as number,
+    userHouseSelected.animals
+  )
 
-  function handleOnPressDateField() {
-    setShowDatePicker(true)
+  function handleOnChangeTimePicker({ type }: DateTimePickerEvent, time?: Date) {
+    setShowTimePicker(false)
+    time!.setHours(time!.getHours() - 3)
+    setDateTimePicked(time!)
   }
 
-  function handleOnChangeBirthDate({ type }: DateTimePickerEvent, date?: Date) {
+  function handleOnChangeDatePicker({ type }: DateTimePickerEvent, date?: Date) {
     setShowDatePicker(false)
-
-    if (type === 'set') setErrors([])
-    // setDate(date!.toISOString())
-    // console.log(date)
-    // dispatch()
+    setDateTimePicked(date!)
   }
 
-  function handleOnPressSendContract() {}
+  async function handleOnPressSendContract() {
+    if (!description || !dateTimePicked) setErrors(['Preencha todos os campos!'])
+    else {
+      setErrors([])
+      const contract: Contract = {
+        value: totalValue,
+        date: dateTimePicked!,
+        description: description,
+        houseId: userHouseSelected.id,
+        providerId: provider.id,
+      }
+
+      await ContractService.sendContract(contract)
+      setFinished(true)
+    }
+  }
+
+  function navigateToHome() {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Main', params: { screen: 'SearchServices' } }],
+    })
+  }
+
+  if (finished) {
+    return (
+      <TransitionScreen
+        message="Solicitação de serviço realizada com sucesso!"
+        navigatesTo={navigateToHome}
+      />
+    )
+  }
 
   return (
     <SafeAreaContainer>
       <Container>
         {showDatePicker && (
           <DateTimePicker
-            testID="datePicker"
-            value={new Date()}
+            value={dateTimePicked ? dateTimePicked : new Date()}
             mode="date"
             minimumDate={new Date()}
-            onChange={handleOnChangeBirthDate}
-            onTouchCancel={() => setShowDatePicker(false)}
+            onChange={handleOnChangeDatePicker}
           />
         )}
         {showTimePicker && (
           <DateTimePicker
-            testID="timePicker"
-            value={new Date()}
+            value={dateTimePicked ? dateTimePicked : new Date()}
             mode="time"
             minimumDate={new Date()}
             is24Hour
-            onChange={handleOnChangeBirthDate}
+            onChange={handleOnChangeTimePicker}
             onTouchCancel={() => setShowTimePicker(false)}
-            onTouchEnd={() => setShowTimePicker(false)}
           />
         )}
         <FormContainer>
@@ -202,42 +221,22 @@ const SendContract = () => {
 
             <InfoItemsContainer>
               <Title>{'Data:'}</Title>
-              {/* {showDatePicker && (
-                <DateTimePicker
-                  testID="dateTimePicker"
-                  value={!dateSelected ? new Date() : dateSelected}
-                  minimumDate={new Date()}
-                  mode="date"
-                  is24Hour={true}
-                  onChange={handleOnChangeBirthDate}
-                />
-              )}
-              {!showDatePicker && (
-                <AddButton onPress={handleOnPressDateField}>
-                  <AddText>{dateSelected ? '' : 'Escolha a data aqui'}</AddText>
-                </AddButton>
-              )} */}
-              <DateField onPress={() => setShowDatePicker(true)}>--/--/----</DateField>
+              <DateField
+                onPress={() => setShowDatePicker(true)}
+                selected={!!dateTimePicked}
+              >
+                {dateTimePicked ? getDateString(dateTimePicked) : '--/--/----'}
+              </DateField>
             </InfoItemsContainer>
 
             <InfoItemsContainer>
               <Title>{'Hora:'}</Title>
-              {/* {showDatePicker && (
-                <DateTimePicker
-                  testID="dateTimePicker"
-                  value={!dateSelected ? new Date() : dateSelected}
-                  minimumDate={new Date()}
-                  mode="date"
-                  is24Hour={true}
-                  onChange={handleOnChangeBirthDate}
-                />
-              )}
-              {!showDatePicker && (
-                <AddButton onPress={handleOnPressDateField}>
-                  <AddText>{dateSelected ? '' : 'Escolha a data aqui'}</AddText>
-                </AddButton>
-              )} */}
-              <DateField onPress={() => setShowTimePicker(true)}>--:--</DateField>
+              <DateField
+                onPress={() => setShowTimePicker(true)}
+                selected={!!dateTimePicked}
+              >
+                {dateTimePicked ? getTimeString(dateTimePicked) : '--:--'}
+              </DateField>
             </InfoItemsContainer>
 
             <InfoItemsContainer>
@@ -254,15 +253,11 @@ const SendContract = () => {
             <Divider />
             <InfoItemsContainer>
               <Title>{'Valor total:'}</Title>
-              <Description>
-                {calculateServiceValue(
-                  userHouseSelected.metersBuilt as unknown as number,
-                  userHouseSelected.animals
-                )}
-              </Description>
+              <Description>{formatServiceValueToString(totalValue)}</Description>
             </InfoItemsContainer>
           </InfoContainer>
         </FormContainer>
+        <SignUpErrors errors={errors} />
         <ButtonsInlineContainer>
           <FormButton
             text={'Cancelar'}
