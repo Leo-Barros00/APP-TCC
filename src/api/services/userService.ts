@@ -65,7 +65,7 @@ class UserService {
 
   public static async getLoggedUser() {
     try {
-      const response = await mainApi.get('/users')
+      const response = await mainApi.get('/users/loggedUser')
       return response.data
     } catch (error) {
       const err = error as AxiosError
