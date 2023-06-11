@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
 
 import MessageWarning from '@Components/atomic/MessageWarning/MessageWarning'
 import { useAppSelector } from '@Hooks/redux'
 import styled from 'styled-components/native'
-import { FlatList } from 'react-native'
+import { Animated, Easing, FlatList } from 'react-native'
 import ContractCard from '@Components/atomic/ContractCard/ContractCard'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import ContractService from '@Api/services/contractService'
@@ -47,12 +47,12 @@ const ProposalsScreen = () => {
     setLoading(false)
   }
 
-  async function handleOnPressAccept(id: string) {
-    const res = await ContractService.updateContractStatus(id, 'true')
-  }
-
-  async function handleOnPressDecline(id: string) {
-    const res = await ContractService.updateContractStatus(id, 'false')
+  async function handleOnPressAcceptOrDecline(id: string, status: string) {
+    await ContractService.updateContractStatus(id, status)
+    const newArray = contracts!.filter((contract) => contract.id !== id)
+    setTimeout(() => {
+      setContracts(newArray)
+    }, 1000)
   }
 
   useEffect(() => {
@@ -92,6 +92,7 @@ const ProposalsScreen = () => {
         <FlatList
           style={{ paddingHorizontal: 16 }}
           data={contracts!}
+          // extraData={contracts}
           renderItem={({ item }) => (
             <ContractCard
               value={formatServiceValueToString(item.value)}
@@ -106,10 +107,10 @@ const ProposalsScreen = () => {
               }
               date={new Date(item.date)}
               onPressAccept={() => {
-                handleOnPressAccept(item.id)
+                handleOnPressAcceptOrDecline(item.id, 'true')
               }}
               onPressDecline={() => {
-                handleOnPressDecline(item.id)
+                handleOnPressAcceptOrDecline(item.id, 'false')
               }}
             />
           )}

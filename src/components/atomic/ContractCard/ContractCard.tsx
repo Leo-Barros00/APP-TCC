@@ -2,6 +2,7 @@ import styled from 'styled-components/native'
 import { IContractCard } from './interface'
 import { getDateString, getTimeString } from '@Utils/date'
 import { useState } from 'react'
+import { Animated, Easing } from 'react-native'
 
 const CardTitle = styled.Text`
   font-size: 24px;
@@ -124,8 +125,34 @@ const ContractCard: React.FC<IContractCard> = ({
   onPressDecline,
 }) => {
   const [showConfirmation, setShowConfirmation] = useState(false)
+
+  const position = new Animated.Value(0)
+
+  const leftAnimation = () => {
+    setTimeout(() => {
+      Animated.timing(position, {
+        toValue: -1000,
+        duration: 800,
+        easing: Easing.ease,
+        useNativeDriver: true,
+      }).start()
+    }, 300)
+  }
+  const rightAnimation = () => {
+    setTimeout(() => {
+      Animated.timing(position, {
+        toValue: 1000,
+        duration: 800,
+        easing: Easing.ease,
+        useNativeDriver: true,
+      }).start()
+    }, 300)
+  }
+
   return (
-    <OuterContainer>
+    <Animated.View
+      style={[{ marginBottom: 24 }, { transform: [{ translateX: position }] }]}
+    >
       <ProposalCard
         onPress={() => {
           onPress
@@ -166,15 +193,25 @@ const ContractCard: React.FC<IContractCard> = ({
       </ProposalCard>
       {showConfirmation && (
         <ConfirmContainer>
-          <AcceptButton onPress={onPressAccept}>
+          <AcceptButton
+            onPress={() => {
+              leftAnimation()
+              onPressAccept()
+            }}
+          >
             <ButtonAcceptText>Aceitar</ButtonAcceptText>
           </AcceptButton>
-          <DeclineButton onPress={onPressDecline}>
+          <DeclineButton
+            onPress={() => {
+              rightAnimation()
+              onPressDecline()
+            }}
+          >
             <ButtonDeclineText>Recusar</ButtonDeclineText>
           </DeclineButton>
         </ConfirmContainer>
       )}
-    </OuterContainer>
+    </Animated.View>
   )
 }
 
