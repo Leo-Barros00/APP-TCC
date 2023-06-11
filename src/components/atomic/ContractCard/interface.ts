@@ -10,4 +10,6 @@ export interface IContractCard {
   locale: string
   date: Date
   onPress?: (event: GestureResponderEvent) => void
+  onPressAccept?: () => void
+  onPressDecline?: () => void
 }

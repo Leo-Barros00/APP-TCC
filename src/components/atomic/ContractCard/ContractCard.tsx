@@ -1,6 +1,7 @@
 import styled from 'styled-components/native'
 import { IContractCard } from './interface'
 import { getDateString, getTimeString } from '@Utils/date'
+import { useState } from 'react'
 
 const CardTitle = styled.Text`
   font-size: 24px;
@@ -33,7 +34,6 @@ const ProposalCard = styled.TouchableOpacity`
   border-top-width: 4px;
   border-top-color: ${({ theme }) => theme.colors['primary']['main']};
   background-color: white;
-  margin-bottom: 24px;
   padding: 16px;
   border-radius: 8px;
   justify-content: space-between;
@@ -64,6 +64,53 @@ const NameDescriptionContainer = styled.View`
   justify-content: flex-start;
 `
 
+const ConfirmContainer = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  padding-top: 16px;
+  margin-top: 4px;
+  padding-bottom: 16px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-color: ${({ theme }) => theme.colors['primary']['main']};
+  background-color: white;
+  opacity: 0.75;
+`
+
+const OuterContainer = styled.View`
+  margin-bottom: 24px;
+`
+
+const AcceptButton = styled.TouchableOpacity`
+  flex: 1;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`
+
+const DeclineButton = styled.TouchableOpacity`
+  flex: 1;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  border-left-width: 1px;
+  border-left-color: ${({ theme }) => theme.colors['primary']['main']};
+`
+
+const ButtonAcceptText = styled.Text`
+  font-size: 18px;
+  font-family: 'Poppins-SemiBold';
+
+  color: ${({ theme }) => theme.colors['primary']['main']};
+`
+
+const ButtonDeclineText = styled.Text`
+  font-size: 18px;
+  font-family: 'Poppins-SemiBold';
+
+  color: ${({ theme }) => theme.colors['error']['main']};
+`
+
 const ContractCard: React.FC<IContractCard> = ({
   value,
   icon,
@@ -73,43 +120,61 @@ const ContractCard: React.FC<IContractCard> = ({
   locale,
   date,
   onPress,
+  onPressAccept,
+  onPressDecline,
 }) => {
+  const [showConfirmation, setShowConfirmation] = useState(false)
   return (
-    <ProposalCard
-      onPress={onPress}
-      style={{
-        shadowColor: '#000000',
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 0.17,
-        shadowRadius: 2.54,
-        elevation: 3,
-      }}
-    >
-      <LeftContainerCard>
-        <CardTitle>{value}</CardTitle>
-        <HouseInfoCard>
-          {icon}
-          <CardDescription>{houseSize + ' m²'}</CardDescription>
-        </HouseInfoCard>
-        <CardDescription>
-          {getDateString(date) + ' - ' + getTimeString(date)}
-        </CardDescription>
-      </LeftContainerCard>
+    <OuterContainer>
+      <ProposalCard
+        onPress={() => {
+          onPress
+          setShowConfirmation(!showConfirmation)
+        }}
+        style={{
+          shadowColor: '#000000',
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.17,
+          shadowRadius: 2.54,
+          elevation: 3,
+        }}
+      >
+        <LeftContainerCard>
+          <CardTitle>{value}</CardTitle>
+          <HouseInfoCard>
+            {icon}
+            <CardDescription>{houseSize + ' m²'}</CardDescription>
+          </HouseInfoCard>
+          <CardDescription>
+            {getDateString(date) + ' - ' + getTimeString(date)}
+          </CardDescription>
+        </LeftContainerCard>
 
-      <InfoContainerCard>
-        <NameDescriptionContainer>
-          <CardOwnerName>{contractorName}</CardOwnerName>
-          <CardDescription>{'"' + jobDescription + '"'}</CardDescription>
-        </NameDescriptionContainer>
+        <InfoContainerCard>
+          <NameDescriptionContainer>
+            <CardOwnerName>{contractorName}</CardOwnerName>
+            <CardDescription>{'"' + jobDescription + '"'}</CardDescription>
+          </NameDescriptionContainer>
 
-        <LocaleContainerCard>
-          <CardLocale>{locale}</CardLocale>
-        </LocaleContainerCard>
-      </InfoContainerCard>
-    </ProposalCard>
+          <LocaleContainerCard>
+            <CardLocale>{locale}</CardLocale>
+          </LocaleContainerCard>
+        </InfoContainerCard>
+      </ProposalCard>
+      {showConfirmation && (
+        <ConfirmContainer>
+          <AcceptButton onPress={onPressAccept}>
+            <ButtonAcceptText>Aceitar</ButtonAcceptText>
+          </AcceptButton>
+          <DeclineButton onPress={onPressDecline}>
+            <ButtonDeclineText>Recusar</ButtonDeclineText>
+          </DeclineButton>
+        </ConfirmContainer>
+      )}
+    </OuterContainer>
   )
 }
 

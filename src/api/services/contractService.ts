@@ -22,6 +22,16 @@ class ContractService {
       if (error instanceof AxiosError) return error.response?.data
     }
   }
+
+  public static async updateContractStatus(contractId: string, status: string) {
+    try {
+      const response = await mainApi.put(`/contract/${contractId}/${status}`)
+
+      return response.data
+    } catch (error) {
+      if (error instanceof AxiosError) return error.response?.data
+    }
+  }
 }
 
 export default ContractService
