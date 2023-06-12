@@ -1,12 +1,15 @@
 import React from 'react'
-import { Dimensions, Text } from 'react-native'
+import { Dimensions } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { useAppDispatch, useAppSelector } from '@Hooks/redux'
-import { reset } from '@Store/reducers/auth'
+import { reset as resetAuth } from '@Store/reducers/auth'
+import { reset as resetServices } from '@Store/reducers/services'
+import { reset as resetSignUp } from '@Store/reducers/signUp'
+import { reset as resetUser } from '@Store/reducers/user'
 import { deleteSecureStoreValue } from '@Utils/secureStore'
 
 const Container = styled.View`
@@ -100,8 +103,15 @@ const Profile: React.FC = () => {
   const dispatch = useAppDispatch()
   const { name, surname } = useAppSelector(({ user }) => user)
 
+  function resetRedux() {
+    dispatch(resetAuth())
+    dispatch(resetSignUp())
+    dispatch(resetUser())
+    dispatch(resetServices())
+  }
+
   function handleOnPressLogoutButton() {
-    dispatch(reset())
+    resetRedux()
     deleteSecureStoreValue('secureToken')
   }
 

@@ -76,9 +76,12 @@ const loggedUserSlice = createSlice({
         ...action.payload,
       }
     },
+    reset() {
+      return initialState
+    },
   },
 })
 
-export const { insertLoggedUserInfo, insertHouse, updatePreferences } =
+export const { insertLoggedUserInfo, insertHouse, updatePreferences, reset } =
   loggedUserSlice.actions
 export default loggedUserSlice.reducer

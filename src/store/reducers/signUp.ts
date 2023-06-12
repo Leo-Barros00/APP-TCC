@@ -56,8 +56,11 @@ const signUpslice = createSlice({
         ...action.payload,
       }
     },
+    reset() {
+      return initialState
+    },
   },
 })
 
-export const { nextStep, previousStep, insertSignUpInfo } = signUpslice.actions
+export const { nextStep, previousStep, insertSignUpInfo, reset } = signUpslice.actions
 export default signUpslice.reducer
