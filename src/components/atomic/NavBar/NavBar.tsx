@@ -24,12 +24,6 @@ const ButtonContent = styled.View`
 `
 
 const NavBarItems = [
-  // {
-  //   screen: 'Home',
-  //   label: 'Home',
-  //   icon: <Ionicons name="home-outline" size={24} color="black" />,
-  //   selectedIcon: <Ionicons name="home" size={24} color="#3030C2" />,
-  // },
   {
     screen: 'Proposals',
     label: 'Propostas\nRecebidas',

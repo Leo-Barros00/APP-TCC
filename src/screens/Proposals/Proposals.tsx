@@ -33,6 +33,22 @@ const Title = styled.Text`
   text-align: center;
 `
 
+const EmptyListView = styled.View`
+  justify-content: center;
+  align-items: center;
+  padding-left: 32px;
+  padding-right: 32px;
+  margin-top: 240px;
+`
+
+const EmptyListText = styled.Text`
+  font-size: 18px;
+  font-family: 'Poppins-SemiBold';
+  text-align: center;
+  padding: 8px;
+  color: ${({ theme }) => theme.colors.primary.main};
+`
+
 const ProposalsScreen = () => {
   const { preferenceId } = useAppSelector(({ user }) => user)
   const [contracts, setContracts] = useState<any[] | null>(null)
@@ -85,6 +101,7 @@ const ProposalsScreen = () => {
       </SafeAreaContainerLoading>
     )
   }
+
   return (
     <SafeAreaContainer>
       <Title>Suas propostas de serviço</Title>
@@ -92,7 +109,19 @@ const ProposalsScreen = () => {
         <FlatList
           style={{ paddingHorizontal: 16 }}
           data={contracts!}
-          // extraData={contracts}
+          ListEmptyComponent={() => (
+            <EmptyListView>
+              <LottieView
+                style={{ height: 120, width: 120 }}
+                source={require('./empty-list.json')}
+                autoPlay
+                loop={true}
+              />
+              <EmptyListText>
+                {'Você ainda não possui nenhuma proposta de serviço!'}
+              </EmptyListText>
+            </EmptyListView>
+          )}
           renderItem={({ item }) => (
             <ContractCard
               value={formatServiceValueToString(item.value)}

@@ -25,19 +25,19 @@ export interface SignUpState {
 
 const initialState: SignUpState = {
   step: SignUpStep.Email,
-  email: 'filipe@gmail.com',
-  password: '123415263',
-  passwordConfirm: '123415263',
-  name: 'filipe',
-  surname: 'neves',
-  cpf: '02732320536',
+  email: '',
+  password: '',
+  passwordConfirm: '',
+  name: '',
+  surname: '',
+  cpf: '',
   birthDate: '',
   gender: '',
   stateId: '',
   cityId: '',
   neighborhoodId: '',
-  addressDescription: 'rua E',
-  addressNumber: '710',
+  addressDescription: '',
+  addressNumber: '',
 }
 
 const signUpslice = createSlice({

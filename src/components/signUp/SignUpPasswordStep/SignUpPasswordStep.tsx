@@ -27,7 +27,7 @@ const SignUpPasswordStep = () => {
   function navigateToHome() {
     navigation.reset({
       index: 0,
-      routes: [{ name: 'Main', params: { screen: 'SearchServices' } }],
+      routes: [{ name: 'Main', params: { screen: 'Home' } }],
     })
   }
 
