@@ -1,1 +1,1 @@
-import { default } from './SearchServices'
+export { default } from './SearchServices'
