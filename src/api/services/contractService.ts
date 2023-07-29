@@ -5,7 +5,7 @@ import { Contract } from 'src/typings'
 class ContractService {
   public static async sendContract(req: Contract) {
     try {
-      const response = await mainApi.post('/contract/send', req)
+      const response = await mainApi.post('/contracts/send', req)
 
       return response.data
     } catch (error) {
@@ -15,7 +15,7 @@ class ContractService {
 
   public static async getContracts() {
     try {
-      const response = await mainApi.get('/contract')
+      const response = await mainApi.get('/contracts')
 
       return response.data
     } catch (error) {
@@ -25,7 +25,7 @@ class ContractService {
 
   public static async updateContractStatus(contractId: string, status: string) {
     try {
-      const response = await mainApi.put(`/contract/${contractId}/${status}`)
+      const response = await mainApi.put(`/contracts/${contractId}/${status}`)
 
       return response.data
     } catch (error) {

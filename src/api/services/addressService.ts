@@ -5,7 +5,7 @@ import { mainApi } from '@Api/index'
 class AddressService {
   public static async getAllStateData() {
     try {
-      const response = await mainApi.get('/address/states')
+      const response = await mainApi.get('/states')
       return response.data
     } catch (error) {
       if (error instanceof AxiosError) return error.response?.data
