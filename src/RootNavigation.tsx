@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -15,6 +15,7 @@ import HousesList from '@Screens/Profile/HousesList'
 import ProposalsScreen from '@Screens/Proposals'
 import Preferences from '@Screens/Preferences'
 import SendContract from '@Screens/SendContract'
+import Approval from '@Screens/Approval/Approval'
 
 import { useAppDispatch, useAppSelector } from '@Hooks/redux'
 import { insertLoggedUserInfo } from '@Store/reducers/user'
@@ -82,12 +83,21 @@ const AuthenticatedNavigation = () => {
   }, [])
 
   return (
-    <Stack.Navigator initialRouteName="Main" screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Main" component={MainNavigation} />
-      <Stack.Screen name="AddHouse" component={AddHouse} />
-      <Stack.Screen name="Preferences" component={Preferences} />
-      <Stack.Screen name="HouseList" component={HousesList} />
-      <Stack.Screen name="SendContract" component={SendContract} />
+    <Stack.Navigator
+      initialRouteName={approved ? 'Main' : 'Approval'}
+      screenOptions={{ headerShown: false }}
+    >
+      {approved ? (
+        <>
+          <Stack.Screen name="Main" component={MainNavigation} />
+          <Stack.Screen name="AddHouse" component={AddHouse} />
+          <Stack.Screen name="Preferences" component={Preferences} />
+          <Stack.Screen name="HouseList" component={HousesList} />
+          <Stack.Screen name="SendContract" component={SendContract} />
+        </>
+      ) : (
+        <Stack.Screen name="Approval" component={Approval} />
+      )}
     </Stack.Navigator>
   )
 }
