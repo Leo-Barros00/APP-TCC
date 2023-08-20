@@ -38,6 +38,7 @@ export interface LoggedUserState {
   preferenceId: string | null
   preference?: Preferences
   houses: HouseState[]
+  approved: boolean
 }
 
 const initialState: LoggedUserState = {
@@ -51,6 +52,7 @@ const initialState: LoggedUserState = {
   addressId: '',
   preferenceId: null,
   houses: [],
+  approved: false,
 }
 
 const loggedUserSlice = createSlice({
