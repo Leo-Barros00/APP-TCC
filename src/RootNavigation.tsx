@@ -16,7 +16,12 @@ import ProposalsScreen from '@Screens/Proposals'
 import Preferences from '@Screens/Preferences'
 import SendContract from '@Screens/SendContract'
 
-import { useAppSelector } from '@Hooks/redux'
+import { useAppDispatch, useAppSelector } from '@Hooks/redux'
+import { insertLoggedUserInfo } from '@Store/reducers/user'
+import { insertAuthInfo } from '@Store/reducers/auth'
+
+import UserService from '@Api/services/userService'
+import { secureStoreSave } from '@Utils/secureStore'
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -42,6 +47,40 @@ const UnauthenticatedNavigation = () => {
 }
 
 const AuthenticatedNavigation = () => {
+  const dispatch = useAppDispatch()
+  const { auth, user } = useAppSelector((state) => state)
+  const { token, refreshToken } = auth
+  const { email, approved } = user
+
+  async function loadLoggedUser() {
+    const TEN_MINUTES_IN_MS = 600000
+
+    const response = await UserService.getLoggedUser()
+    dispatch(insertLoggedUserInfo(response))
+
+    setInterval(async () => {
+      if (!token || !refreshToken) return
+
+      const refreshResponse = await UserService.refreshToken(
+        token.value,
+        refreshToken.value
+      )
+
+      const newTokenObject = {
+        token,
+        refreshToken,
+        ...refreshResponse,
+      }
+
+      dispatch(insertAuthInfo({ ...newTokenObject, isLogged: true }))
+      secureStoreSave('secureToken', JSON.stringify(newTokenObject))
+    }, TEN_MINUTES_IN_MS)
+  }
+
+  useEffect(() => {
+    loadLoggedUser()
+  }, [])
+
   return (
     <Stack.Navigator initialRouteName="Main" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Main" component={MainNavigation} />
