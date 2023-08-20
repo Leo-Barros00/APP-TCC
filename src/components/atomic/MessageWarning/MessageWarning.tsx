@@ -44,7 +44,7 @@ const MessageWarning: React.FC<IMessageWarning> = ({
   const navigation = useNavigation()
 
   function handleOnPressPreferencesButton() {
-    navigation.navigate(navigateTo)
+    navigateTo && navigation.navigate(navigateTo)
   }
 
   return (
@@ -54,14 +54,16 @@ const MessageWarning: React.FC<IMessageWarning> = ({
         <WarningTitle>{title}</WarningTitle>
         <WarningText>{text}</WarningText>
       </TextContainer>
-      <ButtonContainer>
-        <TextButton
-          onPress={handleOnPressPreferencesButton}
-          text={buttonText!}
-          variant="primary"
-          fluid
-        />
-      </ButtonContainer>
+      {buttonText && (
+        <ButtonContainer>
+          <TextButton
+            onPress={handleOnPressPreferencesButton}
+            text={buttonText!}
+            variant="primary"
+            fluid
+          />
+        </ButtonContainer>
+      )}
     </Container>
   )
 }
