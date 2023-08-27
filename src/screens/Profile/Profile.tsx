@@ -11,6 +11,7 @@ import { reset as resetServices } from '@Store/reducers/services'
 import { reset as resetSignUp } from '@Store/reducers/signUp'
 import { reset as resetUser } from '@Store/reducers/user'
 import { deleteSecureStoreValue } from '@Utils/secureStore'
+import { Ionicons } from '@expo/vector-icons'
 
 const Container = styled.View`
   flex: 1;
@@ -134,6 +135,20 @@ const Profile: React.FC = () => {
           <CardContainer onPress={() => navigation.navigate('HouseList')}>
             <FontAwesome5 name="list-ol" size={24} color="black" />
             <CardText>{'Minhas residências'}</CardText>
+          </CardContainer>
+        </BodyContainer>
+        <BodyContainer>
+          <CardContainer onPress={() => navigation.navigate('Preferences')}>
+            <Ionicons name="options" size={24} color="black" />
+            <CardText>{'Minhas preferências'}</CardText>
+          </CardContainer>
+          {/* gambiarra para deixar o grid layout enquanto não temos todos os cards do perfil */}
+          <CardContainer
+            style={{ opacity: 0 }}
+            onPress={() => navigation.navigate('Preferences')}
+          >
+            <Ionicons name="options" size={24} color="black" />
+            <CardText>{'Minhas preferências'}</CardText>
           </CardContainer>
         </BodyContainer>
         <AddButton onPress={handleOnPressLogoutButton}>
