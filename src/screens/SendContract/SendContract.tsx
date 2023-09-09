@@ -7,13 +7,15 @@ import { calculateServiceValue, formatServiceValueToString } from '@Utils/servic
 import { useNavigation } from '@react-navigation/native'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Contract } from 'src/typings'
 import ContractService from '@Api/services/contractService'
 import { getDateString, getTimeString } from '@Utils/date'
 import SignUpErrors from '@Components/signUp/SignUpErrors/SignUpErrors'
 import TransitionScreen from '@Components/atomic/TransitionScreen/TransitionScreen'
+import Select from '@Components/atomic/Select'
+import React from 'react'
 
 const SafeAreaContainer = styled(SafeAreaView)`
   flex: 1;
@@ -47,7 +49,8 @@ const InfoContainer = styled.View`
 `
 
 const InfoItemsContainer = styled.View`
-  flex-direction: row;
+  flex-direction: column;
+  justify-content: flex-start;
   gap: 8px;
   width: 100%;
   margin-bottom: 8px;
@@ -115,10 +118,8 @@ const SendContract = () => {
   const [description, setDescription] = useState<string>('')
   const [errors, setErrors] = useState<string[]>([])
   const [finished, setFinished] = useState(false)
-  const totalValue = calculateServiceValue(
-    userHouseSelected.metersBuilt as unknown as number,
-    userHouseSelected.animals
-  )
+  const [serviceHours, setServiceHours] = useState<string>('')
+  let totalValue = 0
 
   function handleOnChangeTimePicker({ type }: DateTimePickerEvent, time?: Date) {
     setShowTimePicker(false)
@@ -132,7 +133,8 @@ const SendContract = () => {
   }
 
   async function handleOnPressSendContract() {
-    if (!description || !dateTimePicked) setErrors(['Preencha todos os campos!'])
+    if (!description || !dateTimePicked || !serviceHours)
+      setErrors(['Preencha todos os campos!'])
     else {
       setErrors([])
       const contract: Contract = {
@@ -141,6 +143,7 @@ const SendContract = () => {
         description: description,
         houseId: userHouseSelected.id,
         providerId: provider.id,
+        workHours: Number(serviceHours),
       }
 
       await ContractService.sendContract(contract)
@@ -163,6 +166,14 @@ const SendContract = () => {
       />
     )
   }
+
+  useEffect(() => {
+    const price = provider.preference.priceFourHours
+    // totalValue = calculateServiceValue(
+
+    //   userHouseSelected.animals
+    // )
+  }, [serviceHours])
 
   return (
     <SafeAreaContainer>
@@ -230,13 +241,27 @@ const SendContract = () => {
             </InfoItemsContainer>
 
             <InfoItemsContainer>
-              <Title>{'Hora:'}</Title>
+              <Title>{'Hora de Início:'}</Title>
               <DateField
                 onPress={() => setShowTimePicker(true)}
                 selected={!!dateTimePicked}
               >
                 {dateTimePicked ? getTimeString(dateTimePicked) : '--:--'}
               </DateField>
+            </InfoItemsContainer>
+
+            <InfoItemsContainer>
+              <Title>{'Horas de serviço:'}</Title>
+              <Select
+                title={'Selecione o tempo de serviço'}
+                options={[
+                  { id: '4', value: '4 horas' },
+                  { id: '6', value: '6 horas' },
+                  { id: '8', value: '8 horas' },
+                ]}
+                selectedOption={serviceHours}
+                onSelect={(opt) => setServiceHours(opt)}
+              />
             </InfoItemsContainer>
 
             <InfoItemsContainer>
@@ -253,7 +278,11 @@ const SendContract = () => {
             <Divider />
             <InfoItemsContainer>
               <Title>{'Valor total:'}</Title>
-              <Description>{formatServiceValueToString(totalValue)}</Description>
+              <Description>
+                {serviceHours !== ''
+                  ? formatServiceValueToString(totalValue)
+                  : 'Selecione um tempo de serviço...'}
+              </Description>
             </InfoItemsContainer>
           </InfoContainer>
         </FormContainer>

@@ -10,6 +10,8 @@ import TransitionScreen from '@Components/atomic/TransitionScreen/TransitionScre
 import { useNavigation } from '@react-navigation/native'
 import { updatePreferences } from '@Store/reducers/user'
 import { insertLoggedUserInfo } from '@Store/reducers/user'
+import SelectedButton from '@Components/atomic/SelectedButton'
+import IWorkHours from './interface'
 
 const ScrollContainer = styled.ScrollView`
   flex: 1;
@@ -68,6 +70,24 @@ const NestedSelectContainer = styled.View`
   padding-left: 24px;
 `
 
+const SelectHoursContainer = styled.View`
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+`
+
+const PriceContainer = styled.View`
+  flex: 1;
+  gap: 12px;
+`
+
+const PricePerHourContainer = styled.View`
+  flex: 1;
+  flex-direction: row;
+  width: 100%;
+  gap: 50px;
+`
+
 const Preferences = () => {
   const {
     addressData: { data: statesData },
@@ -85,6 +105,10 @@ const Preferences = () => {
   )
   const [isLoading, setIsLoading] = useState(false)
   const [finished, setFinished] = useState(false)
+  const [hours, setHours] = useState<IWorkHours>({})
+  const [priceFourHours, setPriceFourHours] = useState('')
+  const [priceSixHours, setPriceSixHours] = useState('')
+  const [priceEightHours, setPriceEightHours] = useState('')
   const navigation = useNavigation()
   const dispatch = useAppDispatch()
 
@@ -168,6 +192,12 @@ const Preferences = () => {
       animals,
       maximumMetersBuilt,
       neighborhoods: selectedNeighborhoods,
+      workFourHoursPerDay: hours.workFourHoursPerDay,
+      workSixHoursPerDay: hours.workSixHoursPerDay,
+      workEightHoursPerDay: hours.workEightHoursPerDay,
+      priceFourHours: Number(priceFourHours),
+      priceSixHours: Number(priceSixHours),
+      priceEightHours: Number(priceEightHours),
     })
 
     if (preferencesResponse.status !== 'error') {
@@ -241,6 +271,70 @@ const Preferences = () => {
                   fluid
                   onPress={handleOnPressIncreaseMeters}
                 />
+              </ButtonsInlineContainer>
+            </PreferenceGroup>
+            <PreferenceGroup>
+              <PricePerHourContainer>
+                <PreferenceTitle>Carga Horária: </PreferenceTitle>
+                <PreferenceTitle>Preço: </PreferenceTitle>
+              </PricePerHourContainer>
+
+              <ButtonsInlineContainer>
+                <SelectHoursContainer>
+                  <SelectedButton
+                    text={'4h'}
+                    onClick={() =>
+                      setHours({
+                        ...hours,
+                        workFourHoursPerDay: !hours.workFourHoursPerDay ? 4 : undefined,
+                      })
+                    }
+                  />
+                  <SelectedButton
+                    text={'6h'}
+                    onClick={() =>
+                      setHours({
+                        ...hours,
+                        workSixHoursPerDay: !hours.workSixHoursPerDay ? 6 : undefined,
+                      })
+                    }
+                  />
+                  <SelectedButton
+                    text={'8h'}
+                    onClick={() =>
+                      setHours({
+                        ...hours,
+                        workEightHoursPerDay: !hours.workEightHoursPerDay ? 8 : undefined,
+                      })
+                    }
+                  />
+                </SelectHoursContainer>
+                <PriceContainer>
+                  <TextField
+                    editable={!!hours.workFourHoursPerDay}
+                    style={{ opacity: !hours.workFourHoursPerDay ? 0.4 : 1 }}
+                    variant={'primary'}
+                    onChangeText={(value) => setPriceFourHours(value)}
+                    value={priceFourHours}
+                    keyboardType="numeric"
+                  />
+                  <TextField
+                    editable={!!hours.workSixHoursPerDay}
+                    style={{ opacity: !hours.workSixHoursPerDay ? 0.4 : 1 }}
+                    variant={'primary'}
+                    onChangeText={(value) => setPriceSixHours(value)}
+                    value={priceSixHours}
+                    keyboardType="numeric"
+                  />
+                  <TextField
+                    editable={!!hours.workEightHoursPerDay}
+                    style={{ opacity: !hours.workEightHoursPerDay ? 0.4 : 1 }}
+                    variant="primary"
+                    onChangeText={(value) => setPriceEightHours(value)}
+                    value={priceEightHours}
+                    keyboardType="numeric"
+                  />
+                </PriceContainer>
               </ButtonsInlineContainer>
             </PreferenceGroup>
             <PreferenceGroup>
