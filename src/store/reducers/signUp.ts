@@ -1,28 +1,43 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { subYears } from 'date-fns'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export enum SignUpStep {
   Email,
   Name,
-  BirthDate
-} 
+  BirthDate,
+}
 
-interface SignUpState {
-  step: SignUpStep,
+export interface SignUpState {
+  step: SignUpStep
   email: string
+  password: string
+  passwordConfirm?: string
   name: string
   surname: string
   cpf: string
   birthDate: string
+  gender: string
+  stateId: string
+  cityId: string
+  neighborhoodId: string
+  addressDescription: string
+  addressNumber: string
 }
 
 const initialState: SignUpState = {
   step: SignUpStep.Email,
   email: '',
+  password: '',
+  passwordConfirm: '',
   name: '',
   surname: '',
   cpf: '',
-  birthDate: subYears(new Date(), 18).toISOString()
+  birthDate: '',
+  gender: '',
+  stateId: '',
+  cityId: '',
+  neighborhoodId: '',
+  addressDescription: '',
+  addressNumber: '',
 }
 
 const signUpslice = createSlice({
@@ -30,19 +45,22 @@ const signUpslice = createSlice({
   initialState,
   reducers: {
     nextStep(state) {
-      state.step++;
+      state.step++
     },
     previousStep(state) {
-      state.step--;
+      state.step--
     },
     insertSignUpInfo(state, action: PayloadAction<Partial<SignUpState>>) {
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
       }
-    }
+    },
+    reset() {
+      return initialState
+    },
   },
-});
+})
 
-export const { nextStep, previousStep, insertSignUpInfo } = signUpslice.actions;
-export default signUpslice.reducer;
+export const { nextStep, previousStep, insertSignUpInfo, reset } = signUpslice.actions
+export default signUpslice.reducer

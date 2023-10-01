@@ -1,8 +1,12 @@
 import React from 'react'
 import styled from 'styled-components/native'
-
-import Button from '../../components/atomic/TextButton'
 import { SafeAreaView } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+
+import Button from '@Components/atomic/TextButton/TextButton'
+
+import { useAppDispatch } from '@Hooks/redux'
+import { insertSignUpInfo } from '@Store/reducers/signUp'
 
 const Container = styled.View`
   flex: 1;
@@ -17,57 +21,67 @@ const OnboardingTextContainer = styled.View`
 `
 
 const WelcomeTextTitle = styled.Text`
-  font-family: "Poppins-Bold";
+  font-family: 'Poppins-Bold';
   font-size: 40px;
 `
 
 const WelcomeTextSubTitle = styled.Text`
-  font-family: "Poppins-SemiBold";
+  font-family: 'Poppins-SemiBold';
   font-size: 30px;
   line-height: 36px;
 `
 
 const WelcomeTextHighlight = styled.Text`
-  /* text-decoration: underline; */
   color: ${({ theme }) => theme.colors.primary.main};
 `
 
-const OnboardingScreen: React.FC<ScreenType> = ({ navigation }) => {
+const ButtonsContainer = styled.View`
+  width: 100%;
+`
 
-  function handleOnPressLoginButton() {
-
-  }
+const OnboardingScreen = () => {
+  const dispatch = useAppDispatch()
+  const navigation = useNavigation()
 
   function handleOnPressSignInButton() {
+    navigation.navigate('SignIn')
+  }
+
+  function handleOnPressSignUnButton() {
+    dispatch(insertSignUpInfo({ step: 0 }))
     navigation.navigate('SignUp')
   }
-  
+
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Container>
         <OnboardingTextContainer>
-          <WelcomeTextTitle>
-            Bem-vindo(a)
-          </WelcomeTextTitle>
+          <WelcomeTextTitle>Bem-vindo(a)</WelcomeTextTitle>
           <WelcomeTextSubTitle>
-            Simplifique a conexão de <WelcomeTextHighlight>quem necessita</WelcomeTextHighlight>, com <WelcomeTextHighlight>quem tem habilidades para realizar</WelcomeTextHighlight>.
+            Simplifique a conexão de{' '}
+            <WelcomeTextHighlight>quem necessita</WelcomeTextHighlight>, com{' '}
+            <WelcomeTextHighlight>
+              quem tem habilidades para realizar
+            </WelcomeTextHighlight>
+            .
           </WelcomeTextSubTitle>
         </OnboardingTextContainer>
-        <Button
-          fluid
-          variant='primary'
-          text='Criar conta'
-          onPress={handleOnPressSignInButton}
-        />
-        <Button
-          fluid
-          variant='secondary'
-          text='Fazer login'
-          onPress={handleOnPressLoginButton}
-        />
+        <ButtonsContainer>
+          <Button
+            fluid
+            variant="primary"
+            text="Criar conta"
+            onPress={handleOnPressSignUnButton}
+          />
+          <Button
+            fluid
+            variant="secondary"
+            text="Fazer login"
+            onPress={handleOnPressSignInButton}
+          />
+        </ButtonsContainer>
       </Container>
     </SafeAreaView>
-
   )
 }
 

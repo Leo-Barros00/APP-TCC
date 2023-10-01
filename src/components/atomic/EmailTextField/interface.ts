@@ -1,5 +1,3 @@
-import { ITextField } from "../TextField/interface";
+import { ITextField } from '../TextField/interface'
 
-export interface IEmailTextField extends ITextField {
-
-}
+export interface IEmailTextField extends ITextField {}

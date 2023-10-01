@@ -1,5 +1,5 @@
-import { TextInputProps } from "react-native"
-import { Variant } from "../../../../typings/theme"
+import { TextInputProps } from 'react-native'
+import { Variant } from '@Typings/theme'
 
 export interface ITextField extends TextInputProps {
   variant: Variant

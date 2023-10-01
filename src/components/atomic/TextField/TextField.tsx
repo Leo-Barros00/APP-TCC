@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 import { ITextField } from './interface'
 
 const TextInput = styled.TextInput<ITextField>`
-  width: ${({ fluid }) => fluid ? '100%' : 'auto'};
+  flex-grow: ${({ fluid }) => (fluid ? '1' : '0')};
   min-height: 64px;
   padding: 14px 16px 10px;
   margin: 4px 0;
@@ -16,11 +16,7 @@ const TextInput = styled.TextInput<ITextField>`
 `
 
 const TextField: React.FC<ITextField> = ({ ...props }) => {
-  return (
-    <TextInput
-      {...props}
-    />
-  )
+  return <TextInput {...props} />
 }
 
 export default TextField
