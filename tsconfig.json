@@ -11,6 +11,8 @@
       "@Utils/*": ["src/utils/*"],
       "@Api/*": ["src/api/*"],
       "@Typings/*": ["src/typings/*"],
+      "react":["./node_modules/@types/react"],
     }
+    
   }
 }

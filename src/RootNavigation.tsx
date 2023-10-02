@@ -1,26 +1,29 @@
-import React, { useEffect } from 'react'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import React, { useEffect } from 'react'
 
 import NavBar from '@Components/atomic/NavBar'
-import Onboarding from '@Screens/Onboarding'
-import SignUp from '@Screens/SignUp'
-import Home from '@Screens/Home'
-import Profile from '@Screens/Profile'
-import SignIn from '@Screens/SignIn'
-import SearchServices from '@Screens/SearchServices'
 import AddHouse from '@Screens/AddHouse'
+import Home from '@Screens/Home'
+import Onboarding from '@Screens/Onboarding'
+import Preferences from '@Screens/Preferences'
+import Profile from '@Screens/Profile'
 import HousesList from '@Screens/Profile/HousesList'
 import ProposalsScreen from '@Screens/Proposals'
-import Preferences from '@Screens/Preferences'
+
+import SearchServices from '@Screens/SearchServices'
 import SendContract from '@Screens/SendContract'
+import SignIn from '@Screens/SignIn'
+import SignUp from '@Screens/SignUp'
 
 import { useAppDispatch, useAppSelector } from '@Hooks/redux'
-import { insertLoggedUserInfo } from '@Store/reducers/user'
 import { insertAuthInfo } from '@Store/reducers/auth'
+import { insertLoggedUserInfo } from '@Store/reducers/user'
 
 import UserService from '@Api/services/userService'
+import HiringList from '@Screens/HiringList'
+import Rating from '@Screens/Rating'
 import { secureStoreSave } from '@Utils/secureStore'
 
 const Stack = createNativeStackNavigator()
@@ -88,6 +91,8 @@ const AuthenticatedNavigation = () => {
       <Stack.Screen name="Preferences" component={Preferences} />
       <Stack.Screen name="HouseList" component={HousesList} />
       <Stack.Screen name="SendContract" component={SendContract} />
+      <Stack.Screen name="HiringList" component={HiringList} />
+      <Stack.Screen name="Rating" component={Rating} />
     </Stack.Navigator>
   )
 }

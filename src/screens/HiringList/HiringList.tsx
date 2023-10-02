@@ -69,10 +69,11 @@ const HiringList: React.FC = () => {
               icon={<FontAwesome5 name="file-contract" size={24} color="black" />}
               secondIcon={<SimpleLineIcons name="star" size={24} color="black" />}
               bgColor={false}
-              onPress={() => {}}
+              onPress={() => navigation.navigate('Rating')}
             />
           )}
         />
+
         <View style={{ width: '100%', position: 'absolute', bottom: 16 }}>
           <TextButton text="Voltar" variant="primary" onPress={navigation.goBack} />
         </View>

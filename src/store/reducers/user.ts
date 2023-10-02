@@ -1,5 +1,5 @@
 import { Preferences } from '@Typings/user'
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 interface StateState {
   name: string
@@ -26,6 +26,18 @@ interface HouseState {
   animals: boolean
 }
 
+interface ProviderContractState {
+  value: string
+  description: string
+  provider: any
+}
+
+interface ContractorContractState {
+  value: string
+  description: string
+  contractor: any
+}
+
 export interface LoggedUserState {
   name: string
   surname: string
@@ -39,6 +51,8 @@ export interface LoggedUserState {
   preference?: Preferences
   houses: HouseState[]
   approved: boolean
+  providerContract: ProviderContractState[]
+  contractorContract: ContractorContractState[]
 }
 
 const initialState: LoggedUserState = {
@@ -53,6 +67,8 @@ const initialState: LoggedUserState = {
   preferenceId: null,
   houses: [],
   approved: false,
+  providerContract: [],
+  contractorContract: [],
 }
 
 const loggedUserSlice = createSlice({

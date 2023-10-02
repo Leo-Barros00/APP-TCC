@@ -1,14 +1,13 @@
+import InfoCardIcon from '@Components/atomic/InfoCardIcon/InfoCardIcon'
+import TextButton from '@Components/atomic/TextButton/TextButton'
 import { useAppSelector } from '@Hooks/redux'
+import { Feather, MaterialIcons } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
+import LottieView from 'lottie-react-native'
 import React from 'react'
 import { FlatList, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
-import LottieView from 'lottie-react-native'
-import InfoCardIcon from '@Components/atomic/InfoCardIcon/InfoCardIcon'
-import { MaterialIcons } from '@expo/vector-icons'
-import TextButton from '@Components/atomic/TextButton/TextButton'
-import { useNavigation } from '@react-navigation/native'
-import { Feather } from '@expo/vector-icons'
 
 const Container = styled.View`
   flex: 1;

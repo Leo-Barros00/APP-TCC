@@ -1,6 +1,6 @@
 import React from 'react'
-import styled from 'styled-components/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import styled from 'styled-components/native'
 
 import MessageWarning from '@Components/atomic/MessageWarning/MessageWarning'
 
@@ -14,7 +14,9 @@ const Approval = () => {
     <SafeAreaContainer>
       <MessageWarning
         title={'Perfil ainda não aprovado.'}
-        text={'O seu perfil ainda não foi aprovado. Mas não se preocupe, o processo é rápido e retornaremos assim que possível.'}
+        text={
+          'O seu perfil ainda não foi aprovado. Mas não se preocupe, o processo é rápido e retornaremos assim que possível.'
+        }
       />
     </SafeAreaContainer>
   )
