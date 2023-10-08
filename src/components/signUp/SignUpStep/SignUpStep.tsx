@@ -10,6 +10,7 @@ import SignUpGenderStep from '@Components/signUp/SignUpGenderStep'
 import SignUpPasswordStep from '@Components/signUp/SignUpPasswordStep'
 import SignUpAddressFirstStep from '@Components/signUp/SignUpAddressFirstStep'
 import SignUpAddressSecondStep from '@Components/signUp/SignUpAddressSecondStep'
+import SignUpPhotoStep from '../SignUpPhotoStep'
 
 import { useAppSelector } from '@Hooks/redux'
 
@@ -38,6 +39,10 @@ const signUpSteps = [
   {
     instruction: 'Insira agora o seu CPF',
     form: <SignUpCpfStep />,
+  },
+  {
+    instruction: 'Agora precisamos de uma foto sua e de seu documento',
+    form: <SignUpPhotoStep />,
   },
   {
     instruction: 'Nos conte agora a sua data de nascimento',
