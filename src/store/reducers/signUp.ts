@@ -21,6 +21,8 @@ export interface SignUpState {
   neighborhoodId: string
   addressDescription: string
   addressNumber: string
+  documentImage: string
+  personImage: string
 }
 
 const initialState: SignUpState = {
