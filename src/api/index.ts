@@ -1,22 +1,22 @@
-import axios, { AxiosInstance } from 'axios'
-import store from '@Store/configureStore'
+import axios, { AxiosInstance } from "axios";
+import store from "@Store/configureStore";
 
-const HOST = 'http://192.168.0.13'
+const HOST = "http://192.168.15.137";
 
 const mainApi: AxiosInstance = axios.create({
-  baseURL: `${HOST}:3332`,
-})
+  baseURL: `${HOST}:3333`,
+});
 
 mainApi.interceptors.request.use((config) => {
-  const { token } = store.getState().auth
+  const { token } = store.getState().auth;
 
-  if (token) config.headers.Authorization = `Bearer ${token.value}`
+  if (token) config.headers.Authorization = `Bearer ${token.value}`;
 
-  return config
-})
+  return config;
+});
 
 const authApi: AxiosInstance = axios.create({
   baseURL: `${HOST}:3330`,
-})
+});
 
-export { mainApi, authApi }
+export { mainApi, authApi };

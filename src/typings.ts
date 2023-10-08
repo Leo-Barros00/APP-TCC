@@ -24,4 +24,5 @@ export interface Contract {
   houseId: string
   providerId: string
   accepted?: boolean
+  workHours: number
 }

@@ -1,16 +1,15 @@
-import React from 'react'
-import { Dimensions } from 'react-native'
-import styled, { useTheme } from 'styled-components/native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { MaterialIcons } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
-import { FontAwesome5 } from '@expo/vector-icons'
 import { useAppDispatch, useAppSelector } from '@Hooks/redux'
 import { reset as resetAuth } from '@Store/reducers/auth'
 import { reset as resetServices } from '@Store/reducers/services'
 import { reset as resetSignUp } from '@Store/reducers/signUp'
 import { reset as resetUser } from '@Store/reducers/user'
 import { deleteSecureStoreValue } from '@Utils/secureStore'
+import { FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
+import React from 'react'
+import { Dimensions } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import styled, { useTheme } from 'styled-components/native'
 
 const Container = styled.View`
   flex: 1;
@@ -134,6 +133,16 @@ const Profile: React.FC = () => {
           <CardContainer onPress={() => navigation.navigate('HouseList')}>
             <FontAwesome5 name="list-ol" size={24} color="black" />
             <CardText>{'Minhas residências'}</CardText>
+          </CardContainer>
+        </BodyContainer>
+        <BodyContainer>
+          <CardContainer onPress={() => navigation.navigate('Preferences')}>
+            <Ionicons name="options" size={24} color="black" />
+            <CardText>{'Minhas preferências'}</CardText>
+          </CardContainer>
+          <CardContainer onPress={() => navigation.navigate('HiringList')}>
+            <Ionicons name="options" size={24} color="black" />
+            <CardText>{'Minhas contratações'}</CardText>
           </CardContainer>
         </BodyContainer>
         <AddButton onPress={handleOnPressLogoutButton}>

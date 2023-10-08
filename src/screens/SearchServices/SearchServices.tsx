@@ -1,13 +1,8 @@
-import SearchBar from '@Components/atomic/SearchBar/SearchBar'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useAppSelector } from '@Hooks/redux'
-import { MaterialIcons } from '@expo/vector-icons'
-import { useTheme } from 'styled-components'
 import { useNavigation } from '@react-navigation/native'
-import { Keyboard } from 'react-native'
-import ProvidersList from './components/ProvidersList'
 import MessageWarning from '@Components/atomic/MessageWarning/MessageWarning'
 import ServicesList from '@Components/atomic/ServicesList'
 
@@ -18,23 +13,6 @@ const Container = styled.View`
   padding: 16px;
 `
 
-// const AddButton = styled.TouchableOpacity`
-//   min-height: 20px;
-//   padding: 8px 8px;
-//   align-items: center;
-//   justify-content: center;
-//   margin: 16px 0;
-//   flex-direction: row;
-// `
-
-// const AddText = styled.Text`
-//   font-size: 18px;
-//   font-family: 'Poppins-SemiBold';
-
-//   padding: 8px 8px;
-//   color: ${({ theme }) => theme.colors['primary']['main']};
-// `
-
 const PageTitle = styled.Text`
   font-size: 28px;
   line-height: 40px;
@@ -44,14 +22,8 @@ const PageTitle = styled.Text`
 
 const SearchServices: React.FC = () => {
   const { houses } = useAppSelector(({ user }) => user)
-  // const theme = useTheme()
-  const navigation = useNavigation()
 
   const hasHouse = houses.length > 0
-
-  // function handleOnPressAddHouse() {
-  //   navigation.navigate('AddHouse')
-  // }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -71,19 +43,6 @@ const SearchServices: React.FC = () => {
             <ServicesList />
           </>
         )}
-
-        {/* {hasHouse && (
-          <AddButton onPress={handleOnPressAddHouse}>
-            <>
-              <MaterialIcons
-                name={'add-box'}
-                size={20}
-                color={theme.colors['primary']['main']}
-              />
-              <AddText>{'Adicione sua residencia aqui'}</AddText>
-            </>
-          </AddButton>
-        )} */}
       </Container>
     </SafeAreaView>
   )

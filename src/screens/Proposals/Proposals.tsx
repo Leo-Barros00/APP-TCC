@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
 
 import MessageWarning from '@Components/atomic/MessageWarning/MessageWarning'
