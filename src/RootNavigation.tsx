@@ -15,7 +15,7 @@ import HousesList from '@Screens/Profile/HousesList'
 import ProposalsScreen from '@Screens/Proposals'
 import Preferences from '@Screens/Preferences'
 import SendContract from '@Screens/SendContract'
-import Approval from '@Screens/Approval/Approval'
+import Approval from '@Screens/Approval'
 
 import { useAppDispatch, useAppSelector } from '@Hooks/redux'
 import { insertLoggedUserInfo } from '@Store/reducers/user'
@@ -51,7 +51,9 @@ const AuthenticatedNavigation = () => {
   const dispatch = useAppDispatch()
   const { auth, user } = useAppSelector((state) => state)
   const { token, refreshToken } = auth
-  const { email, approved } = user
+  const { status } = user
+
+  const isApprovedUser = status === 'approved'
 
   async function loadLoggedUser() {
     const TEN_MINUTES_IN_MS = 600000
@@ -84,10 +86,10 @@ const AuthenticatedNavigation = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName={approved ? 'Main' : 'Approval'}
+      initialRouteName={isApprovedUser ? 'Main' : 'Approval'}
       screenOptions={{ headerShown: false }}
     >
-      {approved ? (
+      {isApprovedUser ? (
         <>
           <Stack.Screen name="Main" component={MainNavigation} />
           <Stack.Screen name="AddHouse" component={AddHouse} />
