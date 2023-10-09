@@ -39,7 +39,15 @@ const SignUpAddressFirstStep = () => {
     dispatch(nextStep())
   }
 
-  const mappedStateDataSelect = data?.map(({ id, name }) => ({ id, value: name }))
+  const mappedStateDataSelect = data
+    ?.filter(({ cities }) => {
+      const possibleCities = cities.filter(
+        ({ neighborhoods }) => neighborhoods.length > 0
+      )
+
+      return possibleCities.length > 0
+    })
+    .map(({ id, name }) => ({ id, value: name }))
   const selectedState = data?.find(({ id }) => id === stateId)
 
   const mappedCityDataSelect = selectedState?.cities.map(({ id, name }) => ({
