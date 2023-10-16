@@ -3,7 +3,7 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker'
 import { useAppSelector } from '@Hooks/redux'
-import { calculateServiceValue, formatServiceValueToString } from '@Utils/serviceValue'
+import { formatServiceValueToString } from '@Utils/serviceValue'
 import { useNavigation } from '@react-navigation/native'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
@@ -76,6 +76,7 @@ const Description = styled.Text`
   font-family: 'Poppins-Regular';
   text-align: left;
 `
+
 const Divider = styled.View`
   width: 100%;
   height: 1px;
