@@ -4,6 +4,7 @@ interface ISelectOption {
 }
 
 export interface ISelect {
+  isButton?: boolean
   title: string
   selectedOption?: string
   options?: ISelectOption[]
