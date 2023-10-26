@@ -63,7 +63,6 @@ const AddHouse: React.FC = () => {
   } = useAppSelector((state) => state)
   const [errors, setErrors] = useState<string[]>([])
   const [house, setHouse] = useState(houseInitialValues)
-  const { token } = useAppSelector(({ auth }) => auth)
   const [finished, setFinished] = useState(false)
   const navigation = useNavigation()
   const dispatch = useAppDispatch()
@@ -144,8 +143,16 @@ const AddHouse: React.FC = () => {
     })
   }
 
-  const mappedStateDataSelect = data?.map(({ id, name }) => ({ id, value: name }))
-  const selectedState = data?.find(({ id }) => id === house.stateId)
+  const statesDataFiltered = data?.filter(({ cities }) => {
+    const possibleCities = cities.filter(
+      ({ neighborhoods }) => neighborhoods.length > 0
+    )
+
+    return possibleCities.length > 0
+  })
+
+  const mappedStateDataSelect = statesDataFiltered?.map(({ id, name }) => ({ id, value: name }))
+  const selectedState = statesDataFiltered?.find(({ id }) => id === house.stateId)
 
   const mappedCityDataSelect = selectedState?.cities.map(({ id, name }) => ({
     id,
@@ -174,7 +181,7 @@ const AddHouse: React.FC = () => {
       <ScrollContainer contentContainerStyle={{ flexGrow: 1 }}>
         <Container>
           <Instruction>
-            {'Precisamos saber o endereço da residência que deseja contratar um serviço'}
+            Precisamos saber o endereço da residência que deseja contratar um serviço
           </Instruction>
           <View>
             <SignUpErrors errors={errors} />

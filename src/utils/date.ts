@@ -13,3 +13,16 @@ export function getTimeString(date: Date) {
       : date.getUTCMinutes()
   return hour + ':' + minute
 }
+
+export function mergeDateAndTime(date: Date, time: Date): Date {
+  const ano = date.getFullYear()
+  const mes = date.getMonth()
+  const dia = date.getDate()
+  const hora = time.getHours()
+  const minuto = time.getMinutes()
+  const milissegundo = time.getMilliseconds()
+
+  const novaData = new Date(ano, mes, dia, hora, minuto, 0, milissegundo)
+
+  return novaData
+}

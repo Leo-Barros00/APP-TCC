@@ -1,9 +1,6 @@
 import TextButton from '@Components/atomic/TextButton/TextButton'
-import DateTimePicker, {
-  DateTimePickerEvent,
-} from '@react-native-community/datetimepicker'
 import { useAppSelector } from '@Hooks/redux'
-import { calculateServiceValue, formatServiceValueToString } from '@Utils/serviceValue'
+import { formatServiceValueToString } from '@Utils/serviceValue'
 import { useNavigation } from '@react-navigation/native'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
@@ -14,7 +11,6 @@ import ContractService from '@Api/services/contractService'
 import { getDateString, getTimeString } from '@Utils/date'
 import SignUpErrors from '@Components/signUp/SignUpErrors/SignUpErrors'
 import TransitionScreen from '@Components/atomic/TransitionScreen/TransitionScreen'
-import Select from '@Components/atomic/Select'
 import React from 'react'
 
 const SafeAreaContainer = styled(SafeAreaView)`
@@ -76,6 +72,7 @@ const Description = styled.Text`
   font-family: 'Poppins-Regular';
   text-align: left;
 `
+
 const Divider = styled.View`
   width: 100%;
   height: 1px;
@@ -92,12 +89,12 @@ const DescriptionField = styled.TextInput`
   text-align: left;
 `
 
-const DateField = styled.Text<{ selected?: boolean }>`
+const DateText = styled.Text`
   font-size: 20px;
   line-height: 32px;
   font-family: 'Poppins-Regular';
   text-align: left;
-  color: #${({ selected }) => (selected ? '000' : 'aaa')};
+  color: black;
 `
 
 const FormButton = styled(TextButton)`
@@ -109,37 +106,23 @@ const SendContract = () => {
     ({ services }) => services
   )
   const { houses } = useAppSelector(({ user }) => user)
+  const { startDate, serviceHours } = useAppSelector(({ services }) => services)
   const navigation = useNavigation()
   const provider = providers![providerIndexSelected!]
   const userHouseSelected = houses.filter((item) => item.id === houseSelected)[0]
-  const [showDatePicker, setShowDatePicker] = useState(false)
-  const [dateTimePicked, setDateTimePicked] = useState<Date | null>(null)
-  const [showTimePicker, setShowTimePicker] = useState(false)
   const [description, setDescription] = useState<string>('')
   const [errors, setErrors] = useState<string[]>([])
   const [finished, setFinished] = useState(false)
-  const [serviceHours, setServiceHours] = useState<string>('')
-  let totalValue = 0
-
-  function handleOnChangeTimePicker({ type }: DateTimePickerEvent, time?: Date) {
-    setShowTimePicker(false)
-    time!.setHours(time!.getHours() - 3)
-    setDateTimePicked(time!)
-  }
-
-  function handleOnChangeDatePicker({ type }: DateTimePickerEvent, date?: Date) {
-    setShowDatePicker(false)
-    setDateTimePicked(date!)
-  }
+  const [totalValue, setTotalValue] = useState<number>(0)
 
   async function handleOnPressSendContract() {
-    if (!description || !dateTimePicked || !serviceHours)
+    if (!description || !startDate || !serviceHours)
       setErrors(['Preencha todos os campos!'])
     else {
       setErrors([])
       const contract: Contract = {
         value: totalValue,
-        date: dateTimePicked!,
+        date: new Date(startDate!),
         description: description,
         houseId: userHouseSelected.id,
         providerId: provider.id,
@@ -158,6 +141,20 @@ const SendContract = () => {
     })
   }
 
+  useEffect(() => {
+    switch (serviceHours) {
+      case '4':
+        setTotalValue(provider.preference.priceFourHours)
+        break
+      case '6':
+        setTotalValue(provider.preference.priceSixHours)
+        break
+      case '8':
+        setTotalValue(provider.preference.priceEightHours)
+        break
+    }
+  }, [])
+
   if (finished) {
     return (
       <TransitionScreen
@@ -167,35 +164,9 @@ const SendContract = () => {
     )
   }
 
-  useEffect(() => {
-    const price = provider.preference.priceFourHours
-    // totalValue = calculateServiceValue(
-
-    //   userHouseSelected.animals
-    // )
-  }, [serviceHours])
-
   return (
     <SafeAreaContainer>
       <Container>
-        {showDatePicker && (
-          <DateTimePicker
-            value={dateTimePicked ? dateTimePicked : new Date()}
-            mode="date"
-            minimumDate={new Date()}
-            onChange={handleOnChangeDatePicker}
-          />
-        )}
-        {showTimePicker && (
-          <DateTimePicker
-            value={dateTimePicked ? dateTimePicked : new Date()}
-            mode="time"
-            minimumDate={new Date()}
-            is24Hour
-            onChange={handleOnChangeTimePicker}
-            onTouchCancel={() => setShowTimePicker(false)}
-          />
-        )}
         <FormContainer>
           <PageTitle>Envio de proposta</PageTitle>
           <InfoContainer>
@@ -232,36 +203,17 @@ const SendContract = () => {
 
             <InfoItemsContainer>
               <Title>{'Data:'}</Title>
-              <DateField
-                onPress={() => setShowDatePicker(true)}
-                selected={!!dateTimePicked}
-              >
-                {dateTimePicked ? getDateString(dateTimePicked) : '--/--/----'}
-              </DateField>
+              <DateText>{getDateString(new Date(startDate!))}</DateText>
             </InfoItemsContainer>
 
             <InfoItemsContainer>
               <Title>{'Hora de Início:'}</Title>
-              <DateField
-                onPress={() => setShowTimePicker(true)}
-                selected={!!dateTimePicked}
-              >
-                {dateTimePicked ? getTimeString(dateTimePicked) : '--:--'}
-              </DateField>
+              <DateText>{getTimeString(new Date(startDate!))}</DateText>
             </InfoItemsContainer>
 
             <InfoItemsContainer>
               <Title>{'Horas de serviço:'}</Title>
-              <Select
-                title={'Selecione o tempo de serviço'}
-                options={[
-                  { id: '4', value: '4 horas' },
-                  { id: '6', value: '6 horas' },
-                  { id: '8', value: '8 horas' },
-                ]}
-                selectedOption={serviceHours}
-                onSelect={(opt) => setServiceHours(opt)}
-              />
+              <DateText>{serviceHours}</DateText>
             </InfoItemsContainer>
 
             <InfoItemsContainer>

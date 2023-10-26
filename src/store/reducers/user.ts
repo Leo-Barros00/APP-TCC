@@ -50,7 +50,8 @@ export interface LoggedUserState {
   preferenceId: string | null
   preference?: Preferences
   houses: HouseState[]
-  approved: boolean
+  status: string
+  rejectReasons: any
   providerContract: ProviderContractState[]
   contractorContract: ContractorContractState[]
 }
@@ -66,7 +67,8 @@ const initialState: LoggedUserState = {
   addressId: '',
   preferenceId: null,
   houses: [],
-  approved: false,
+  status: 'pending',
+  rejectReasons: null,
   providerContract: [],
   contractorContract: [],
 }

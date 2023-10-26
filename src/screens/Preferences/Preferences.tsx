@@ -1,17 +1,19 @@
 import React, { Fragment, useState } from 'react'
+import { View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
-import TextButton from '@Components/atomic/TextButton/TextButton'
-import TextField from '@Components/atomic/TextField/TextField'
-import { useAppDispatch, useAppSelector } from '@Hooks/redux'
-import PreferenceService from '@Api/services/preferenceService'
-import { View } from 'react-native'
-import TransitionScreen from '@Components/atomic/TransitionScreen/TransitionScreen'
 import { useNavigation } from '@react-navigation/native'
-import { updatePreferences } from '@Store/reducers/user'
-import { insertLoggedUserInfo } from '@Store/reducers/user'
+
+import TextButton from '@Components/atomic/TextButton'
+import TextField from '@Components/atomic/TextField'
+import TransitionScreen from '@Components/atomic/TransitionScreen'
 import SelectedButton from '@Components/atomic/SelectedButton'
+
+import { useAppDispatch, useAppSelector } from '@Hooks/redux'
+import { updatePreferences } from '@Store/reducers/user'
+
 import IWorkHours from './interface'
+import PreferenceService from '@Api/services/preferenceService'
 
 const ScrollContainer = styled.ScrollView`
   flex: 1;
@@ -48,10 +50,6 @@ const ButtonsInlineContainer = styled.View`
   gap: 8px;
 `
 
-const MaximumMetersField = styled(TextField)`
-  width: 30px;
-`
-
 const LocationButtonSelect = styled.TouchableOpacity<{ selected: boolean }>`
   padding: 2px 10px;
   border-radius: 20px;
@@ -59,7 +57,7 @@ const LocationButtonSelect = styled.TouchableOpacity<{ selected: boolean }>`
   background-color: ${({ theme }) => theme.colors['primary'].main}33;
   border: 4px solid
     ${({ selected, theme }) =>
-      selected ? theme.colors['primary'].main : `${theme.colors['primary'].main}33`};
+    selected ? theme.colors['primary'].main : `${theme.colors['primary'].main}33`};
 `
 
 const LocationTextSelect = styled.Text`
@@ -95,9 +93,6 @@ const Preferences = () => {
   } = useAppSelector((state) => state)
 
   const [animals, setAnimals] = useState<boolean | null>(preference?.animals ?? null)
-  const [maximumMetersBuilt, setMaximumMetersBuilt] = useState<number>(
-    preference?.maximumMetersBuilt ?? 50
-  )
   const [selectedStates, setSelectedStates] = useState<string[]>([])
   const [selectedCities, setSelectedCities] = useState<string[]>([])
   const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<string[]>(
@@ -113,23 +108,7 @@ const Preferences = () => {
   const dispatch = useAppDispatch()
 
   const isFormFulfilled =
-    animals !== null && maximumMetersBuilt > 0 && selectedNeighborhoods.length > 0
-
-  function handleOnPressDecreaseMeters() {
-    setMaximumMetersBuilt((prevValue) => prevValue - 5)
-  }
-
-  function handleOnPressIncreaseMeters() {
-    setMaximumMetersBuilt((prevValue) => prevValue + 5)
-  }
-
-  function handleOnChangeMeters(value: string) {
-    const numericValue = Number(value.replace(/[^\d]/g, ''))
-
-    if (isNaN(numericValue)) return
-
-    setMaximumMetersBuilt(numericValue)
-  }
+    animals !== null && selectedNeighborhoods.length > 0
 
   function removeCitiesFromState(stateId: string) {
     const state = statesData?.find(({ id }) => stateId)
@@ -190,7 +169,6 @@ const Preferences = () => {
     setIsLoading(true)
     const preferencesResponse = await PreferenceService.savePreferences({
       animals,
-      maximumMetersBuilt,
       neighborhoods: selectedNeighborhoods,
       workFourHoursPerDay: hours.workFourHoursPerDay,
       workSixHoursPerDay: hours.workSixHoursPerDay,
@@ -214,6 +192,14 @@ const Preferences = () => {
       routes: [{ name: 'Main', params: { screen: 'Preferences' } }],
     })
   }
+
+  const statesDataFiltered = statesData?.filter(({ cities }) => {
+    const possibleCities = cities.filter(
+      ({ neighborhoods }) => neighborhoods.length > 0
+    )
+
+    return possibleCities.length > 0
+  })
 
   if (finished)
     return (
@@ -245,31 +231,6 @@ const Preferences = () => {
                   ghost={animals === null || animals === true}
                   fluid
                   onPress={() => setAnimals(false)}
-                />
-              </ButtonsInlineContainer>
-            </PreferenceGroup>
-            <PreferenceGroup>
-              <PreferenceTitle>Tamanho máximo da residência (m²)</PreferenceTitle>
-              <ButtonsInlineContainer>
-                <TextButton
-                  text={'-'}
-                  variant="primary"
-                  disabled={maximumMetersBuilt <= 0}
-                  fluid
-                  onPress={handleOnPressDecreaseMeters}
-                />
-                <MaximumMetersField
-                  variant="primary"
-                  value={String(maximumMetersBuilt)}
-                  fluid
-                  onChangeText={handleOnChangeMeters}
-                  keyboardType="number-pad"
-                />
-                <TextButton
-                  text={'+'}
-                  variant="primary"
-                  fluid
-                  onPress={handleOnPressIncreaseMeters}
                 />
               </ButtonsInlineContainer>
             </PreferenceGroup>
@@ -340,7 +301,7 @@ const Preferences = () => {
             <PreferenceGroup>
               <PreferenceTitle>Localidades</PreferenceTitle>
               <View>
-                {statesData?.map(({ id: stateId, name: stateName, cities }) => (
+                {statesDataFiltered?.map(({ id: stateId, name: stateName, cities }) => (
                   <Fragment key={stateId}>
                     <LocationButtonSelect
                       onPress={() => handleOnPressSelectState(stateId)}

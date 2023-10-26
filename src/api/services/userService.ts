@@ -1,13 +1,44 @@
 import { AxiosError } from 'axios'
+import FormData from 'form-data'
+import mime from 'mime'
 
 import { mainApi, authApi } from '@Api/index'
 
 import { SignUpState } from '@Store/reducers/signUp'
 
+function getFormattedImageUri(uri: string) {
+  return 'file:///' + uri.split('file:/').join('')
+}
+
 class UserService {
   public static async signUp(signUpData: SignUpState) {
     try {
-      const response = await mainApi.post('/users', signUpData)
+      const formData = new FormData()
+
+      const documentImageUri = getFormattedImageUri(signUpData.documentImage)
+      const personImageUri = getFormattedImageUri(signUpData.personImage)
+
+      formData.append('documentImage', {
+        uri: documentImageUri,
+        type: mime.getType(documentImageUri),
+        name: documentImageUri.split('/').pop(),
+      })
+      formData.append('personImage', {
+        uri: personImageUri,
+        type: mime.getType(personImageUri),
+        name: personImageUri.split('/').pop(),
+      })
+
+      for (let key in signUpData) {
+        formData.append(key, String(signUpData[key as keyof SignUpState]))
+      }
+
+      const response = await mainApi.post('/users', formData, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+      })
       return response.data
     } catch (error) {
       if (error instanceof AxiosError)
