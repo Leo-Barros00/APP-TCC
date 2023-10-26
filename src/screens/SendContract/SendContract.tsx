@@ -141,15 +141,6 @@ const SendContract = () => {
     })
   }
 
-  if (finished) {
-    return (
-      <TransitionScreen
-        message="Solicitação de serviço realizada com sucesso!"
-        navigatesTo={navigateToHome}
-      />
-    )
-  }
-
   useEffect(() => {
     switch (serviceHours) {
       case '4':
@@ -163,6 +154,15 @@ const SendContract = () => {
         break
     }
   }, [])
+
+  if (finished) {
+    return (
+      <TransitionScreen
+        message="Solicitação de serviço realizada com sucesso!"
+        navigatesTo={navigateToHome}
+      />
+    )
+  }
 
   return (
     <SafeAreaContainer>
