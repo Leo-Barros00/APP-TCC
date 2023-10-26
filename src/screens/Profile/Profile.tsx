@@ -10,6 +10,7 @@ import React from 'react'
 import { Dimensions } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled, { useTheme } from 'styled-components/native'
+import { Foundation } from '@expo/vector-icons'
 
 const Container = styled.View`
   flex: 1;
@@ -141,7 +142,7 @@ const Profile: React.FC = () => {
             <CardText>{'Minhas preferências'}</CardText>
           </CardContainer>
           <CardContainer onPress={() => navigation.navigate('HiringList')}>
-            <Ionicons name="options" size={24} color="black" />
+            <Foundation name="clipboard-pencil" size={24} color="black" />
             <CardText>{'Minhas contratações'}</CardText>
           </CardContainer>
         </BodyContainer>
