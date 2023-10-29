@@ -1,5 +1,7 @@
-export function getDateString(date: Date) {
-  return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
+export function getDateString(date: Date, withYear: boolean = true) {
+  return withYear
+    ? date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
+    : date.getDate() + '/' + (date.getMonth() + 1)
 }
 
 export function getTimeString(date: Date) {

@@ -131,7 +131,7 @@ const Profile: React.FC = () => {
             <MaterialIcons name="house" size={32} color="black" />
             <CardText>{'Adicionar residência'}</CardText>
           </CardContainer>
-          <CardContainer onPress={handleOnPressLogoutButton}>
+          <CardContainer onPress={() => navigation.navigate('HouseList')}>
             <FontAwesome5 name="list-ol" size={24} color="black" />
             <CardText>{'Minhas residências'}</CardText>
           </CardContainer>

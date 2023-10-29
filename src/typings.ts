@@ -19,7 +19,7 @@ export interface State {
 
 export interface Contract {
   value: number
-  date: Date
+  startDate: Date
   description: string
   houseId: string
   providerId: string

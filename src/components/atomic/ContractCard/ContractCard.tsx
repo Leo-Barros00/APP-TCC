@@ -78,10 +78,6 @@ const ConfirmContainer = styled.View`
   opacity: 0.75;
 `
 
-const OuterContainer = styled.View`
-  margin-bottom: 24px;
-`
-
 const AcceptButton = styled.TouchableOpacity`
   flex: 1;
   width: 100%;
