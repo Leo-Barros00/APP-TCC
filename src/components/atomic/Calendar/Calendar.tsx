@@ -1,11 +1,16 @@
 import styled, { useTheme } from 'styled-components/native'
 import { ICalendar } from './ICalendar'
-import { FlatList } from 'react-native'
+import { FlatList, Linking, View } from 'react-native'
 import { getDateString, getTimeString } from '@Utils/date'
 import { useEffect, useState } from 'react'
 import IconButton from '../IconButton'
 import { AntDesign } from '@expo/vector-icons'
 import { formatServiceValueToString } from '@Utils/serviceValue'
+import Modal from '../Modal'
+import { IContract } from '@Typings/contract'
+import { EvilIcons } from '@expo/vector-icons'
+import TextButton from '../TextButton'
+import { FontAwesome } from '@expo/vector-icons'
 
 const Container = styled.View`
   display: flex;
@@ -63,7 +68,20 @@ const ServiceRightInfo = styled.View`
   width: 160px;
 `
 
-const HourText = styled.Text`
+const ServiceInfoContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 12px;
+`
+const ModalContentContainer = styled.View`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 330px;
+`
+const TopicText = styled.Text`
   font-size: 18px;
   font-family: 'Poppins-SemiBold';
   text-align: center;
@@ -77,7 +95,15 @@ const InfoText = styled.Text`
   color: ${({ theme }) => theme.colors.primary.main};
 `
 
-const DayText = styled.Text`
+const LinkText = styled.Text`
+  text-decoration: underline;
+  font-size: 18px;
+  font-family: 'Poppins-Regular';
+  text-align: center;
+  color: ${({ theme }) => theme.colors.primary.main};
+`
+
+const TitleText = styled.Text`
   font-size: 24px;
   font-family: 'Poppins-Bold';
   text-align: center;
@@ -89,6 +115,8 @@ const Calendar: React.FC<ICalendar> = ({ contracts }) => {
 
   const [daysOfCalendar, setDaysOfCalendar] = useState<string[]>([])
   const [daysCarouselCont, setDaysCarouselCont] = useState<number>(0)
+  const [selectedService, setSelectedService] = useState<IContract | null>(null)
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
   function getDaysOfCalendar() {
     if (contracts !== null && contracts.length != 0) {
@@ -110,12 +138,113 @@ const Calendar: React.FC<ICalendar> = ({ contracts }) => {
       setDaysCarouselCont(daysCarouselCont + 1)
   }
 
+  function onPressService(service: IContract) {
+    setIsModalVisible(true)
+    setSelectedService(service)
+  }
+
+  function isServiceAvailable(service: IContract | null) {
+    if (!service) {
+      return false
+    }
+    const now = new Date()
+    const startDate = new Date(service.startDate)
+    const endDate = new Date(service.endDate)
+    return (
+      startDate.getFullYear() === now.getFullYear() &&
+      startDate.getMonth() === now.getMonth() &&
+      startDate.getDate() === now.getDate() &&
+      now.getHours() >= startDate.getHours() &&
+      now.getHours() <= endDate.getHours()
+    )
+  }
+
   useEffect(() => {
     getDaysOfCalendar()
   }, [])
 
   return (
     <Container>
+      <Modal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        title={'Sobre o serviço:'}
+      >
+        <ModalContentContainer>
+          <View>
+            <ServiceInfoContainer>
+              <TopicText>Contratante:</TopicText>
+              <InfoText>
+                {selectedService?.contractor.name} {selectedService?.contractor.surname}
+              </InfoText>
+            </ServiceInfoContainer>
+            <ServiceInfoContainer>
+              <TopicText>Descrição:</TopicText>
+              <InfoText>{selectedService?.description}</InfoText>
+            </ServiceInfoContainer>
+            <ServiceInfoContainer>
+              <TopicText>Horário:</TopicText>
+              <InfoText>
+                {selectedService
+                  ? getTimeString(new Date(selectedService?.startDate))
+                  : '--:--'}{' '}
+                -{' '}
+                {selectedService
+                  ? getTimeString(new Date(selectedService?.endDate))
+                  : '--:--'}
+              </InfoText>
+            </ServiceInfoContainer>
+            <ServiceInfoContainer>
+              <TopicText>Tempo de serviço:</TopicText>
+              <InfoText>{selectedService?.workHours} horas</InfoText>
+            </ServiceInfoContainer>
+            <ServiceInfoContainer>
+              <TopicText>Valor:</TopicText>
+              <InfoText>
+                {formatServiceValueToString(Number(selectedService?.value))}
+              </InfoText>
+            </ServiceInfoContainer>
+            <ServiceInfoContainer>
+              <TopicText>Endereço:</TopicText>
+              <LinkText
+                onPress={() => {
+                  const query = encodeURIComponent(
+                    `${selectedService?.house.address.description} ${selectedService?.house.address.number}`
+                  )
+                  Linking.openURL(
+                    `https://www.google.com/maps/search/?api=1&query=${query}`
+                  )
+                }}
+              >
+                {selectedService?.house.address.description},{' '}
+                {selectedService?.house.address.number}
+              </LinkText>
+              <EvilIcons
+                name="external-link"
+                size={24}
+                color={theme.colors['primary']['main']}
+              />
+            </ServiceInfoContainer>
+          </View>
+          {isServiceAvailable(selectedService) ? (
+            <TextButton text={'Começar'} variant={'primary'} />
+          ) : (
+            <TextButton
+              text={'Começar'}
+              variant={'primary'}
+              ghost
+              icon={
+                <FontAwesome
+                  name="lock"
+                  size={24}
+                  color={theme.colors['primary']['main']}
+                />
+              }
+            />
+          )}
+        </ModalContentContainer>
+      </Modal>
+
       <DayContainer>
         <IconButton
           icon={
@@ -133,7 +262,7 @@ const Calendar: React.FC<ICalendar> = ({ contracts }) => {
           onPress={onPressLeftCarousel}
           disabled={daysCarouselCont === 0}
         />
-        <DayText>{daysOfCalendar[daysCarouselCont]}</DayText>
+        <TitleText>{daysOfCalendar[daysCarouselCont]}</TitleText>
         <IconButton
           icon={
             <AntDesign
@@ -159,8 +288,8 @@ const Calendar: React.FC<ICalendar> = ({ contracts }) => {
         )}
         renderItem={({ item }) => (
           <>
-            <ContractContainer>
-              <HourText>{getTimeString(new Date(item.startDate))}</HourText>
+            <ContractContainer onPress={() => onPressService(item)}>
+              <TopicText>{getTimeString(new Date(item.startDate))}</TopicText>
               <CalendarItemContainer>
                 <ServiceLeftInfo>
                   <InfoText>{`${item.workHours}h`}</InfoText>
