@@ -7,6 +7,7 @@ class ContractService {
     try {
       const response = await mainApi.post('/contracts/send', req)
 
+      console.log(response.data)
       return response.data
     } catch (error) {
       if (error instanceof AxiosError) return error.response?.data

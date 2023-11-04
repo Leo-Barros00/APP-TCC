@@ -194,7 +194,7 @@ const ServicesList = () => {
         providers === null ? (
           <LottieView
             style={{ height: 120, width: 120 }}
-            source={require('./loading_dots_animation.json')}
+            source={require('../../../../assets/lottie/loading_dots_animation.json')}
             autoPlay
             loop={true}
           />

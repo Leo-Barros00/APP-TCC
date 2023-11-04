@@ -11,6 +11,8 @@ import { IContract } from '@Typings/contract'
 import { EvilIcons } from '@expo/vector-icons'
 import TextButton from '../TextButton'
 import { FontAwesome } from '@expo/vector-icons'
+import TextIconButton from '../TextIconButton'
+import AnimatedLottieView from 'lottie-react-native'
 
 const Container = styled.View`
   display: flex;
@@ -110,6 +112,22 @@ const TitleText = styled.Text`
   color: ${({ theme }) => theme.colors.primary.main};
 `
 
+const EmptyListView = styled.View`
+  justify-content: center;
+  align-items: center;
+  padding-left: 32px;
+  padding-right: 32px;
+  margin-top: 40px;
+`
+
+const EmptyListText = styled.Text`
+  font-size: 18px;
+  font-family: 'Poppins-SemiBold';
+  text-align: center;
+  padding: 8px;
+  color: ${({ theme }) => theme.colors.primary.main};
+`
+
 const Calendar: React.FC<ICalendar> = ({ contracts }) => {
   const theme = useTheme()
 
@@ -117,15 +135,37 @@ const Calendar: React.FC<ICalendar> = ({ contracts }) => {
   const [daysCarouselCont, setDaysCarouselCont] = useState<number>(0)
   const [selectedService, setSelectedService] = useState<IContract | null>(null)
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  function setContToCurrentDate(daysOfCalendar: string[]) {
+    const indexToday = daysOfCalendar.findIndex(
+      (value, index, array) => value === getDateString(new Date(), false)
+    )
+
+    setDaysCarouselCont(indexToday)
+    setLoading(false)
+  }
 
   function getDaysOfCalendar() {
     if (contracts !== null && contracts.length != 0) {
-      const daysOfContracts = contracts
+      const dateArray: IContract[] = contracts
+
+      contracts.find(
+        (c) =>
+          getDateString(new Date(c.startDate), false) === getDateString(new Date(), false)
+      ) ?? dateArray.push({ startDate: new Date() } as IContract)
+
+      dateArray.sort(
+        (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+      )
+
+      const daysOfContracts = dateArray
         .filter((value, index, array) => array.indexOf(value) === index)
         .map((c) => getDateString(new Date(c.startDate), false))
 
       let uniqueDaysOfContracts: string[] = Array.from(new Set(daysOfContracts))
       setDaysOfCalendar(uniqueDaysOfContracts)
+      setContToCurrentDate(uniqueDaysOfContracts)
     }
   }
 
@@ -162,6 +202,16 @@ const Calendar: React.FC<ICalendar> = ({ contracts }) => {
   useEffect(() => {
     getDaysOfCalendar()
   }, [])
+
+  if (loading) {
+    return (
+      <AnimatedLottieView
+        source={require('../../../../assets/lottie/loading_dots_animation.json')}
+        autoPlay
+        loop={true}
+      />
+    )
+  }
 
   return (
     <Container>
@@ -229,7 +279,7 @@ const Calendar: React.FC<ICalendar> = ({ contracts }) => {
           {isServiceAvailable(selectedService) ? (
             <TextButton text={'Começar'} variant={'primary'} />
           ) : (
-            <TextButton
+            <TextIconButton
               text={'Começar'}
               variant={'primary'}
               ghost
@@ -286,22 +336,35 @@ const Calendar: React.FC<ICalendar> = ({ contracts }) => {
             getDateString(new Date(contract.startDate), false) ===
             daysOfCalendar[daysCarouselCont]
         )}
+        ListEmptyComponent={() => (
+          <EmptyListView>
+            <AnimatedLottieView
+              style={{ height: 120, width: 120 }}
+              source={require('../../../../assets/lottie/empty-list.json')}
+              autoPlay
+              loop={true}
+            />
+            <EmptyListText>{'Você não possui serviços para este dia!'}</EmptyListText>
+          </EmptyListView>
+        )}
         renderItem={({ item }) => (
           <>
-            <ContractContainer onPress={() => onPressService(item)}>
-              <TopicText>{getTimeString(new Date(item.startDate))}</TopicText>
-              <CalendarItemContainer>
-                <ServiceLeftInfo>
-                  <InfoText>{`${item.workHours}h`}</InfoText>
-                  <InfoText>{formatServiceValueToString(Number(item.value))}</InfoText>
-                </ServiceLeftInfo>
-                <ServiceRightInfo>
-                  <InfoText numberOfLines={2} ellipsizeMode="tail">
-                    {item.description}
-                  </InfoText>
-                </ServiceRightInfo>
-              </CalendarItemContainer>
-            </ContractContainer>
+            {item.value && (
+              <ContractContainer onPress={() => onPressService(item)}>
+                <TopicText>{getTimeString(new Date(item.startDate))}</TopicText>
+                <CalendarItemContainer>
+                  <ServiceLeftInfo>
+                    <InfoText>{`${item.workHours}h`}</InfoText>
+                    <InfoText>{formatServiceValueToString(Number(item.value))}</InfoText>
+                  </ServiceLeftInfo>
+                  <ServiceRightInfo>
+                    <InfoText numberOfLines={2} ellipsizeMode="tail">
+                      {item.description}
+                    </InfoText>
+                  </ServiceRightInfo>
+                </CalendarItemContainer>
+              </ContractContainer>
+            )}
           </>
         )}
       />

@@ -4,7 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import MessageWarning from '@Components/atomic/MessageWarning/MessageWarning'
 import { useAppSelector } from '@Hooks/redux'
 import styled from 'styled-components/native'
-import { Animated, Easing, FlatList, View } from 'react-native'
+import { FlatList, View } from 'react-native'
 import ContractCard from '@Components/atomic/ContractCard/ContractCard'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import ContractService from '@Api/services/contractService'
@@ -113,7 +113,7 @@ const ProposalsScreen = () => {
         <Title>Suas propostas de serviço</Title>
         <LottieView
           style={{ height: 120, width: 120 }}
-          source={require('./loading_dots_animation.json')}
+          source={require('../../../assets/lottie/loading_dots_animation.json')}
           autoPlay
           loop={true}
         />
@@ -163,7 +163,7 @@ const ProposalsScreen = () => {
               <EmptyListView>
                 <LottieView
                   style={{ height: 120, width: 120 }}
-                  source={require('./empty-list.json')}
+                  source={require('../../../assets/lottie/empty-list.json')}
                   autoPlay
                   loop={true}
                 />
