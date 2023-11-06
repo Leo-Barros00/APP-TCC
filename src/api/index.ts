@@ -1,7 +1,7 @@
 import store from '@Store/configureStore'
 import axios, { AxiosInstance } from 'axios'
 
-const HOST = 'http://192.168.100.110'
+const HOST = 'http://192.168.100.103'
 
 const mainApi: AxiosInstance = axios.create({
   baseURL: `${HOST}:3333`,
