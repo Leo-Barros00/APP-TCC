@@ -1,3 +1,5 @@
+import TextButton from '@Components/atomic/TextButton'
+import { useNavigation } from '@react-navigation/native'
 import { useState } from 'react'
 import {
   Image,
@@ -11,6 +13,7 @@ import {
 const Rating = () => {
   const [defaultRating, setDefaultRating] = useState(0)
   const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5])
+  const navigation = useNavigation()
 
   const RatingBar = () => {
     return (
@@ -43,15 +46,16 @@ const Rating = () => {
         <Text style={styles.textStyle}>
           {defaultRating} / {Math.max.apply(null, maxRating)}
         </Text>
-        <TouchableOpacity
-          activeOpacity={0.7}
-          style={styles.buttonStyle}
-          onPress={() =>
-            alert('A nota dada ao prestador foi de ' + defaultRating + ' estrelas')
-          }
-        >
-          <Text style={styles.buttonTextStyle}>Enviar avaliação</Text>
-        </TouchableOpacity>
+        <View style={{ marginTop: 12 }}>
+          <TextButton
+            text={'Enviar avaliação'}
+            variant={'primary'}
+            onPress={() => {
+              alert('A nota dada ao prestador foi de ' + defaultRating + ' estrelas')
+              navigation.goBack()
+            }}
+          />
+        </View>
       </View>
     </SafeAreaView>
   )
@@ -67,17 +71,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   textStyle: {
+    fontFamily: 'Poppins-SemiBold',
     textAlign: 'center',
-    fontSize: 23,
+    fontSize: 26,
     color: '#000',
     marginTop: 15,
-  },
-  buttonStyle: {
-    justifyContent: 'center',
-    flexDirection: 'row',
-    marginTop: 30,
-    padding: 15,
-    backgroundColor: '#8ad24e',
   },
   buttonTextStyle: {
     color: '#fff',

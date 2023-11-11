@@ -122,7 +122,7 @@ const SendContract = () => {
       setErrors([])
       const contract: Contract = {
         value: totalValue,
-        date: new Date(startDate!),
+        startDate: new Date(startDate!),
         description: description,
         houseId: userHouseSelected.id,
         providerId: provider.id,

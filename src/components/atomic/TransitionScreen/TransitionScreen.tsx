@@ -33,7 +33,7 @@ const TransitionScreen: React.FC<ITransitionScreen> = ({ message, navigatesTo })
     <Container>
       <LottieView
         style={{ height: 220, width: 220 }}
-        source={require('./check_animation.json')}
+        source={require('../../../../assets/lottie/check_animation.json')}
         autoPlay
         loop={false}
       />

@@ -4,9 +4,9 @@ import AnimatedLottieView from 'lottie-react-native'
 
 import { hexToHsl } from '../../../utils/color'
 
-import { IButton, IText } from './interface'
+import { IIconButton, IText } from './interface'
 
-const Container = styled.TouchableHighlight<Omit<IButton, 'text'>>`
+const Container = styled.TouchableHighlight<Omit<IIconButton, 'text'>>`
   flex-grow: ${({ fluid }) => (fluid ? '1' : '0')};
   min-height: 64px;
   border-radius: 12px;
@@ -36,17 +36,26 @@ const ButtonText = styled.Text<IText>`
     theme.colors[variant][!ghost ? 'constrastText' : 'main']};
 `
 
+const ButtonContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  gap: 18px;
+  justify-content: center;
+  align-items: center;
+`
+
 function getMinButtonUnderlayColorLightness(currentLightness: number): number {
   const decreasedLightness = Math.max(10, currentLightness - 15)
   return Math.min(currentLightness, decreasedLightness)
 }
 
-const TextButton: React.FC<IButton> = ({
+const TextButton: React.FC<IIconButton> = ({
   children,
   text,
   variant,
   loading,
   disabled,
+  icon,
   ...props
 }) => {
   const { colors } = useTheme()
@@ -68,9 +77,12 @@ const TextButton: React.FC<IButton> = ({
           loop={true}
         />
       ) : (
-        <ButtonText variant={variant} {...props}>
-          {text}
-        </ButtonText>
+        <ButtonContainer>
+          <ButtonText variant={variant} {...props}>
+            {text}
+          </ButtonText>
+          {icon}
+        </ButtonContainer>
       )}
     </Container>
   )

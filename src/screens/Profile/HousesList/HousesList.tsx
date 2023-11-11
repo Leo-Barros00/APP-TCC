@@ -55,7 +55,7 @@ const HousesList: React.FC = () => {
             <EmptyListView>
               <LottieView
                 style={{ height: 120, width: 120 }}
-                source={require('./empty-list.json')}
+                source={require('../../../../assets/lottie/empty-list.json')}
                 autoPlay
                 loop={true}
               />

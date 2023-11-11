@@ -8,6 +8,7 @@ import React from 'react'
 import { FlatList, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
+
 const Container = styled.View`
   flex: 1;
   width: 100%;
@@ -54,7 +55,7 @@ const HiringList: React.FC = () => {
             <EmptyListView>
               <LottieView
                 style={{ height: 120, width: 120 }}
-                source={require('./empty-list.json')}
+                source={require('../../../assets/lottie/empty-list.json')}
                 autoPlay
                 loop={true}
               />
