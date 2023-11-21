@@ -11,7 +11,11 @@ import Preferences from '@Screens/Preferences'
 import Profile from '@Screens/Profile'
 import HousesList from '@Screens/Profile/HousesList'
 import ProposalsScreen from '@Screens/Proposals'
-
+import HiringList from '@Screens/HiringList'
+import Rating from '@Screens/Rating'
+import Report from '@Screens/Report'
+import Balance from '@Screens/Balance'
+import Withdraw from '@Screens/Withdraw'
 import SearchServices from '@Screens/SearchServices'
 import SendContract from '@Screens/SendContract'
 import Approval from '@Screens/Approval'
@@ -23,8 +27,7 @@ import { insertAuthInfo } from '@Store/reducers/auth'
 import { insertLoggedUserInfo } from '@Store/reducers/user'
 
 import UserService from '@Api/services/userService'
-import HiringList from '@Screens/HiringList'
-import Rating from '@Screens/Rating'
+
 import { secureStoreSave } from '@Utils/secureStore'
 
 const Stack = createNativeStackNavigator()
@@ -101,6 +104,9 @@ const AuthenticatedNavigation = () => {
           <Stack.Screen name="SendContract" component={SendContract} />
           <Stack.Screen name="HiringList" component={HiringList} />
           <Stack.Screen name="Rating" component={Rating} />
+          <Stack.Screen name="Report" component={Report} />
+          <Stack.Screen name="Balance" component={Balance} />
+          <Stack.Screen name="Withdraw" component={Withdraw} />
         </>
       ) : (
         <Stack.Screen name="Approval" component={Approval} />

@@ -32,10 +32,13 @@ interface ProviderContractState {
   provider: any
 }
 
-interface ContractorContractState {
+export interface ContractorContractState {
   value: string
   description: string
   contractor: any
+  progressStatus: string
+  startDate: string
+  endDate: string
 }
 
 export interface LoggedUserState {
@@ -54,6 +57,7 @@ export interface LoggedUserState {
   rejectReasons: any
   providerContract: ProviderContractState[]
   contractorContract: ContractorContractState[]
+  balance: number
 }
 
 const initialState: LoggedUserState = {
@@ -71,6 +75,7 @@ const initialState: LoggedUserState = {
   rejectReasons: null,
   providerContract: [],
   contractorContract: [],
+  balance: 0,
 }
 
 const loggedUserSlice = createSlice({

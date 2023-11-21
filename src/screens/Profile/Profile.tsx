@@ -7,7 +7,7 @@ import { deleteSecureStoreValue } from '@Utils/secureStore'
 import { FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import React from 'react'
-import { Dimensions } from 'react-native'
+import { Dimensions, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled, { useTheme } from 'styled-components/native'
 import { Foundation } from '@expo/vector-icons'
@@ -20,7 +20,7 @@ const Container = styled.View`
 
 const HeaderContainer = styled.View`
   width: 100%;
-  height: ${Dimensions.get('window').height / 3}px;
+  height: ${Dimensions.get('window').height * 0.3}px;
   align-items: center;
   justify-content: center;
   padding: 16px;
@@ -125,38 +125,46 @@ const Profile: React.FC = () => {
         </Avatar>
         <StyledText>{name + ' ' + surname}</StyledText>
       </HeaderContainer>
-      <SafeAreaView>
-        <BodyContainer>
-          <CardContainer onPress={() => navigation.navigate('AddHouse')}>
-            <MaterialIcons name="house" size={32} color="black" />
-            <CardText>{'Adicionar residência'}</CardText>
-          </CardContainer>
-          <CardContainer onPress={() => navigation.navigate('HouseList')}>
-            <FontAwesome5 name="list-ol" size={24} color="black" />
-            <CardText>{'Minhas residências'}</CardText>
-          </CardContainer>
-        </BodyContainer>
-        <BodyContainer>
-          <CardContainer onPress={() => navigation.navigate('Preferences')}>
-            <Ionicons name="options" size={24} color="black" />
-            <CardText>{'Minhas preferências'}</CardText>
-          </CardContainer>
-          <CardContainer onPress={() => navigation.navigate('HiringList')}>
-            <Foundation name="clipboard-pencil" size={24} color="black" />
-            <CardText>{'Minhas contratações'}</CardText>
-          </CardContainer>
-        </BodyContainer>
-        <AddButton onPress={handleOnPressLogoutButton}>
-          <>
-            <MaterialIcons
-              name="logout"
-              size={20}
-              color={theme.colors['primary']['main']}
-            />
-            <AddText>{'Sair'}</AddText>
-          </>
-        </AddButton>
-      </SafeAreaView>
+      <ScrollView>
+        <SafeAreaView>
+          <BodyContainer>
+            <CardContainer onPress={() => navigation.navigate('AddHouse')}>
+              <MaterialIcons name="house" size={32} color="black" />
+              <CardText>Adicionar residência</CardText>
+            </CardContainer>
+            <CardContainer onPress={() => navigation.navigate('HouseList')}>
+              <FontAwesome5 name="list-ol" size={24} color="black" />
+              <CardText>Minhas residências</CardText>
+            </CardContainer>
+          </BodyContainer>
+          <BodyContainer>
+            <CardContainer onPress={() => navigation.navigate('Preferences')}>
+              <Ionicons name="options" size={24} color="black" />
+              <CardText>Minhas preferências</CardText>
+            </CardContainer>
+            <CardContainer onPress={() => navigation.navigate('HiringList')}>
+              <Foundation name="clipboard-pencil" size={24} color="black" />
+              <CardText>Minhas contratações</CardText>
+            </CardContainer>
+          </BodyContainer>
+          <BodyContainer>
+            <CardContainer onPress={() => navigation.navigate('Balance')}>
+              <MaterialIcons name="attach-money" size={24} color="black" />
+              <CardText>Carteira</CardText>
+            </CardContainer>
+          </BodyContainer>
+          <AddButton onPress={handleOnPressLogoutButton}>
+            <>
+              <MaterialIcons
+                name="logout"
+                size={20}
+                color={theme.colors['primary']['main']}
+              />
+              <AddText>Sair</AddText>
+            </>
+          </AddButton>
+        </SafeAreaView>
+      </ScrollView>
     </Container>
   )
 }
