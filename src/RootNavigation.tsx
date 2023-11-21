@@ -16,6 +16,7 @@ import Rating from '@Screens/Rating'
 import Report from '@Screens/Report'
 import Balance from '@Screens/Balance'
 import Withdraw from '@Screens/Withdraw'
+import WithdrawHistory from '@Screens/WithdrawHistory'
 import SearchServices from '@Screens/SearchServices'
 import SendContract from '@Screens/SendContract'
 import Approval from '@Screens/Approval'
@@ -107,6 +108,7 @@ const AuthenticatedNavigation = () => {
           <Stack.Screen name="Report" component={Report} />
           <Stack.Screen name="Balance" component={Balance} />
           <Stack.Screen name="Withdraw" component={Withdraw} />
+          <Stack.Screen name="WithdrawHistory" component={WithdrawHistory} />
         </>
       ) : (
         <Stack.Screen name="Approval" component={Approval} />

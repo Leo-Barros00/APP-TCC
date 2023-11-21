@@ -58,6 +58,7 @@ export interface LoggedUserState {
   providerContract: ProviderContractState[]
   contractorContract: ContractorContractState[]
   balance: number
+  withdraws: any[]
 }
 
 const initialState: LoggedUserState = {
@@ -76,6 +77,7 @@ const initialState: LoggedUserState = {
   providerContract: [],
   contractorContract: [],
   balance: 0,
+  withdraws: [],
 }
 
 const loggedUserSlice = createSlice({

@@ -53,7 +53,7 @@ const Balance = () => {
   }
 
   function handleOnClickWithdrawHistoryButton() {
-
+    navigation.navigate('WithdrawHistory')
   }
 
   return (
