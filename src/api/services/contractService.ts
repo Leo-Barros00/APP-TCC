@@ -5,9 +5,7 @@ import { Contract } from 'src/typings'
 class ContractService {
   public static async sendContract(req: Contract) {
     try {
-      const response = await mainApi.post('/contracts/send', req)
-
-      console.log(response.data)
+      const response = await mainApi.post('/contracts/send', req)  
       return response.data
     } catch (error) {
       if (error instanceof AxiosError) return error.response?.data
@@ -33,6 +31,17 @@ class ContractService {
       if (error instanceof AxiosError) return error.response?.data
     }
   }
+
+  public static async getContractByContractor() {
+    try {
+      const response = await mainApi.get('/contracts/contractor')
+
+      return response.data
+    } catch (error) {
+      if (error instanceof AxiosError) return error.response?.data
+    }
+  }
+
 }
 
 export default ContractService

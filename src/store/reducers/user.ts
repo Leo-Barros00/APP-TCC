@@ -33,9 +33,6 @@ interface ProviderContractState {
 }
 
 interface ContractorContractState {
-  value: string
-  description: string
-  contractor: any
 }
 
 export interface LoggedUserState {

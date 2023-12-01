@@ -26,3 +26,7 @@ export interface Contract {
   accepted?: boolean
   workHours: number
 }
+
+export interface Avaliation {
+ 
+}

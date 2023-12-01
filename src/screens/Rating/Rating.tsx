@@ -1,5 +1,7 @@
+import AvaliationService from '@Api/services/avaliationService'
 import TextButton from '@Components/atomic/TextButton'
-import { useNavigation } from '@react-navigation/native'
+import { useAppSelector } from '@Hooks/redux'
+import { Route, RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { useState } from 'react'
 import {
   Image,
@@ -9,11 +11,27 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
+// import { ICustomNativeStackNavigator } from 'src/RootNavigation'
+import { Avaliation } from 'src/typings'
+// type prop = RouteProp<ICustomNativeStackNavigator, 'Rating'>
 
-const Rating = () => {
+const Rating = ({providerId}) => {
+  // const route = useRoute();
+  // const { providerId } = route.params
+  const { name, surname } = useAppSelector(({ user }) => user)
   const [defaultRating, setDefaultRating] = useState(0)
   const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5])
   const navigation = useNavigation()
+  
+  function sendAvaliation() {    
+    console.log("ID: ", providerId)
+    const avaliation: Avaliation = {
+      description: "bla bla",
+      userId:providerId,
+      value: defaultRating.toString() 
+    }
+    AvaliationService.sendAvaliation(avaliation)
+  }
 
   const RatingBar = () => {
     return (
@@ -50,7 +68,8 @@ const Rating = () => {
           <TextButton
             text={'Enviar avaliação'}
             variant={'primary'}
-            onPress={() => {
+            onPress={() => {           
+              sendAvaliation()
               alert('A nota dada ao prestador foi de ' + defaultRating + ' estrelas')
               navigation.goBack()
             }}

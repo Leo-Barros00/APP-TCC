@@ -27,6 +27,22 @@ import HiringList from '@Screens/HiringList'
 import Rating from '@Screens/Rating'
 import { secureStoreSave } from '@Utils/secureStore'
 
+// export type ICustomNativeStackNavigator = {
+//   Main?: undefined;
+//   Onboarding?: undefined;
+//   SignIn?: undefined;
+//   SignUp?: undefined;
+//   AddHouse?: undefined;
+//   Preferences?: undefined;
+//   HouseList?: undefined;
+//   SendContract?: undefined;
+//   HiringList?: undefined;
+//   Rating?: {
+//     providerId: string;
+//   };
+//   Approval?: undefined;  
+// }
+
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 
@@ -92,6 +108,7 @@ const AuthenticatedNavigation = () => {
       initialRouteName={isApprovedUser ? 'Main' : 'Approval'}
       screenOptions={{ headerShown: false }}
     >
+
       {isApprovedUser ? (
         <>
           <Stack.Screen name="Main" component={MainNavigation} />

@@ -12,31 +12,12 @@ function getFormattedImageUri(uri: string) {
 
 class UserService {
   public static async signUp(signUpData: SignUpState) {
-    try {
-      const formData = new FormData()
-
-      const documentImageUri = getFormattedImageUri(signUpData.documentImage)
-      const personImageUri = getFormattedImageUri(signUpData.personImage)
-
-      formData.append('documentImage', {
-        uri: documentImageUri,
-        type: mime.getType(documentImageUri),
-        name: documentImageUri.split('/').pop(),
-      })
-      formData.append('personImage', {
-        uri: personImageUri,
-        type: mime.getType(personImageUri),
-        name: personImageUri.split('/').pop(),
-      })
-
-      for (let key in signUpData) {
-        formData.append(key, String(signUpData[key as keyof SignUpState]))
-      }
-
-      const response = await mainApi.post('/users', formData, {
+    
+    try {      
+      const response = await mainApi.post('/users', signUpData, {
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'multipart/form-data',
+         
+          'Content-Type': 'application/json',
         },
       })
       return response.data
@@ -83,7 +64,7 @@ class UserService {
     try {
       const response = await mainApi.get('/users/providers', {
         headers: { Authorization: `Bearer ${authToken}` },
-      })
+      })        
       return response.data
     } catch (error) {
       if (error instanceof AxiosError)

@@ -1,12 +1,16 @@
+import ContractService from '@Api/services/contractService'
 import InfoCardIcon from '@Components/atomic/InfoCardIcon/InfoCardIcon'
 import TextButton from '@Components/atomic/TextButton/TextButton'
 import { useAppSelector } from '@Hooks/redux'
+import { IContract } from '@Typings/contract'
 import { FontAwesome5, SimpleLineIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import LottieView from 'lottie-react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { Provider } from 'react-redux'
+import { ICustomNativeStackNavigator } from 'src/RootNavigation'
 import styled from 'styled-components/native'
 
 const Container = styled.View`
@@ -40,9 +44,22 @@ const EmptyListView = styled.View`
   margin-top: 240px;
 `
 
-const HiringList: React.FC = () => {
-  const { providerContract, contractorContract } = useAppSelector(({ user }) => user)
+const HiringList: React.FC = () => {  
   const navigation = useNavigation()
+  const [contracts, setContracts] = useState<IContract[]>([])
+  // const { providerContract, contractorContract } = useAppSelector(({ user }) => user)
+
+  async function getAllContractsByContractorId() {
+    const contractsSearched: IContract[] = await ContractService.getContractByContractor() 
+    setContracts(contractsSearched)   
+    console.log(contractsSearched[0].provider.id)
+  }
+
+   
+  useEffect(() => {
+    getAllContractsByContractorId();
+    
+  }, [])
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -50,7 +67,7 @@ const HiringList: React.FC = () => {
         <ScreenTitle>{'Aqui está o histórico das suas contratações !'}</ScreenTitle>
         <FlatList
           style={{ width: '100%', marginBottom: 120 }}
-          data={contractorContract}
+          data={contracts}
           ListEmptyComponent={() => (
             <EmptyListView>
               <LottieView
@@ -64,19 +81,22 @@ const HiringList: React.FC = () => {
           )}
           renderItem={({ item }) => (
             <InfoCardIcon
-              title={item.contractor.name + ' ' + item.contractor.surname}
+              title={item.provider.name + ' ' + item.provider.surname}
               subtitle={item.description}
               size={item.value + '$'}
               icon={<FontAwesome5 name="file-contract" size={24} color="black" />}
               secondIcon={<SimpleLineIcons name="star" size={24} color="black" />}
               bgColor={false}
-              onPress={() => navigation.navigate('Rating')}
+              onPress={() => {
+                  navigation.navigate( 'Rating', {providerId: 'item.provider.id'})
+                }
+              }
             />
           )}
         />
 
         <View style={{ width: '100%', position: 'absolute', bottom: 16 }}>
-          <TextButton text="Voltar" variant="primary" onPress={navigation.goBack} />
+          <TextButton text="Voltar" variant="primary" onPress={() => navigation.goBack()} />
         </View>
       </Container>
     </SafeAreaView>

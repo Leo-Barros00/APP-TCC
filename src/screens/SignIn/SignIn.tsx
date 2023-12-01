@@ -61,8 +61,7 @@ const SignIn = () => {
       setErrors(['Dados inválidos! Tente novamente'])
       setLoading(false)
       return
-    }
-    console.log(JSON.stringify(loginResponse))
+    }    
     secureStoreSave('secureToken', JSON.stringify(loginResponse))
     dispatch(insertAuthInfo({ ...loginResponse, isLogged: true }))
   }
