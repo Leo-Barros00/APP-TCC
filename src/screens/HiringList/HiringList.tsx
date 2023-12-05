@@ -1,7 +1,8 @@
 import ContractService from '@Api/services/contractService'
 import InfoCardIcon from '@Components/atomic/InfoCardIcon/InfoCardIcon'
 import TextButton from '@Components/atomic/TextButton/TextButton'
-import { useAppSelector } from '@Hooks/redux'
+import { useAppDispatch, useAppSelector } from '@Hooks/redux'
+import { setSelectedProviderId } from '@Store/reducers/avaliation'
 import { IContract } from '@Typings/contract'
 import { FontAwesome5, SimpleLineIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
@@ -10,7 +11,7 @@ import React, { useEffect, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Provider } from 'react-redux'
-import { ICustomNativeStackNavigator } from 'src/RootNavigation'
+import { ICustomNativeStackNavigator, ScreenProps } from 'src/RootNavigation'
 import styled from 'styled-components/native'
 
 const Container = styled.View`
@@ -44,21 +45,19 @@ const EmptyListView = styled.View`
   margin-top: 240px;
 `
 
-const HiringList: React.FC = () => {  
+const HiringList: React.FC = () => {
   const navigation = useNavigation()
+  const dispatch = useAppDispatch()
   const [contracts, setContracts] = useState<IContract[]>([])
-  // const { providerContract, contractorContract } = useAppSelector(({ user }) => user)
 
   async function getAllContractsByContractorId() {
-    const contractsSearched: IContract[] = await ContractService.getContractByContractor() 
-    setContracts(contractsSearched)   
+    const contractsSearched: IContract[] = await ContractService.getContractByContractor()
+    setContracts(contractsSearched)
     console.log(contractsSearched[0].provider.id)
   }
 
-   
   useEffect(() => {
-    getAllContractsByContractorId();
-    
+    getAllContractsByContractorId()
   }, [])
 
   return (
@@ -88,15 +87,19 @@ const HiringList: React.FC = () => {
               secondIcon={<SimpleLineIcons name="star" size={24} color="black" />}
               bgColor={false}
               onPress={() => {
-                  navigation.navigate( 'Rating', {providerId: 'item.provider.id'})
-                }
-              }
+                dispatch(setSelectedProviderId(item.provider.id))
+                navigation.navigate('Rating')
+              }}
             />
           )}
         />
 
         <View style={{ width: '100%', position: 'absolute', bottom: 16 }}>
-          <TextButton text="Voltar" variant="primary" onPress={() => navigation.goBack()} />
+          <TextButton
+            text="Voltar"
+            variant="primary"
+            onPress={() => navigation.goBack()}
+          />
         </View>
       </Container>
     </SafeAreaView>
