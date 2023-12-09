@@ -34,24 +34,25 @@ const EditButton = styled.TouchableOpacity`
   align-items: flex-start;
 `
 
+const ThirdIconButton = styled.TouchableOpacity`
+  align-items: flex-start;
+`
+
 const Title = styled.Text`
   font-size: 16px;
   font-family: 'Poppins-SemiBold';
-
   color: black;
 `
 
 const Subtitle = styled.Text`
   font-size: 16px;
   font-family: 'Poppins-SemiBold';
-
   color: black;
 `
 
 const Size = styled.Text`
   font-size: 14px;
   font-family: 'Poppins-SemiBold';
-
   color: black;
 `
 
@@ -61,7 +62,9 @@ const InfoCardIcon: React.FC<IInfoCardIcon> = ({
   icon,
   size,
   secondIcon,
+  thirdIcon,
   onPress,
+  onPressThirdIcon
 }) => {
   return (
     <Container>
@@ -81,6 +84,9 @@ const InfoCardIcon: React.FC<IInfoCardIcon> = ({
       </FirstContainer>
 
       <EditButton onPress={onPress}>{secondIcon}</EditButton>
+      {thirdIcon && (
+        <ThirdIconButton onPress={onPressThirdIcon}>{thirdIcon}</ThirdIconButton>
+      )}
     </Container>
   )
 }

@@ -4,6 +4,7 @@ import styled from 'styled-components/native'
 import { useAppSelector } from '@Hooks/redux'
 import { FlatList } from 'react-native'
 import { format } from 'date-fns'
+import LottieView from 'lottie-react-native'
 
 const Container = styled.View`
   display: flex;
@@ -40,6 +41,22 @@ const WithdrawContainer = styled.View`
   border-bottom-color: #ccc;
 `
 
+const EmptyListView = styled.View`
+  justify-content: center;
+  align-items: center;
+  padding-left: 32px;
+  padding-right: 32px;
+  flex: 1;
+`
+
+const EmptyListText = styled.Text`
+  font-size: 18px;
+  font-family: 'Poppins-SemiBold';
+  text-align: center;
+  padding: 8px;
+  color: ${({ theme }) => theme.colors.primary.main};
+`
+
 const formatCurrency = (value: string) => {
   return Number(value).toLocaleString('pt-BR', {
     style: 'currency',
@@ -54,24 +71,39 @@ const WithdrawHistory = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <Container>
         <ScreenTitle>Histórico de saques</ScreenTitle>
-        <InfoContainer>
-          <FlatList
-            data={withdraws}
-            renderItem={({ item }) => (
-              <WithdrawContainer>
-                <HistoryText>
-                  Data: {format(new Date(item.date), 'dd/MM/yyyy')}
-                </HistoryText>
-                <HistoryText>
-                  Hora: {format(new Date(item.date), 'HH:mm:ss')}
-                </HistoryText>
-                <HistoryText style={{ fontFamily: 'Poppins-Bold' }}>
-                  Valor: {formatCurrency(item.value)}
-                </HistoryText>
-              </WithdrawContainer>
-            )}
-          />
-        </InfoContainer>
+        {withdraws.length > 0 ? (
+          <InfoContainer>
+            <FlatList
+              data={withdraws}
+              renderItem={({ item }) => (
+                <WithdrawContainer>
+                  <HistoryText>
+                    Data: {format(new Date(item.date), 'dd/MM/yyyy')}
+                  </HistoryText>
+                  <HistoryText>
+                    Hora: {format(new Date(item.date), 'HH:mm:ss')}
+                  </HistoryText>
+                  <HistoryText style={{ fontFamily: 'Poppins-Bold' }}>
+                    Valor: {formatCurrency(item.value)}
+                  </HistoryText>
+                </WithdrawContainer>
+              )}
+            />
+          </InfoContainer>
+        ) : (
+          <EmptyListView>
+            <LottieView
+              style={{ height: 120, width: 120 }}
+              source={require('../../../assets/lottie/empty-list.json')}
+              autoPlay
+              loop={true}
+            />
+            <EmptyListText>
+              {'Você ainda não possui saques realizados!y'}
+            </EmptyListText>
+          </EmptyListView>
+        )}
+
       </Container>
     </SafeAreaView>
   )

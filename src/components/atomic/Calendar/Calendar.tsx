@@ -13,6 +13,8 @@ import TextButton from '../TextButton'
 import { FontAwesome } from '@expo/vector-icons'
 import TextIconButton from '../TextIconButton'
 import AnimatedLottieView from 'lottie-react-native'
+// import ContractService from '@Api/services/contractService'
+import { isAfter } from 'date-fns'
 
 const Container = styled.View`
   display: flex;
@@ -128,11 +130,17 @@ const EmptyListText = styled.Text`
   color: ${({ theme }) => theme.colors.primary.main};
 `
 
+const WarningText = styled.Text`
+  font-size: 18px;
+  font-family: 'Poppins-Bold';
+  color: red;
+`
+
 const Calendar: React.FC<ICalendar> = ({ contracts }) => {
   const theme = useTheme()
 
   const [daysOfCalendar, setDaysOfCalendar] = useState<string[]>([])
-  const [daysCarouselCont, setDaysCarouselCont] = useState<number>(0)
+  const [daysCarouselCont, setDaysCarouselCont] = useState(0)
   const [selectedService, setSelectedService] = useState<IContract | null>(null)
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -163,7 +171,7 @@ const Calendar: React.FC<ICalendar> = ({ contracts }) => {
         .filter((value, index, array) => array.indexOf(value) === index)
         .map((c) => getDateString(new Date(c.startDate), false))
 
-      let uniqueDaysOfContracts: string[] = Array.from(new Set(daysOfContracts))
+      let uniqueDaysOfContracts = Array.from(new Set(daysOfContracts))
       setDaysOfCalendar(uniqueDaysOfContracts)
       setContToCurrentDate(uniqueDaysOfContracts)
     }
@@ -183,21 +191,49 @@ const Calendar: React.FC<ICalendar> = ({ contracts }) => {
     setSelectedService(service)
   }
 
-  function isServiceAvailable(service: IContract | null) {
-    if (!service) {
-      return false
-    }
+  function getWarningText(contract: IContract | null) {
+    if (!contract)
+      return ''
+
     const now = new Date()
-    const startDate = new Date(service.startDate)
-    const endDate = new Date(service.endDate)
-    return (
-      startDate.getFullYear() === now.getFullYear() &&
-      startDate.getMonth() === now.getMonth() &&
-      startDate.getDate() === now.getDate() &&
-      now.getHours() >= startDate.getHours() &&
-      now.getHours() <= endDate.getHours()
-    )
+    const endDate = new Date(contract.endDate)
+
+    if (contract.progressStatus === 'cancelled')
+      return 'O serviço não pode ser finalziado pois você não compareceu ao local para a realização do serviço.'
+
+    if (!isAfter(endDate, now))
+      return 'O serviço não pode ser finalizado pois o tempo de serviço ainda não foi completo.'
+
+    return 'O serviço não pode ser finalizado pois já foi finalizado anteriorente.'
   }
+
+  function isServiceFinishable(contract: IContract | null) {
+    if (!contract)
+      return false
+
+    const now = new Date()
+    const endDate = new Date(contract.endDate)
+
+    return isAfter(endDate, now) && contract.progressStatus === 'pending'
+  }
+
+  // function handleOnClickContract(contract: IContract) {
+  //   if (contract.id == selectedService?.id) setSelectedService(null)
+  //   else setSelectedService(contract)
+  // }
+
+  // function handleOnClickFinishContract(contractId: string) {
+  //   ContractService.finishService(contractId).then(response => console.log({ response }))
+  // }
+
+  function handleOnClickFinishService(contract: IContract | null) {
+    if (!contract)
+      return
+
+    console.log('')
+  }
+
+  console.log({ selectedService })
 
   useEffect(() => {
     getDaysOfCalendar()
@@ -218,7 +254,7 @@ const Calendar: React.FC<ICalendar> = ({ contracts }) => {
       <Modal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
-        title={'Sobre o serviço:'}
+        title="Sobre o serviço:"
       >
         <ModalContentContainer>
           <View>
@@ -275,23 +311,31 @@ const Calendar: React.FC<ICalendar> = ({ contracts }) => {
                 color={theme.colors['primary']['main']}
               />
             </ServiceInfoContainer>
+            {!isServiceFinishable(selectedService) && (
+              <WarningText>
+                {getWarningText(selectedService)}
+              </WarningText>
+            )}
+            <ServiceInfoContainer>
+
+
+            </ServiceInfoContainer>
           </View>
-          {isServiceAvailable(selectedService) ? (
-            <TextButton text={'Começar'} variant={'primary'} />
-          ) : (
-            <TextIconButton
-              text={'Começar'}
-              variant={'primary'}
-              ghost
-              icon={
-                <FontAwesome
+          <TextIconButton
+            text="Finalizar"
+            variant="primary"
+            ghost={!isServiceFinishable(selectedService)}
+            disabled={!isServiceFinishable(selectedService)}
+            icon={
+              !isServiceFinishable(selectedService) ?
+                (<FontAwesome
                   name="lock"
                   size={24}
                   color={theme.colors['primary']['main']}
-                />
-              }
-            />
-          )}
+                />) : (null)
+            }
+            onPress={() => handleOnClickFinishService(selectedService)}
+          />
         </ModalContentContainer>
       </Modal>
 
@@ -365,6 +409,14 @@ const Calendar: React.FC<ICalendar> = ({ contracts }) => {
                 </CalendarItemContainer>
               </ContractContainer>
             )}
+            {/* {selectedContract === item.id && (
+              <View>
+                <InfoText>O serviço foi concretizado?</InfoText>
+              </View>
+            )} */}
+            {/* {selectedContract === item.id && (
+              <TextButton onPress={() => handleOnClickFinishContract(item.id)} variant='primary' fluid text='Finalizar Serviço' />
+            )} */}
           </>
         )}
       />

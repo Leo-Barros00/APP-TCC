@@ -9,4 +9,5 @@ export interface IContract {
   house: any
   contractor: any
   provider: any
+  progressStatus: string
 }

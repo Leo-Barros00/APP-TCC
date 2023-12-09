@@ -4,14 +4,13 @@ import { formatServiceValueToString } from '@Utils/serviceValue'
 import { useNavigation } from '@react-navigation/native'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Contract } from 'src/typings'
 import ContractService from '@Api/services/contractService'
 import { getDateString, getTimeString } from '@Utils/date'
 import SignUpErrors from '@Components/signUp/SignUpErrors/SignUpErrors'
 import TransitionScreen from '@Components/atomic/TransitionScreen/TransitionScreen'
-import React from 'react'
 
 const SafeAreaContainer = styled(SafeAreaView)`
   flex: 1;
@@ -108,12 +107,14 @@ const SendContract = () => {
   const { houses } = useAppSelector(({ user }) => user)
   const { startDate, serviceHours } = useAppSelector(({ services }) => services)
   const navigation = useNavigation()
+
   const provider = providers![providerIndexSelected!]
   const userHouseSelected = houses.filter((item) => item.id === houseSelected)[0]
-  const [description, setDescription] = useState<string>('')
+
+  const [description, setDescription] = useState('')
   const [errors, setErrors] = useState<string[]>([])
   const [finished, setFinished] = useState(false)
-  const [totalValue, setTotalValue] = useState<number>(0)
+  const [totalValue, setTotalValue] = useState(0)
 
   async function handleOnPressSendContract() {
     if (!description || !startDate || !serviceHours)
@@ -122,7 +123,7 @@ const SendContract = () => {
       setErrors([])
       const contract: Contract = {
         value: totalValue,
-        startDate: new Date(startDate!),
+        startDate: new Date(startDate),
         description: description,
         houseId: userHouseSelected.id,
         providerId: provider.id,
@@ -171,15 +172,15 @@ const SendContract = () => {
           <PageTitle>Envio de proposta</PageTitle>
           <InfoContainer>
             <InfoItemsContainer>
-              <Title>{'Prestador:'}</Title>
-              <Description>{provider.name + ' ' + provider.surname}</Description>
+              <Title>Prestador:</Title>
+              <Description>{provider.name} {provider.surname}</Description>
             </InfoItemsContainer>
             <InfoItemsContainer>
-              <Title>{'Nota:'}</Title>
-              <Description>{'4.3'}</Description>
+              <Title>Nota:</Title>
+              <Description>4.3</Description>
             </InfoItemsContainer>
             <InfoItemsContainer>
-              <Title>{'Endereço:'}</Title>
+              <Title>Endereço:</Title>
               <Description>
                 {userHouseSelected.address.description +
                   ', ' +
@@ -189,7 +190,7 @@ const SendContract = () => {
               </Description>
             </InfoItemsContainer>
             <InfoItemsContainer>
-              <Title>{'Cidade/UF:'}</Title>
+              <Title>Cidade/UF:</Title>
               <Description>
                 {userHouseSelected.address.neighborhood.city.name +
                   ' - ' +
@@ -197,27 +198,27 @@ const SendContract = () => {
               </Description>
             </InfoItemsContainer>
             <InfoItemsContainer>
-              <Title>{'Metragem da casa:'}</Title>
+              <Title>Metragem da casa:</Title>
               <Description>{userHouseSelected.metersBuilt + ' m²'}</Description>
             </InfoItemsContainer>
 
             <InfoItemsContainer>
-              <Title>{'Data:'}</Title>
+              <Title>Data:</Title>
               <DateText>{getDateString(new Date(startDate!))}</DateText>
             </InfoItemsContainer>
 
             <InfoItemsContainer>
-              <Title>{'Hora de Início:'}</Title>
+              <Title>Hora de Início:</Title>
               <DateText>{getTimeString(new Date(startDate!))}</DateText>
             </InfoItemsContainer>
 
             <InfoItemsContainer>
-              <Title>{'Horas de serviço:'}</Title>
+              <Title>Horas de serviço:</Title>
               <DateText>{serviceHours}</DateText>
             </InfoItemsContainer>
 
             <InfoItemsContainer>
-              <Title>{'Descrição:'}</Title>
+              <Title>Descrição:</Title>
               <View style={{ flex: 1 }}>
                 <DescriptionField
                   multiline
@@ -229,7 +230,7 @@ const SendContract = () => {
             </InfoItemsContainer>
             <Divider />
             <InfoItemsContainer>
-              <Title>{'Valor total:'}</Title>
+              <Title>Valor total:</Title>
               <Description>
                 {serviceHours !== ''
                   ? formatServiceValueToString(totalValue)
@@ -241,14 +242,14 @@ const SendContract = () => {
         <SignUpErrors errors={errors} />
         <ButtonsInlineContainer>
           <FormButton
-            text={'Cancelar'}
-            variant={'primary'}
+            text="Cancelar"
+            variant="primary"
             onPress={navigation.goBack}
             ghost
           />
           <FormButton
-            text={'Enviar'}
-            variant={'primary'}
+            text="Enviar"
+            variant="primary"
             onPress={handleOnPressSendContract}
           />
         </ButtonsInlineContainer>

@@ -5,7 +5,7 @@ import { Contract } from 'src/typings'
 class ContractService {
   public static async sendContract(req: Contract) {
     try {
-      const response = await mainApi.post('/contracts/send', req)  
+      const response = await mainApi.post('/contracts/send', req)
       return response.data
     } catch (error) {
       if (error instanceof AxiosError) return error.response?.data
@@ -42,6 +42,20 @@ class ContractService {
     }
   }
 
+  public static async updateProgressStatus(
+    contractId: string,
+    newProgressStatus: string
+  ) {
+    try {
+      const response = await mainApi.put(`/contracts/progress/${contractId}`, {
+        progressStatus: newProgressStatus,
+      })
+
+      return response.data
+    } catch (error) {
+      if (error instanceof AxiosError) return error.response?.data
+    }
+  }
 }
 
 export default ContractService

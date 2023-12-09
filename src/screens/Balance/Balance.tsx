@@ -5,6 +5,7 @@ import { useAppSelector } from '@Hooks/redux'
 import { formatServiceValueToString } from '@Utils/serviceValue'
 import TextButton from '@Components/atomic/TextButton'
 import { useNavigation } from '@react-navigation/native'
+import Toast from 'react-native-root-toast'
 
 const Container = styled.View`
   display: flex;
@@ -44,11 +45,23 @@ const ButtonsContainer = styled.View`
   
 `
 
+const toastDefaultConfig = {
+  duration: Toast.durations.LONG,
+  position: Toast.positions.CENTER,
+  shadow: true,
+  animation: true,
+  hideOnPress: true,
+}
+
 const Balance = () => {
   const navigation = useNavigation()
   const { balance } = useAppSelector(({ user }) => user)
 
   function handleOnClickWithdrawButton() {
+    if (balance <= 0) {
+      return Toast.show('Seu saldo atual não permite a realização de saques.', toastDefaultConfig)
+    }
+
     navigation.navigate('Withdraw')
   }
 
