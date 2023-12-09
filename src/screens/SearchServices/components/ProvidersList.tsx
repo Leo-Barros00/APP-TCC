@@ -13,14 +13,13 @@ const CardContainer = styled.View`
 const ProvidersList: React.FC = () => {
   const { providers } = useAppSelector(({ services }) => services)
   const navigation = useNavigation()
-
+ 
   const dispatch = useAppDispatch()
 
   function handleOnPressSendContract(index: number) {
     dispatch(setSelectedProviderIndex(index))
     navigation.navigate('SendContract')
-  }
-
+  }  
   return (
     <FlatList
       data={providers}
@@ -28,7 +27,7 @@ const ProvidersList: React.FC = () => {
         <CardContainer>
           <InfoCardIcon
             title={item.name + ' ' + item.surname}
-            subtitle={'4.2 ⭐'}
+            subtitle={`${item.averageRating == 0 ? '-': item.averageRating}⭐`}
             size={''}
             icon={<AntDesign name="infocirlce" size={24} color="black" />}
             secondIcon={<FontAwesome name="send-o" size={24} color="black" />}

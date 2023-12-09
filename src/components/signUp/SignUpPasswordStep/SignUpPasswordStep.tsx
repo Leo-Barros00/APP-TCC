@@ -63,6 +63,7 @@ const SignUpPasswordStep = () => {
     }
 
     const loginResponse = await UserService.signIn(email, password)
+    
     secureStoreSave('secureToken', JSON.stringify(loginResponse))
     dispatch(insertAuthInfo({ ...loginResponse, isLogged: true }))
     setFinished(true)
@@ -102,7 +103,7 @@ const SignUpPasswordStep = () => {
       />
       <SignUpButtons
         handleOnPressNextButton={handleOnPressNextButton}
-        nextButtonLoading={loading}
+        nextButtonLoading={false}
       />
     </View>
   )

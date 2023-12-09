@@ -20,7 +20,7 @@ const Approval = () => {
   const dispatch = useAppDispatch()
   const { status, rejectReasons } = useAppSelector(({ user }) => user)
 
-  const isRejectedUser = status === 'rejected'
+  
 
   function resetRedux() {
     dispatch(resetAuth())
