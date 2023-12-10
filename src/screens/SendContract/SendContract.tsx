@@ -156,6 +156,10 @@ const SendContract = () => {
     }
   }, [])
 
+  if (!houseSelected || !userHouseSelected) {
+    return null
+  }
+
   if (finished) {
     return (
       <TransitionScreen
