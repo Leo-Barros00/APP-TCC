@@ -25,8 +25,7 @@ export interface Contract {
   providerId: string
   accepted?: boolean
   workHours: number
+  recurrent: boolean
 }
 
-export interface Avaliation {
- 
-}
+export interface Avaliation {}

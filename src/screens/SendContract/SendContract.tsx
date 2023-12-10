@@ -2,7 +2,7 @@ import TextButton from '@Components/atomic/TextButton/TextButton'
 import { useAppSelector } from '@Hooks/redux'
 import { formatServiceValueToString } from '@Utils/serviceValue'
 import { useNavigation } from '@react-navigation/native'
-import { View } from 'react-native'
+import { Switch, View } from 'react-native'
 import styled from 'styled-components/native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -115,6 +115,8 @@ const SendContract = () => {
   const [errors, setErrors] = useState<string[]>([])
   const [finished, setFinished] = useState(false)
   const [totalValue, setTotalValue] = useState(0)
+  const [isEnabled, setIsEnabled] = useState(false)
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState)
 
   async function handleOnPressSendContract() {
     if (!description || !startDate || !serviceHours)
@@ -128,6 +130,7 @@ const SendContract = () => {
         houseId: userHouseSelected.id,
         providerId: provider.id,
         workHours: Number(serviceHours),
+        recurrent: isEnabled,
       }
 
       await ContractService.sendContract(contract)
@@ -177,7 +180,9 @@ const SendContract = () => {
           <InfoContainer>
             <InfoItemsContainer>
               <Title>Prestador:</Title>
-              <Description>{provider.name} {provider.surname}</Description>
+              <Description>
+                {provider.name} {provider.surname}
+              </Description>
             </InfoItemsContainer>
             <InfoItemsContainer>
               <Title>Nota:</Title>
@@ -219,6 +224,19 @@ const SendContract = () => {
             <InfoItemsContainer>
               <Title>Horas de serviço:</Title>
               <DateText>{serviceHours}</DateText>
+            </InfoItemsContainer>
+
+            <InfoItemsContainer>
+              <Title>Serviço recorrente:</Title>
+              <Description>
+                <Switch
+                  trackColor={{ false: '#767577', true: '#3030C2' }}
+                  thumbColor={'#f4f3f4'}
+                  ios_backgroundColor="#3e3e3e"
+                  onValueChange={toggleSwitch}
+                  value={isEnabled}
+                />
+              </Description>
             </InfoItemsContainer>
 
             <InfoItemsContainer>

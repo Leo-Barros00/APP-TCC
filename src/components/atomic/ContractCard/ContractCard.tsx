@@ -16,6 +16,25 @@ const CardOwnerName = styled.Text`
   text-align: center;
 `
 
+const RecurrentFlag = styled.View`
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-top-right-radius: 18px;
+  border-bottom-right-radius: 18px;
+  justify-content: center;
+  align-items: center;
+  background-color: #facc15;
+  margin-bottom: 12px;
+`
+
+const RecurrentText = styled.Text`
+  font-size: 16px;
+  font-family: 'Poppins-Medium';
+  text-align: center;
+`
+
 const CardDescription = styled.Text`
   font-size: 16px;
   line-height: 30px;
@@ -116,6 +135,7 @@ const ContractCard: React.FC<IContractCard> = ({
   jobDescription,
   locale,
   date,
+  recurrent,
   onPress,
   onPressAccept,
   onPressDecline,
@@ -178,6 +198,12 @@ const ContractCard: React.FC<IContractCard> = ({
 
         <InfoContainerCard>
           <NameDescriptionContainer>
+            {recurrent && (
+              <RecurrentFlag>
+                <RecurrentText>{'Contrato recorrente!'}</RecurrentText>
+              </RecurrentFlag>
+            )}
+
             <CardOwnerName>{contractorName}</CardOwnerName>
             <CardDescription>{'"' + jobDescription + '"'}</CardDescription>
           </NameDescriptionContainer>

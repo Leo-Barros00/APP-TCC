@@ -12,4 +12,5 @@ export interface IContract {
   progressStatus: string
   avaliationId: string
   avaliation: any
+  recurrent: boolean
 }

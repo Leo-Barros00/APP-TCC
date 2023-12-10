@@ -9,6 +9,7 @@ export interface IContractCard {
   jobDescription: string
   locale: string
   date: Date
+  recurrent: boolean
   onPress?: (event: GestureResponderEvent) => void
   onPressAccept: () => void
   onPressDecline: () => void

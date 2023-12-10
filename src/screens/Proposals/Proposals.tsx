@@ -63,15 +63,16 @@ const ProposalsScreen = () => {
 
   async function getContractsData() {
     const contractsSearched: IContract[] = await ContractService.getContracts()
-    const orderedContracts = contractsSearched
-      .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
+    const orderedContracts = contractsSearched.sort(
+      (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+    )
 
-    const pendingContracts = orderedContracts
-      .filter((contract) => contract.accepted === null)
+    const pendingContracts = orderedContracts.filter(
+      (contract) => contract.accepted === null
+    )
     setContracts(pendingContracts)
 
-    const acceptedContracts = orderedContracts
-      .filter((contract) => contract.accepted)
+    const acceptedContracts = orderedContracts.filter((contract) => contract.accepted)
     setAcceptedContracts(acceptedContracts)
 
     setLoading(false)
@@ -167,6 +168,7 @@ const ProposalsScreen = () => {
             )}
             renderItem={({ item }) => (
               <ContractCard
+                recurrent={item.recurrent}
                 value={formatServiceValueToString(item.value)}
                 icon={<MaterialIcons name="house" size={32} color="black" />}
                 houseSize={item.house.metersBuilt.toString()}
