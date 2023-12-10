@@ -2,7 +2,7 @@ import ContractService from '@Api/services/contractService'
 import InfoCardIcon from '@Components/atomic/InfoCardIcon/InfoCardIcon'
 import TextButton from '@Components/atomic/TextButton/TextButton'
 import { useAppDispatch } from '@Hooks/redux'
-import { setSelectedProviderId } from '@Store/reducers/avaliation'
+import { setSelectedProviderId, setSelectedContractId } from '@Store/reducers/avaliation'
 import { IContract } from '@Typings/contract'
 import { FontAwesome5, SimpleLineIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
@@ -91,11 +91,12 @@ const HiringList: React.FC = () => {
               subtitle={item.description}
               size={item.value + '$'}
               icon={<FontAwesome5 name="file-contract" size={24} color="black" />}
-              secondIcon={<SimpleLineIcons name="star" size={24} color="black" />}
+              secondIcon={(item.progressStatus == 'completed' && item.avaliationId == null) && <SimpleLineIcons name="star" size={24} color="black" />}
               thirdIcon={isContractReportable(item) && <AntDesign name="warning" size={24} color="black" />}
               bgColor={false}
               onPress={() => {
                 dispatch(setSelectedProviderId(item.provider.id))
+                dispatch(setSelectedContractId(item.id))
                 navigation.navigate('Rating')
               }}
               onPressThirdIcon={() => navigation.navigate('Report', { contract: item } as never)}

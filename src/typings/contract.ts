@@ -10,4 +10,6 @@ export interface IContract {
   contractor: any
   provider: any
   progressStatus: string
+  avaliationId: string
+  avaliation: any
 }
