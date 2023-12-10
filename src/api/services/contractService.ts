@@ -56,6 +56,16 @@ class ContractService {
       if (error instanceof AxiosError) return error.response?.data
     }
   }
+
+  public static async finishService(contractId: string) {
+    try {
+      const response = await mainApi.put(`/contracts/finish/${contractId}`)
+
+      return response.data
+    } catch (error) {
+      if (error instanceof AxiosError) return error.response?.data
+    }
+  }
 }
 
 export default ContractService
