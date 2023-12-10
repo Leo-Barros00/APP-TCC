@@ -14,20 +14,19 @@ import {
 import { Avaliation } from 'src/typings'
 
 const Rating = () => {
-  const { selectedProviderId } = useAppSelector(({ avaliation }) => avaliation)
+  const { selectedProviderId, selectedContractId } = useAppSelector(({ avaliation }) => avaliation)
 
   const [defaultRating, setDefaultRating] = useState(0)
   const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5])
   const navigation = useNavigation()
 
   function sendAvaliation() {
-    console.log('ID: ', selectedProviderId)
     const avaliation: Avaliation = {
       description: 'bla bla',
       userId: selectedProviderId,
       value: defaultRating.toString(),
     }
-    AvaliationService.sendAvaliation(avaliation)
+    AvaliationService.sendAvaliation(avaliation,selectedContractId)
   }
 
   const RatingBar = () => {
@@ -68,7 +67,7 @@ const Rating = () => {
             onPress={() => {
               sendAvaliation()
               alert('A nota dada ao prestador foi de ' + defaultRating + ' estrelas')
-              navigation.goBack()
+              navigation.navigate('Profile')
             }}
           />
         </View>

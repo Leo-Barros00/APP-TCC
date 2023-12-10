@@ -82,8 +82,9 @@ const InfoCardIcon: React.FC<IInfoCardIcon> = ({
           </Subtitle>
         </TextContainer>
       </FirstContainer>
-
+      {secondIcon && (
       <EditButton onPress={onPress}>{secondIcon}</EditButton>
+      )}
       {thirdIcon && (
         <ThirdIconButton onPress={onPressThirdIcon}>{thirdIcon}</ThirdIconButton>
       )}

@@ -5,9 +5,9 @@ import { Avaliation } from 'src/typings'
 
 class AvaliationService {
 
-    public static async sendAvaliation(req: Avaliation) {
+    public static async sendAvaliation(req: Avaliation, contractId: string | null) {
         try {
-          const response = await mainApi.post('/avaliation/send', req)
+          const response = await mainApi.post(`/avaliation/send/${contractId}`, req)
           return response.data
         } catch (error) {
           if (error instanceof AxiosError) return error.response?.data
