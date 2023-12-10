@@ -55,44 +55,37 @@ const EmptyListText = styled.Text`
 
 const ProposalsScreen = () => {
   const { preferenceId } = useAppSelector(({ user }) => user)
+
   const [contracts, setContracts] = useState<any[] | null>(null)
   const [acceptedContracts, setAcceptedContracts] = useState<IContract[] | null>(null)
   const [loading, setLoading] = useState(true)
   const [isCalendarScreen, setIsCalendarScreen] = useState(false)
 
-  async function getContracts() {
+  async function getContractsData() {
     const contractsSearched: IContract[] = await ContractService.getContracts()
-    const filteredContracts = contractsSearched
-      .filter((contract) => contract.accepted === null)
+    const orderedContracts = contractsSearched
       .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
-    setContracts(filteredContracts)
-    setLoading(false)
-  }
 
-  async function geAcceptedtContracts() {
-    const contractsSearched: IContract[] = await ContractService.getContracts()
-    const filteredContracts = contractsSearched
+    const pendingContracts = orderedContracts
+      .filter((contract) => contract.accepted === null)
+    setContracts(pendingContracts)
+
+    const acceptedContracts = orderedContracts
       .filter((contract) => contract.accepted)
-      .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
-    setAcceptedContracts(filteredContracts)
+    setAcceptedContracts(acceptedContracts)
+
     setLoading(false)
   }
 
   async function handleOnPressAcceptOrDecline(id: string, status: string) {
-    await ContractService.updateContractStatus(id, status)
-    const newArray = contracts!.filter((contract) => contract.id !== id)
-    setTimeout(() => {
-      setContracts(newArray)
-    }, 1000)
+    await ContractService.updateContractStatus(id, status).then(() => {
+      getContractsData()
+    })
   }
 
   useEffect(() => {
-    getContracts()
+    getContractsData()
   }, [])
-
-  useEffect(() => {
-    geAcceptedtContracts()
-  }, [isCalendarScreen])
 
   if (!preferenceId) {
     return (

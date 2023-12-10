@@ -9,12 +9,11 @@ import { formatServiceValueToString } from '@Utils/serviceValue'
 import Modal from '../Modal'
 import { IContract } from '@Typings/contract'
 import { EvilIcons } from '@expo/vector-icons'
-import TextButton from '../TextButton'
 import { FontAwesome } from '@expo/vector-icons'
 import TextIconButton from '../TextIconButton'
 import AnimatedLottieView from 'lottie-react-native'
-// import ContractService from '@Api/services/contractService'
-import { isAfter } from 'date-fns'
+import { addHours, isAfter } from 'date-fns'
+import ContractService from '@Api/services/contractService'
 
 const Container = styled.View`
   display: flex;
@@ -144,10 +143,11 @@ const Calendar: React.FC<ICalendar> = ({ contracts }) => {
   const [selectedService, setSelectedService] = useState<IContract | null>(null)
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [finished, setFinished] = useState(false)
 
   function setContToCurrentDate(daysOfCalendar: string[]) {
     const indexToday = daysOfCalendar.findIndex(
-      (value, index, array) => value === getDateString(new Date(), false)
+      (value) => value === getDateString(new Date(), false)
     )
 
     setDaysCarouselCont(indexToday)
@@ -174,6 +174,8 @@ const Calendar: React.FC<ICalendar> = ({ contracts }) => {
       let uniqueDaysOfContracts = Array.from(new Set(daysOfContracts))
       setDaysOfCalendar(uniqueDaysOfContracts)
       setContToCurrentDate(uniqueDaysOfContracts)
+    } else if (contracts !== null && contracts.length == 0) {
+      setLoading(false)
     }
   }
 
@@ -195,13 +197,10 @@ const Calendar: React.FC<ICalendar> = ({ contracts }) => {
     if (!contract)
       return ''
 
-    const now = new Date()
-    const endDate = new Date(contract.endDate)
-
     if (contract.progressStatus === 'cancelled')
-      return 'O serviço não pode ser finalziado pois você não compareceu ao local para a realização do serviço.'
+      return 'O serviço não pode ser finalizado pois você não compareceu ao local para a realização do serviço.'
 
-    if (!isAfter(endDate, now))
+    if (!isServiceTimeEnded(contract))
       return 'O serviço não pode ser finalizado pois o tempo de serviço ainda não foi completo.'
 
     return 'O serviço não pode ser finalizado pois já foi finalizado anteriorente.'
@@ -211,29 +210,22 @@ const Calendar: React.FC<ICalendar> = ({ contracts }) => {
     if (!contract)
       return false
 
+    return isServiceTimeEnded(contract) && contract.progressStatus === 'pending'
+  }
+
+  function isServiceTimeEnded(contract: IContract) {
     const now = new Date()
     const endDate = new Date(contract.endDate)
 
-    return isAfter(endDate, now) && contract.progressStatus === 'pending'
+    return isAfter(addHours(now, -3), endDate)
   }
-
-  // function handleOnClickContract(contract: IContract) {
-  //   if (contract.id == selectedService?.id) setSelectedService(null)
-  //   else setSelectedService(contract)
-  // }
-
-  // function handleOnClickFinishContract(contractId: string) {
-  //   ContractService.finishService(contractId).then(response => console.log({ response }))
-  // }
 
   function handleOnClickFinishService(contract: IContract | null) {
     if (!contract)
       return
 
-    console.log('')
+    ContractService.finishService(contract.id).then(response => console.log({ response }))
   }
-
-  console.log({ selectedService })
 
   useEffect(() => {
     getDaysOfCalendar()
@@ -339,41 +331,44 @@ const Calendar: React.FC<ICalendar> = ({ contracts }) => {
         </ModalContentContainer>
       </Modal>
 
-      <DayContainer>
-        <IconButton
-          icon={
-            <AntDesign
-              name="leftcircle"
-              size={32}
-              color={
-                daysCarouselCont === 0
-                  ? `${theme.colors['secondary']['main']}33`
-                  : theme.colors['primary']['main']
-              }
-            />
-          }
-          size={32}
-          onPress={onPressLeftCarousel}
-          disabled={daysCarouselCont === 0}
-        />
-        <TitleText>{daysOfCalendar[daysCarouselCont]}</TitleText>
-        <IconButton
-          icon={
-            <AntDesign
-              name="rightcircle"
-              size={32}
-              color={
-                daysCarouselCont === daysOfCalendar.length - 1
-                  ? `${theme.colors['secondary']['main']}33`
-                  : theme.colors['primary']['main']
-              }
-            />
-          }
-          size={32}
-          onPress={onPressRightCarousel}
-          disabled={daysCarouselCont === daysOfCalendar.length - 1}
-        />
-      </DayContainer>
+      {contracts !== null && contracts.length > 0 && (
+        <DayContainer>
+          <IconButton
+            icon={
+              <AntDesign
+                name="leftcircle"
+                size={32}
+                color={
+                  daysCarouselCont === 0
+                    ? `${theme.colors['secondary']['main']}33`
+                    : theme.colors['primary']['main']
+                }
+              />
+            }
+            size={32}
+            onPress={onPressLeftCarousel}
+            disabled={daysCarouselCont === 0}
+          />
+          <TitleText>{daysOfCalendar[daysCarouselCont]}</TitleText>
+          <IconButton
+            icon={
+              <AntDesign
+                name="rightcircle"
+                size={32}
+                color={
+                  daysCarouselCont === daysOfCalendar.length - 1
+                    ? `${theme.colors['secondary']['main']}33`
+                    : theme.colors['primary']['main']
+                }
+              />
+            }
+            size={32}
+            onPress={onPressRightCarousel}
+            disabled={daysCarouselCont === daysOfCalendar.length - 1}
+          />
+        </DayContainer>
+      )}
+
       <FlatList
         data={contracts?.filter(
           (contract) =>
@@ -388,7 +383,7 @@ const Calendar: React.FC<ICalendar> = ({ contracts }) => {
               autoPlay
               loop={true}
             />
-            <EmptyListText>{'Você não possui serviços para este dia!'}</EmptyListText>
+            <EmptyListText>Você não possui serviços agendados!</EmptyListText>
           </EmptyListView>
         )}
         renderItem={({ item }) => (
@@ -409,14 +404,6 @@ const Calendar: React.FC<ICalendar> = ({ contracts }) => {
                 </CalendarItemContainer>
               </ContractContainer>
             )}
-            {/* {selectedContract === item.id && (
-              <View>
-                <InfoText>O serviço foi concretizado?</InfoText>
-              </View>
-            )} */}
-            {/* {selectedContract === item.id && (
-              <TextButton onPress={() => handleOnClickFinishContract(item.id)} variant='primary' fluid text='Finalizar Serviço' />
-            )} */}
           </>
         )}
       />
